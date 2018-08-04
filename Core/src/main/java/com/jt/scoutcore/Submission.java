@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Objects;
 
 import com.esotericsoftware.kryo.io.Input;
 
@@ -21,11 +22,16 @@ public class Submission {
 		map.put(name, value + amount);
 	}
 	
+	public void put(String name, Object value) {
+		map.put(Objects.requireNonNull(name), value);
+	}
+	
+	@SuppressWarnings("unchecked")
 	private <T> T get(String name, Class<T> type) {
 		Object obj = map.get(name);
 		if(obj == null) throw new NullPointerException("Null values not allowed! Key: " + name);
-		assert(obj.getClass().isAssignableFrom(type));
-		return null;
+		assert(type.isAssignableFrom(obj.getClass()));
+		return (T) obj;
 	}
 
 	public Submission(HashMap<String, Object> map) {
