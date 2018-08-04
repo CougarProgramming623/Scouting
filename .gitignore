@@ -17,6 +17,10 @@ out/
 .gradle/
 build/
 
+# Eclipse files
+.recommenders/
+.metadata/
+
 # Local configuration file (sdk path, etc)
 local.properties
 

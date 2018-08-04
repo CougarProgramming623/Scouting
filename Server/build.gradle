@@ -5,3 +5,5 @@ repositories {
 }
 
 dependencies {
+	compile group: 'com.esotericsoftware', name: 'kryo', version: '5.0.0-RC1'
+}
