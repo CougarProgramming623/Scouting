@@ -1,2 +1,2 @@
-
+import 'Core'
 rootProject.name = 'Server'

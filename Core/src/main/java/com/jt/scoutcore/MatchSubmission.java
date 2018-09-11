@@ -9,17 +9,17 @@ import java.util.Objects;
 
 import com.esotericsoftware.kryo.io.Input;
 
-public class Submission {
+public class MatchSubmission {
 
 	private static final String TEAM_NUMBER_KEY = "Team", MATCH_NUMBER_KEY = "Match", COLOR_KEY = "Color";
 
 	private HashMap<String, Object> map;
 
 	// For serialization
-	public Submission() {
+	public MatchSubmission() {
 	}
 
-	public Submission(int teamNumber, int matchNumber, TeamColor color) {
+	public MatchSubmission(int teamNumber, int matchNumber, TeamColor color) {
 		setTeamNumber(teamNumber);
 		setMatchNumber(matchNumber);
 		setColor(color);
@@ -90,16 +90,16 @@ public class Submission {
 		return map.get(name);
 	}
 
-	public Submission(HashMap<String, Object> map) {
+	public MatchSubmission(HashMap<String, Object> map) {
 		this.map = map;
 	}
 
-	public Submission(File file) throws FileNotFoundException {
+	public MatchSubmission(File file) throws FileNotFoundException {
 		this(new FileInputStream(file));
 	}
 
 	@SuppressWarnings("unchecked")
-	public Submission(InputStream stream) {
+	public MatchSubmission(InputStream stream) {
 		Input in = new Input(stream);
 		map = ScoutingConstants.KRYO.get().readObject(in, ScoutingConstants.MAP_CLASS);
 		in.close();

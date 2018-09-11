@@ -15,7 +15,7 @@ import com.jt.scoutserver.utils.ExcelUtils;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		AndroidUtils.getFile("\\sdcard", "log.txt", new File("C:\\Users\\Troy Neubauer\\Desktop"));
+		AndroidUtils.deleteFile("/sdcard/test.txt");
 		System.exit(0);
 
 		File file = new File("C:\\Users\\Troy Neubauer\\Desktop\\test.xlsx");
