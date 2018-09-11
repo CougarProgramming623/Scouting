@@ -10,11 +10,19 @@ import java.util.Objects;
 import com.esotericsoftware.kryo.io.Input;
 
 public class Submission {
+
+	private static final String TEAM_NUMBER_KEY = "Team", MATCH_NUMBER_KEY = "Match", COLOR_KEY = "Color";
+
 	private HashMap<String, Object> map;
 
 	// For serialization
 	public Submission() {
+	}
 
+	public Submission(int teamNumber, int matchNumber, TeamColor color) {
+		setTeamNumber(teamNumber);
+		setMatchNumber(matchNumber);
+		setColor(color);
 	}
 
 	public void add(String name, double amount) {
@@ -26,10 +34,47 @@ public class Submission {
 		map.put(name, Double.valueOf(value + amount));
 	}
 
+	public int getTeamNumber() {
+		Integer num = get(TEAM_NUMBER_KEY, Integer.class);
+		if (num == null)
+			return -1;
+		return num.intValue();
+	}
+
+	public void setTeamNumber(int number) {
+		map.put(TEAM_NUMBER_KEY, Integer.valueOf(number));
+	}
+
+	public int getMatchNumber() {
+		Integer num = get(MATCH_NUMBER_KEY, Integer.class);
+		if (num == null)
+			return -1;
+		return num.intValue();
+	}
+
+	public void setMatchNumber(int number) {
+		map.put(MATCH_NUMBER_KEY, Integer.valueOf(number));
+	}
+
+	public void setColor(TeamColor color) {
+		map.put(COLOR_KEY, color);
+	}
+
+	public TeamColor getColor() {
+		return get(COLOR_KEY, TeamColor.class);
+	}
+
 	public void put(String name, Object value) {
-		if (value instanceof Number && !(value instanceof Double))//Convert all types of numbers to a double
+		if (value instanceof Number && !(value instanceof Double))// Convert all types of numbers to a double
 			value = Double.valueOf(((Double) value).doubleValue());
 		map.put(Objects.requireNonNull(name), value);
+	}
+
+	public Class<?> getType(String name) {
+		Object obj = map.get(name);
+		if (obj == null)
+			return null;
+		return obj.getClass();
 	}
 
 	@SuppressWarnings("unchecked")
