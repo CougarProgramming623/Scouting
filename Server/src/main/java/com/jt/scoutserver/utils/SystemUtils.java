@@ -1,4 +1,4 @@
-package com.jt.scoutserver;
+package com.jt.scoutserver.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
