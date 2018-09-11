@@ -16,7 +16,7 @@ public class ExcelUtils {
 				FileInputStream in = new FileInputStream(file);
 				Workbook workbook = WorkbookFactory.create(in);
 				in.close();
-				
+
 				return workbook;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -26,15 +26,14 @@ public class ExcelUtils {
 		}
 	}
 
-	public static void writeExcelFile(Workbook workbook, File file) {
-
+	public static boolean writeExcelFile(Workbook workbook, File file) {
 		try {
 			FileOutputStream stream = new FileOutputStream(file);
-
 			try {
 				workbook.write(stream);
 				stream.close();
 				workbook.close();
+				return true;
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -42,9 +41,12 @@ public class ExcelUtils {
 			if (SystemUtils.isExcelRunning()) {
 				Utils.showInfo("Warning!",
 						"Failed to open the file because Excel is running. Please close excel and press ok!");
-				writeExcelFile(workbook, file);
+				if (writeExcelFile(workbook, file))
+					Utils.showInfo("Saved File", "Saved file successfully");
+				return false;
 			} else {
 				Utils.showError("Error", "Failed to open file: \"" + file + "\"");
+				return false;
 			}
 		}
 

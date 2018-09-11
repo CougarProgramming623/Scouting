@@ -1,7 +1,6 @@
 package com.jt.scoutserver;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.time.Instant;
 import java.util.Date;
 
@@ -15,8 +14,6 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		File file = new File("C:\\Users\\Troy Neubauer\\Desktop\\test.xlsx");
 		while (true) {
-			System.out.println(SystemUtils.isExcelRunning());
-			
 			if (file.exists()) {
 				Workbook workbook = ExcelUtils.openExcelFile(file);
 				Sheet sheet = workbook.getSheetAt(0);
