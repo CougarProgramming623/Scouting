@@ -6,6 +6,17 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../Core" />
+        <option name="gradleHome" value="C:/Gradle/gradle-3.3" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../Core" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
     </option>
   </component>
 </project>
