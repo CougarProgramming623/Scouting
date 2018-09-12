@@ -8,4 +8,5 @@ dependencies {
 	compile group: 'com.esotericsoftware', name: 'kryo', version: '5.0.0-RC1'
 	compile group: 'org.apache.poi', name: 'poi', version: '3.17'
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+//    compile project(":Core")
 }
