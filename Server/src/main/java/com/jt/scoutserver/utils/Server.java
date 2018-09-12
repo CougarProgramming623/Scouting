@@ -16,7 +16,7 @@ public class Server extends JFrame {
 	
 	private void refresh() {
 		String[] files = AndroidUtils.listFiles(FOLDER_NAME);
-		if(files.length == 1 && files[0] == AndroidUtils.ADB_ERROR) 
+		if(files.length == 1 && files[0] == AndroidUtils.ADB_ERROR);
 	}
 	
 }

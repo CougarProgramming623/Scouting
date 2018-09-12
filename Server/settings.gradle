@@ -1,2 +1,3 @@
-import 'Core'
+include ':Core'
+project(':Core').projectDir = new File('C:/Robotics/Scouting App/')
 rootProject.name = 'Server'
