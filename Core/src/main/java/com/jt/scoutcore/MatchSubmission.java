@@ -34,6 +34,15 @@ public class MatchSubmission {
 		map.put(name, Double.valueOf(value + amount));
 	}
 
+	public void add(String name, int amount) {
+		Integer value;
+		if (map.containsKey(name))
+			value = get(name, Integer.class);
+		else
+			value = Integer.valueOf(0);
+		map.put(name, Double.valueOf(value + amount));
+	}
+
 	public int getTeamNumber() {
 		Integer num = get(TEAM_NUMBER_KEY, Integer.class);
 		if (num == null)
@@ -65,9 +74,7 @@ public class MatchSubmission {
 	}
 
 	public void put(String name, Object value) {
-		if (value instanceof Number && !(value instanceof Double))// Convert all types of numbers to a double
-			value = Double.valueOf(((Double) value).doubleValue());
-		map.put(Objects.requireNonNull(name), value);
+		map.put(Objects.requireNonNull(name), Objects.requireNonNull(value));
 	}
 
 	public Class<?> getType(String name) {
