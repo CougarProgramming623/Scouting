@@ -9,15 +9,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.jt.scoutserver.utils.AndroidUtils;
 import com.jt.scoutserver.utils.ExcelUtils;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		AndroidUtils.deleteFile("/sdcard/test.txt");
-		System.exit(0);
-
 		File file = new File("C:\\Users\\Troy Neubauer\\Desktop\\test.xlsx");
 		while (true) {
 			if (file.exists()) {

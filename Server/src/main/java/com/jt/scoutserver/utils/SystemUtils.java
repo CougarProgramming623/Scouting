@@ -2,7 +2,6 @@ package com.jt.scoutserver.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Scanner;
 
 public class SystemUtils {
 
@@ -24,11 +23,18 @@ public class SystemUtils {
 	}
 
 	public static String toString(InputStream inputStream) {
-		Scanner scanner = new Scanner(inputStream);
-		scanner.useDelimiter("\\A");
-		String string = scanner.hasNext() ? scanner.next() : "";
-		scanner.close();
-
-		return string;
+		StringBuilder sb = new StringBuilder();
+		int b;
+		while (true) {
+			try {
+				b = inputStream.read();
+				if (b == -1)
+					break;
+				sb.append((char) b);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return sb.toString();
 	}
 }

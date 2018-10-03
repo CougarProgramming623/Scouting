@@ -8,5 +8,8 @@ dependencies {
 	compile group: 'com.esotericsoftware', name: 'kryo', version: '5.0.0-RC1'
 	compile group: 'org.apache.poi', name: 'poi', version: '3.17'
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
-//    compile project(":Core")
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile group: 'com.github.vidstige', name: 'jadb', version: 'v1.1.0'
+	compile project(":Core")
+	
 }
