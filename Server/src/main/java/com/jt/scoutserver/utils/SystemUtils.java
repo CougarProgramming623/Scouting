@@ -21,6 +21,8 @@ public class SystemUtils {
 		String tasksList = toString(process.getInputStream());
 		return tasksList.contains(processName);
 	}
+	
+	public static native boolean hasNewDevices();
 
 	public static String toString(InputStream inputStream) {
 		StringBuilder sb = new StringBuilder();
