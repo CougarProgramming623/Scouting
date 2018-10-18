@@ -1,20 +1,14 @@
 package com.jt.scoutserver;
 
-import java.io.File;
-import java.time.Instant;
-import java.util.Date;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.jt.scoutserver.utils.ExcelUtils;
+import com.jt.scoutserver.utils.Server;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		File file = new File("C:\\Users\\Troy Neubauer\\Desktop\\test.xlsx");
+		Server server = new Server();
+		server.pull();
+		
+		/*
 		while (true) {
 			if (file.exists()) {
 				Workbook workbook = ExcelUtils.openExcelFile(file);
@@ -36,7 +30,7 @@ public class Main {
 				ExcelUtils.writeExcelFile(workbook, file);
 			}
 			Thread.sleep(1000);
-		}
+		}*/
 	}
 
 }
