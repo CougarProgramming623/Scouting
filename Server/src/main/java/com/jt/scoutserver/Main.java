@@ -1,12 +1,18 @@
 package com.jt.scoutserver;
 
 import com.jt.scoutserver.utils.Server;
+import com.jt.scoutserver.utils.SystemUtils;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Server server = new Server();
-		server.pull();
+		while(true) {
+			if(SystemUtils.hasNewDevices()) {
+				System.out.println("Detected new device!");
+				server.pull();
+			}
+		}
 		
 		/*
 		while (true) {

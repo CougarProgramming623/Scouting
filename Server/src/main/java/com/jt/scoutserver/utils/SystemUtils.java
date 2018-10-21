@@ -6,6 +6,22 @@ import java.io.InputStream;
 public class SystemUtils {
 
 	private static final String EXCEL_EXE_NAME = "EXCEL.EXE";
+	
+	static {
+		System.loadLibrary("Scouting App Natives");
+		
+		nativeInit();
+	}
+
+	/**
+	 * Returns if a new device has been plugged into this system since the last time this method was called - or when this class was initialized
+	 * 
+	 */
+	public static native boolean hasNewDevices();
+	
+	private static native int nativeInit();
+	
+	public static native void nativeExit();
 
 	public static boolean isExcelRunning() {
 		try {
@@ -21,8 +37,6 @@ public class SystemUtils {
 		String tasksList = toString(process.getInputStream());
 		return tasksList.contains(processName);
 	}
-	
-	public static native boolean hasNewDevices();
 
 	public static String toString(InputStream inputStream) {
 		StringBuilder sb = new StringBuilder();
