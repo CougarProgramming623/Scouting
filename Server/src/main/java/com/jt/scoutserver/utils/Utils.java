@@ -5,8 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.io.File;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -16,10 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import com.jt.scoutserver.Main;
 
 public class Utils {
 
@@ -135,5 +132,13 @@ public class Utils {
 			usage[place] = false;
 		});
 		thread.start();
+	}
+
+	public static String randomString(Random random, int length) {
+		char[] chars = new char[length];
+		for (int i = 0; i < length; i++) {
+			chars[i] = (char) (random.nextInt(127 - 33) + 33);
+		}
+		return new String(chars);
 	}
 }

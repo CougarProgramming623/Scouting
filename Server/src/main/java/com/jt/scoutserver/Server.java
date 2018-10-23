@@ -1,5 +1,8 @@
 package com.jt.scoutserver;
 
+import static com.jt.scoutcore.ScoutingConstants.ANDROID_SAVE_DIRECTORY;
+import static com.jt.scoutcore.ScoutingConstants.FOLDER_NAME;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
@@ -13,7 +16,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,10 +26,9 @@ import javax.swing.JTextArea;
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutserver.utils.ExcelUtils;
+import com.jt.scoutserver.utils.ExcelWriter;
 import com.jt.scoutserver.utils.SystemUtils;
 import com.jt.scoutserver.utils.Utils;
-
-import static com.jt.scoutcore.ScoutingConstants.*;
 
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
@@ -77,7 +78,7 @@ public class Server extends JFrame {
 			File file = ExcelUtils.saveExcelFile();
 			if (file == null)
 				return;
-			ExcelUtils.exportTo(file);
+			ExcelWriter.writeAll(file, 0, 10);
 
 		});
 

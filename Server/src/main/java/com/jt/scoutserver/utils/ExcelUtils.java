@@ -68,56 +68,6 @@ public class ExcelUtils {
 
 	}
 
-	public static void exportTo(File file) {
-		// maps column names to column numbers
-		HashMap<String, Integer> headers = new HashMap<String, Integer>();
-		for (File childFile : Server.MATCHES_DIR.listFiles()) {
-			if (childFile.exists() && childFile.isFile() && FilenameUtils.isExtension(childFile.getName(), ScoutingConstants.EXTENSION)) {
-				MatchSubmission sub = ScoutingUtils.read(childFile);
-				for (Entry<String, Object> entry : sub.getMap().entrySet()) {
-					String key = entry.getKey();
-					if (!headers.containsKey(key)) {
-						headers.put(key, headers.size());
-					}
-				}
-			}
-		}
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		Sheet sheet = workbook.createSheet();
-		int rowNum = 0;
-		Row header = sheet.createRow(rowNum++);
-		for (Entry<String, Integer> entry : headers.entrySet()) {
-			String key = entry.getKey();
-			header.createCell(entry.getValue()).setCellValue(key);
-
-		}
-
-		for (File childFile : Server.MATCHES_DIR.listFiles()) {
-			if (childFile.exists() && childFile.isFile() && FilenameUtils.isExtension(childFile.getName(), ScoutingConstants.EXTENSION)) {
-				MatchSubmission sub = ScoutingUtils.read(childFile);
-				Row row = sheet.createRow(rowNum++);
-				for (Entry<String, Object> entry : sub.getMap().entrySet()) {
-					String key = entry.getKey();
-					Object value = entry.getValue();
-
-					int col = headers.get(key);
-					Cell cell = row.createCell(col);
-
-					if (value instanceof Number) {
-						cell.setCellValue(((Number) value).doubleValue());
-					} else if (value instanceof Boolean) {
-						cell.setCellValue(((Boolean) value).booleanValue());
-					} else {
-						cell.setCellValue(value.toString());
-					}
-
-				}
-			}
-		}
-		writeExcelFile(workbook, file);
-		System.out.println("Saved excel file successfully");
-	}
-
 	public static File saveExcelFile() {
 		return Utils.saveFile(EXCEL_EXTENSION, "Excel Files");
 	}
