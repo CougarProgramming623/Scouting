@@ -16,10 +16,12 @@ public class MatchSubmission {
 	private HashMap<String, Object> map;
 
 	// For serialization
+
 	public MatchSubmission() {
 	}
 
 	public MatchSubmission(int teamNumber, int matchNumber, TeamColor color) {
+		map = new HashMap<String, Object>();
 		setTeamNumber(teamNumber);
 		setMatchNumber(matchNumber);
 		setColor(color);
@@ -140,7 +142,10 @@ public class MatchSubmission {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "MatchSubmission " + map.toString() + "";
+	}
 
 }

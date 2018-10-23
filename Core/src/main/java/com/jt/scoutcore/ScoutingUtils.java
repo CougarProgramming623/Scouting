@@ -9,14 +9,19 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class ScoutingUtils {
+	
 	public static MatchSubmission read(File file) {
 		try {
 			Kryo kryo = ScoutingConstants.KRYO.get();
 			Input input = new Input(new FileInputStream(file));
-			MatchSubmission sub = kryo.readObject(input, MatchSubmission.class);
+			Object obj = kryo.readClassAndObject(input);
+			if (!(obj instanceof MatchSubmission)) {
+				throw new RuntimeException("Invalid " + obj.getClass());
+			}
 			input.close();
-			return sub;
+			return (MatchSubmission) obj;
 		} catch (Exception e) {
+
 			throw new RuntimeException(e);
 		}
 	}
@@ -25,7 +30,7 @@ public class ScoutingUtils {
 		try {
 			Output out = new Output(new FileOutputStream(file));
 			Kryo kryo = ScoutingConstants.KRYO.get();
-			kryo.writeObject(out, sub);
+			kryo.writeClassAndObject(out, sub);
 			out.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);

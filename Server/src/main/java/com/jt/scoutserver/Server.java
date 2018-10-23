@@ -1,6 +1,7 @@
-package com.jt.scoutserver.utils;
+package com.jt.scoutserver;
 
 import java.awt.BorderLayout;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -11,7 +12,10 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,6 +23,11 @@ import javax.swing.JTextArea;
 
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingUtils;
+import com.jt.scoutserver.utils.ExcelUtils;
+import com.jt.scoutserver.utils.SystemUtils;
+import com.jt.scoutserver.utils.Utils;
+
+import static com.jt.scoutcore.ScoutingConstants.*;
 
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
@@ -26,34 +35,19 @@ import se.vidstige.jadb.JadbException;
 import se.vidstige.jadb.RemoteFile;
 
 public class Server extends JFrame {
-	private static final String FOLDER_NAME = "JT Robo App";
-	private static final File APPDATA_STORAGE_FOLDER = new File(System.getenv("APPDATA"), FOLDER_NAME);
-	private static final File MATCHES_DIR = new File(APPDATA_STORAGE_FOLDER, "Matches");
-	private static final String ANDROID_SAVE_DIRECTORY = "/sdcard/" + FOLDER_NAME;
+	public static final File APPDATA_STORAGE_FOLDER = new File(System.getenv("APPDATA"), FOLDER_NAME);
+	public static final File MATCHES_DIR = new File(APPDATA_STORAGE_FOLDER, "Matches");
 	private JTextArea console = new JTextArea(10, 30);
 	private DefaultListModel<MatchSubmission> model = new DefaultListModel<MatchSubmission>();
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
+	private JButton pull = new JButton("Pull"), export = new JButton("export");
 
 	public Server() {
 		super("Scouting App Server");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 600);
-		setLocationRelativeTo(null);
-
-		JPanel panel = new JPanel(new BorderLayout());
-		console.setEditable(false);
-		JScrollPane scroll = new JScrollPane(console);
-		scroll.setBorder(BorderFactory.createTitledBorder("Console"));
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		panel.add(scroll, BorderLayout.SOUTH);
-
-		setContentPane(panel);
-		setVisible(true);
-
+		
 		PrintStream origionalOut = System.out;
 		System.setOut(new PrintStream(new OutputStream() {
-
+			
 			@Override
 			public void write(int b) throws IOException {
 				String currentText = console.getText();
@@ -64,6 +58,40 @@ public class Server extends JFrame {
 				origionalOut.write(b);
 			}
 		}));
+
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setSize(800, 600);
+		setLocationRelativeTo(null);
+
+		JPanel panel = new JPanel(new BorderLayout());
+		console.setEditable(false);
+		JScrollPane scroll = new JScrollPane(console);
+		scroll.setBorder(BorderFactory.createTitledBorder("Console"));
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		pull.addActionListener((e) -> {
+			pull();
+		});
+		export.addActionListener((e) -> {
+			JFileChooser chooser = new JFileChooser();
+			chooser.showOpenDialog(this);
+			File file = chooser.getSelectedFile();
+			if (file == null)
+				return;
+			ExcelUtils.exportTo(file);
+			
+		});
+
+		panel.add(scroll, BorderLayout.SOUTH);
+		panel.add(new JLabel("Indexed Matches"), BorderLayout.WEST);
+		panel.add(list, BorderLayout.WEST);
+		panel.add(pull, BorderLayout.NORTH);
+		panel.add(export, BorderLayout.NORTH);
+
+		setContentPane(panel);
+		setVisible(true);
+
 
 		for (File file : MATCHES_DIR.listFiles()) {
 			if (file.isDirectory())
@@ -77,12 +105,13 @@ public class Server extends JFrame {
 				System.out.println("invalid file " + file);
 			}
 		}
-		
+
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				setVisible(false);
 				SystemUtils.nativeExit();
-				System.out.println("closing");
+				System.exit(0);
 			}
 		});
 	}
@@ -93,6 +122,7 @@ public class Server extends JFrame {
 		try {
 			JadbConnection jadb = new JadbConnection();
 			List<JadbDevice> devices = jadb.getDevices();
+			System.out.println("Detected " + devices.size() + (devices.size() == 1 ? " Device" : " Devices"));
 			for (JadbDevice device : devices) {
 				device.execute("mkdirs", ANDROID_SAVE_DIRECTORY);
 				List<RemoteFile> files = device.list(ANDROID_SAVE_DIRECTORY);
