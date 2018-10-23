@@ -1,7 +1,7 @@
 package com.jt.scoutserver;
 
 import java.awt.BorderLayout;
-
+import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -40,14 +40,14 @@ public class Server extends JFrame {
 	private JTextArea console = new JTextArea(10, 30);
 	private DefaultListModel<MatchSubmission> model = new DefaultListModel<MatchSubmission>();
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
-	private JButton pull = new JButton("Pull"), export = new JButton("export");
+	private JButton pull = new JButton("Pull"), export = new JButton("Export");
 
 	public Server() {
 		super("Scouting App Server");
-		
+
 		PrintStream origionalOut = System.out;
 		System.setOut(new PrintStream(new OutputStream() {
-			
+
 			@Override
 			public void write(int b) throws IOException {
 				String currentText = console.getText();
@@ -74,24 +74,25 @@ public class Server extends JFrame {
 			pull();
 		});
 		export.addActionListener((e) -> {
-			JFileChooser chooser = new JFileChooser();
-			chooser.showOpenDialog(this);
-			File file = chooser.getSelectedFile();
+			File file = ExcelUtils.saveExcelFile();
 			if (file == null)
 				return;
 			ExcelUtils.exportTo(file);
-			
+
 		});
 
 		panel.add(scroll, BorderLayout.SOUTH);
 		panel.add(new JLabel("Indexed Matches"), BorderLayout.WEST);
 		panel.add(list, BorderLayout.WEST);
-		panel.add(pull, BorderLayout.NORTH);
-		panel.add(export, BorderLayout.NORTH);
+		
+		JPanel north = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		north.add(pull);
+		north.add(export);
+		
+		panel.add(north, BorderLayout.NORTH);
 
 		setContentPane(panel);
 		setVisible(true);
-
 
 		for (File file : MATCHES_DIR.listFiles()) {
 			if (file.isDirectory())

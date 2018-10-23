@@ -5,15 +5,58 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.Window;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+import com.jt.scoutserver.Main;
 
 public class Utils {
-	
+
+	public static File saveFile(String extension, String desc) {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Save File");
+		chooser.setApproveButtonText("Save");
+		chooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public String getDescription() {
+				return desc;
+			}
+
+			@Override
+			public boolean accept(File f) {
+				return f.isDirectory() || FilenameUtils.isExtension(f.getName(), extension);
+			}
+		});
+
+		chooser.showOpenDialog(null);
+		File file = chooser.getSelectedFile();
+		if (file == null)
+			return null;
+		if (file.exists() && file.isFile()) {
+			int value = JOptionPane.showOptionDialog(null, "Do you want to override this file?", file.getName() + " already exists!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null,
+					null);
+			if (value != JOptionPane.YES_OPTION) {
+				return null;
+			}
+		}
+		if (FilenameUtils.isExtension(file.getName(), extension))
+			return file;
+		else
+			return new File(file.getPath() + '.' + extension);
+	}
+
 	public static void showError(String title, String error) {
 		JOptionPane.showMessageDialog(null, error, title, JOptionPane.ERROR_MESSAGE);
 	}
@@ -21,12 +64,12 @@ public class Utils {
 	public static void showInfo(String title, String info) {
 		JOptionPane.showMessageDialog(null, info, title, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	private static boolean[] usage = new boolean[100];
-	
+
 	private static int findNextPlace() {
 		for (int i = 0; i < usage.length; i++) {
-			if(!usage[i]) {
+			if (!usage[i]) {
 				usage[i] = true;
 				return i;
 			}
@@ -80,7 +123,7 @@ public class Utils {
 		Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();// size of the screen
 		Insets toolHeight = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());// height of the task bar
 		frame.pack();
-		frame.setLocation(scrSize.width - frame.getWidth(), scrSize.height - toolHeight.bottom - (frame.getHeight()+ 10) * (place + 1));
+		frame.setLocation(scrSize.width - frame.getWidth(), scrSize.height - toolHeight.bottom - (frame.getHeight() + 10) * (place + 1));
 		frame.setVisible(true);
 		Thread thread = new Thread(() -> {
 			try {

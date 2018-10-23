@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.swing.filechooser.FileFilter;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,6 +24,9 @@ import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutserver.Server;
 
 public class ExcelUtils {
+
+	public static final String EXCEL_EXTENSION = "xlsx";
+
 	public static Workbook openExcelFile(File file) {
 		if (file.exists()) {
 			try {
@@ -64,7 +69,6 @@ public class ExcelUtils {
 	}
 
 	public static void exportTo(File file) {
-		System.out.println("exporting");
 		// maps column names to column numbers
 		HashMap<String, Integer> headers = new HashMap<String, Integer>();
 		for (File childFile : Server.MATCHES_DIR.listFiles()) {
@@ -78,10 +82,8 @@ public class ExcelUtils {
 				}
 			}
 		}
-		System.out.println("about to create workbook");
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		Sheet sheet = workbook.createSheet();
-		System.out.println("created sheet");
 		int rowNum = 0;
 		Row header = sheet.createRow(rowNum++);
 		for (Entry<String, Integer> entry : headers.entrySet()) {
@@ -113,5 +115,10 @@ public class ExcelUtils {
 			}
 		}
 		writeExcelFile(workbook, file);
+		System.out.println("Saved excel file successfully");
+	}
+
+	public static File saveExcelFile() {
+		return Utils.saveFile(EXCEL_EXTENSION, "Excel Files");
 	}
 }
