@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class Utils {
+	
 	public static void showError(String title, String error) {
 		JOptionPane.showMessageDialog(null, error, title, JOptionPane.ERROR_MESSAGE);
 	}

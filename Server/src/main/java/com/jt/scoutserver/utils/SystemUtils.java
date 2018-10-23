@@ -2,14 +2,18 @@ package com.jt.scoutserver.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+
+import org.apache.poi.util.IOUtils;
 
 public class SystemUtils {
 
 	private static final String EXCEL_EXE_NAME = "EXCEL.EXE";
-	
+
 	static {
+		System.out.println("Loading native library");
 		System.loadLibrary("Scouting App Natives");
-		
+
 		nativeInit();
 	}
 
@@ -18,9 +22,9 @@ public class SystemUtils {
 	 * 
 	 */
 	public static native boolean hasNewDevices();
-	
+
 	private static native int nativeInit();
-	
+
 	public static native void nativeExit();
 
 	public static boolean isExcelRunning() {
@@ -52,5 +56,20 @@ public class SystemUtils {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static void run(String string, String input) {
+		ProcessBuilder builder = new ProcessBuilder(string.split(" "));
+		try {
+			builder.start();
+			Process p = builder.start();
+			p.getOutputStream().write(input.getBytes(Charset.forName("UTF-8")));
+			p.waitFor();
+			System.out.println("Out:::");
+			IOUtils.copy(p.getInputStream(), System.out);
+		} catch (Exception e) {
+			System.out.println("Error running \"" + string + "\"");
+		}
+
 	}
 }
