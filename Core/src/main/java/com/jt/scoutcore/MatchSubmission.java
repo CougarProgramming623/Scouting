@@ -145,7 +145,11 @@ public class MatchSubmission {
 
 	@Override
 	public String toString() {
-		return "MatchSubmission " + map.toString() + "";
+		return "Team: " + ScoutingUtils.makeLength(Integer.toString(getTeamNumber()), 5) + " Match#: " + ScoutingUtils.makeLength(Integer.toString(getMatchNumber()), 4) + " Color: " + getColor();
+	}
+
+	public boolean has(String attribute) {
+		return map.containsKey(attribute);
 	}
 
 }
