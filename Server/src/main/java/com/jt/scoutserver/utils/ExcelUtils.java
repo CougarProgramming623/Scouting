@@ -5,25 +5,35 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
-import javax.swing.filechooser.FileFilter;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.jt.scoutcore.MatchSubmission;
-import com.jt.scoutcore.ScoutingConstants;
-import com.jt.scoutcore.ScoutingUtils;
-import com.jt.scoutserver.Server;
 
 public class ExcelUtils {
+
+	public static interface MatchSubmissionIdentifier {
+		public boolean matchFile(MatchSubmission m, long data);
+	}
+
+	public static final MatchSubmissionIdentifier ALL_FILES = new MatchSubmissionIdentifier() {
+		public boolean matchFile(MatchSubmission m, long data) {
+			return true;
+		};
+	};
+
+	public static final MatchSubmissionIdentifier SINGLE_MATCH = new MatchSubmissionIdentifier() {
+		public boolean matchFile(MatchSubmission m, long data) {
+			return m.getMatchNumber() == (int) data;
+		};
+	};
+	
+	public static final MatchSubmissionIdentifier SINGLE_TEAM = new MatchSubmissionIdentifier() {
+		public boolean matchFile(MatchSubmission m, long data) {
+			return m.getTeamNumber() == (int) data;
+		};
+	};
 
 	public static final String EXCEL_EXTENSION = "xlsx";
 

@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class ScoutingUtils {
-	
+
 	public static MatchSubmission read(File file) {
 		try {
 			Kryo kryo = ScoutingConstants.KRYO.get();
@@ -35,5 +35,19 @@ public class ScoutingUtils {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String makeLength(String string, int length) {
+		if (string.length() == length)
+			return string;
+
+		if (string.length() > length)
+			return string.substring(0, length);
+		char[] chars = new char[length];
+		string.getChars(0, string.length(), chars, 0);
+		for (int i = string.length(); i < length; i++) {
+			chars[i] = ' ';
+		}
+		return new String(chars);
 	}
 }
