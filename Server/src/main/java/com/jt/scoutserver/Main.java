@@ -1,21 +1,13 @@
 package com.jt.scoutserver;
 
-import java.io.File;
-import java.util.Random;
-
-import com.jt.scoutcore.MatchSubmission;
-import com.jt.scoutcore.ScoutingConstants;
-import com.jt.scoutcore.ScoutingUtils;
-import com.jt.scoutcore.TeamColor;
 import com.jt.scoutserver.utils.SystemUtils;
-import com.jt.scoutserver.utils.Utils;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
+/*
 		Random r = new Random();
-		for (int i = 20; i < 100; i++) {
+		for (int i = 100; i < 100 + 4 * 80; i++) {
 			MatchSubmission sub = new MatchSubmission(r.nextInt(3000), 1, r.nextBoolean() ? TeamColor.BLUE : TeamColor.RED);
 			sub.put("Test1", r.nextInt(100));
 			sub.put("Test2", r.nextBoolean());
@@ -31,7 +23,7 @@ public class Main {
 			ScoutingUtils.write(sub, new File(i + "." + ScoutingConstants.EXTENSION));
 		}
 
-		System.exit(0);
+		System.exit(0);*/
 
 		Server server = new Server();
 		while (true) {

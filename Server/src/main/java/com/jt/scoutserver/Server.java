@@ -25,8 +25,6 @@ import javax.swing.JTextArea;
 
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingUtils;
-import com.jt.scoutserver.utils.ExcelUtils;
-import com.jt.scoutserver.utils.ExcelWriter;
 import com.jt.scoutserver.utils.SystemUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -41,7 +39,7 @@ public class Server extends JFrame {
 	private JTextArea console = new JTextArea(10, 30);
 	private DefaultListModel<MatchSubmission> model = new DefaultListModel<MatchSubmission>();
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
-	private JButton pull = new JButton("Pull"), export = new JButton("Export");
+	private JButton pull = new JButton("Pull"), export = new JButton("Export to Excel");
 
 	public Server() {
 		super("Scouting App Server");
@@ -75,21 +73,24 @@ public class Server extends JFrame {
 			pull();
 		});
 		export.addActionListener((e) -> {
-			File file = ExcelUtils.saveExcelFile();
-			if (file == null)
-				return;
-			ExcelWriter.writeAll(file, 0, 10);
+			ExportWindow window = new ExportWindow();
 
 		});
 
 		panel.add(scroll, BorderLayout.SOUTH);
 		panel.add(new JLabel("Indexed Matches"), BorderLayout.WEST);
-		panel.add(list, BorderLayout.WEST);
-		
+
+		scroll = new JScrollPane(list);
+		scroll.setBorder(BorderFactory.createTitledBorder("Pulled Files"));
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		panel.add(scroll, BorderLayout.WEST);
+
 		JPanel north = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		north.add(pull);
 		north.add(export);
-		
+
 		panel.add(north, BorderLayout.NORTH);
 
 		setContentPane(panel);
@@ -100,8 +101,11 @@ public class Server extends JFrame {
 				continue;
 			try {
 				MatchSubmission submission = ScoutingUtils.read(file);
-				if (!model.contains(submission))
+				if (!model.contains(submission)) {
 					model.addElement(submission);
+					list.repaint();
+					Thread.sleep(1);
+				}
 			} catch (Exception e) {
 				// ignore
 				System.out.println("invalid file " + file);
