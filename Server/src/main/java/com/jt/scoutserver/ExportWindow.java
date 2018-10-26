@@ -29,6 +29,7 @@ public class ExportWindow extends JFrame {
 	private JComboBox<String> fieldNames = new JComboBox<String>();
 	private JButton export = new JButton("Export");
 	private JTextField fieldValue = new JTextField(20);
+	
 
 	public ExportWindow() {
 		super("Export Scouting Data");
