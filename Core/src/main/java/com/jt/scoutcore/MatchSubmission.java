@@ -16,10 +16,12 @@ public class MatchSubmission {
 	private HashMap<String, Object> map;
 
 	// For serialization
+
 	public MatchSubmission() {
 	}
 
 	public MatchSubmission(int teamNumber, int matchNumber, TeamColor color) {
+		map = new HashMap<String, Object>();
 		setTeamNumber(teamNumber);
 		setMatchNumber(matchNumber);
 		setColor(color);
@@ -114,6 +116,40 @@ public class MatchSubmission {
 
 	public HashMap<String, Object> getMap() {
 		return map;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((map == null) ? 0 : map.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MatchSubmission other = (MatchSubmission) obj;
+		if (map == null) {
+			if (other.map != null)
+				return false;
+		} else if (!map.equals(other.map))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Team: " + ScoutingUtils.makeLength(Integer.toString(getTeamNumber()), 5) + " Match#: " + ScoutingUtils.makeLength(Integer.toString(getMatchNumber()), 4) + " Color: " + getColor();
+	}
+
+	public boolean has(String attribute) {
+		return map.containsKey(attribute);
 	}
 
 }
