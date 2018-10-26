@@ -30,7 +30,6 @@ public class ExportWindow extends JFrame {
 	private JButton export = new JButton("Export");
 	private JTextField fieldValue = new JTextField(20);
 	
-
 	public ExportWindow() {
 		super("Export Scouting Data");
 		JPanel panel = new JPanel(new BorderLayout());
