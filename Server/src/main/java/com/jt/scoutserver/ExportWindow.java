@@ -22,7 +22,7 @@ import com.jt.scoutserver.utils.Utils;
 import com.jt.scoutserver.utils.Utils.Operator;
 
 public class ExportWindow extends JFrame {
-
+	
 	private JComboBox<ExportOption> options = new JComboBox<ExportOption>();
 	private JPanel operators = new JPanel();
 	private JComboBox<Utils.Operator> operatorsBox = new JComboBox<Utils.Operator>();
