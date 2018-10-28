@@ -5,14 +5,61 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView goldValue;
+    TextView silverValue;
+    TextView penValue;
+    int goldcounter = 0;
+    int silvercounter = 0;
+    int pencounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.print("test2");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        goldValue = findViewById(R.id.goldcounter);
+        silverValue = findViewById(R.id.silvercounter);
+        penValue = findViewById(R.id.pencounter);
+    }
+
+    public void goldUp (View view) {
+        goldcounter++;
+        goldValue.setText(Integer.toString(goldcounter));
+    }
+
+    public void goldDown (View view) {
+        if(goldcounter > 0) {
+            goldcounter--;
+            goldValue.setText(Integer.toString(goldcounter));
+        }
+    }
+    public void silverUp (View view) {
+        silvercounter++;
+        silverValue.setText(Integer.toString(silvercounter));
+    }
+
+    public void silverDown (View view) {
+        if(silvercounter > 0) {
+            silvercounter--;
+            silverValue.setText(Integer.toString(silvercounter));
+        }
+    }
+
+    public void penUp (View view) {
+        if(pencounter < 0) {
+            pencounter += 5;
+            penValue.setText(Integer.toString(pencounter));
+        }
+    }
+
+    public void penDown (View view) {
+            pencounter -= 5;
+            penValue.setText(Integer.toString(pencounter));
     }
 
     public void disableLatch (View v) {
@@ -29,16 +76,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void disableCrater (View v) {
-        Switch sw = findViewById(R.id.switch11);
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    //findViewById(R.id.switch2).set
-                } else {
-                }
-            }
-        });
-    }
 
 }
