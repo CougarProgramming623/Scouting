@@ -30,7 +30,7 @@ import com.jt.scoutserver.Server;
 public class Utils {
 
 	public static String toProperEnglishName(String javaName) {
-		
+
 		if (javaName.toUpperCase().equals(javaName)) {// All letters are uppercase. Its the name of a constant
 			char[] result = new char[javaName.length()];
 			boolean lastWasSpace = true;// True to capitalize the first one
@@ -174,9 +174,17 @@ public class Utils {
 	}
 
 	public static File saveFile(String extension, String desc) {
+		return getFile(extension, desc, "Save");
+	}
+
+	public static File openFile(String extension, String desc) {
+		return getFile(extension, desc, "Open");
+	}
+
+	public static File getFile(String extension, String desc, String option) {
 		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Save File");
-		chooser.setApproveButtonText("Save");
+		chooser.setDialogTitle(option + " File");
+		chooser.setApproveButtonText(option);
 		chooser.setFileFilter(new FileFilter() {
 
 			@Override
@@ -194,7 +202,7 @@ public class Utils {
 		File file = chooser.getSelectedFile();
 		if (file == null)
 			return null;
-		if (file.exists() && file.isFile()) {
+		if (file.exists() && file.isFile() && option.equalsIgnoreCase("save")) {
 			int value = JOptionPane.showOptionDialog(null, "Do you want to override this file?", file.getName() + " already exists!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null,
 					null);
 			if (value != JOptionPane.YES_OPTION) {

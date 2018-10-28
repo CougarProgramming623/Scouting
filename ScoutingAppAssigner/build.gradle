@@ -8,5 +8,5 @@ dependencies {
 	compile group: 'org.apache.poi', name: 'poi', version: '3.17'
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	compile files("../Server")
 }
-
