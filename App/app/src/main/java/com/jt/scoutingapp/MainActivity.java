@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.print("test2");
+        //System.out.print(getExternalFilesDir());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

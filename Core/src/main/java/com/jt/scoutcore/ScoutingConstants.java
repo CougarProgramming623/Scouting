@@ -7,7 +7,7 @@ import com.esotericsoftware.kryo.Kryo;
 public class ScoutingConstants {
 
 	public static final String FOLDER_NAME = "JT Robo App";
-	public static final String ANDROID_SAVE_DIRECTORY = "/sdcard/" + FOLDER_NAME, EXTENSION = "jtm";
+	public static final String ANDROID_SAVE_DIRECTORY = "/sdcard/Android/data/com.jt.scoutingapp/files", EXTENSION = "jtm";
 
 	@SuppressWarnings("rawtypes")
 	public static final Class<HashMap> MAP_CLASS = HashMap.class;

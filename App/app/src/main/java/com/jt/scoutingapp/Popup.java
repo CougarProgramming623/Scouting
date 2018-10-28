@@ -2,9 +2,19 @@ package com.jt.scoutingapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+
+import com.jt.scoutcore.MatchSubmission;
+import com.jt.scoutcore.ScoutingConstants;
+import com.jt.scoutcore.ScoutingUtils;
+import com.jt.scoutcore.TeamColor;
+
+import java.io.File;
+
+import static android.os.Environment.getExternalStorageDirectory;
 
 public class Popup extends Activity{
 
@@ -28,6 +38,10 @@ public class Popup extends Activity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
+                File file = new File(ScoutingConstants.ANDROID_SAVE_DIRECTORY, "test.dat");
+                ScoutingUtils.write(m, file);
+
 
                 finish();
             }
