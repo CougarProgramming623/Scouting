@@ -22,6 +22,7 @@ public class Main {
 		File excelFile = Utils.openFile(ExcelUtils.EXCEL_EXTENSION, "Excel Files");
 		int numDevices = Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
 		HashMap<Integer, Integer> deviceUsages = new HashMap<Integer, Integer>();// maps device id's to number of matches assigned
+		
 		int matchColumn = -1;
 		List<Integer> redColumns = new ArrayList<Integer>(), blueColumns = new ArrayList<Integer>();
 		Workbook workbook = ExcelUtils.openExcelFile(excelFile);
@@ -86,6 +87,7 @@ public class Main {
 			for (Cell cell : blues) {
 				redTeams.add((int) cell.getNumericCellValue());
 			}
+			
 
 		}
 	}
