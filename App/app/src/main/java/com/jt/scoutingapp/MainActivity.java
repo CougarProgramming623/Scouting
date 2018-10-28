@@ -1,17 +1,22 @@
 package com.jt.scoutingapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView goldValue;
     TextView silverValue;
     TextView penValue;
+
+    Button submitData;
+
     int goldcounter = 0;
     int silvercounter = 0;
     int pencounter = 0;
@@ -25,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
         goldValue = findViewById(R.id.goldcounter);
         silverValue = findViewById(R.id.silvercounter);
         penValue = findViewById(R.id.pencounter);
+
+        submitData = findViewById(R.id.sumbit);
+        submitData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,Popup.class));
+            }
+        });
     }
 
     public void goldUp (View view) {
