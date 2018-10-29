@@ -24,7 +24,7 @@ public class Popup extends Activity{
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup_window);
+        setContentView(R.layout.frc2018popup);
 
         close = findViewById(R.id.no);
         close.setOnClickListener(new View.OnClickListener() {
