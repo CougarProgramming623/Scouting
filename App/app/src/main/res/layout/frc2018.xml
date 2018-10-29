@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    android:background="#e02a11"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+    android:id="@+id/textView"
+    android:textColor="#ffffff"
+    android:layout_width="200dp"
+    android:layout_height="30dp"
+    android:layout_marginLeft="20dp"
+    android:text="Match #000"
+    android:textSize="20sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintHorizontal_bias="0.033"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.126" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="20dp"
+        android:text="Team 0000"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.033" />
+
+    <Switch
+        android:id="@+id/switch9"
+        android:layout_width="139dp"
+        android:layout_height="41dp"
+        android:layout_marginRight="20dp"
+        android:text="Baseline"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.034" />
+
+
+    <Button
+        android:id="@+id/golddown"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="goldDown"
+        android:text="- 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.324" />
+
+    <Button
+        android:id="@+id/goldup"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="goldUp"
+        android:text="+ 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.324" />
+
+    <Button
+        android:id="@+id/goldup2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#000000"
+        android:onClick="scaleDown"
+        android:text="-"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.654"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
+
+    <Button
+        android:id="@+id/goldup4"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#000000"
+        android:onClick="switchDown"
+        android:text="-"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.654"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.343" />
+
+    <Button
+        android:id="@+id/goldup3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#000000"
+        android:onClick="switchUp"
+        android:text="+ 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.343" />
+
+    <Button
+        android:id="@+id/goldup5"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#000000"
+        android:onClick="scaleUp"
+        android:text="+ 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
+
+    <TextView
+        android:id="@+id/silvercounter"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <TextView
+        android:id="@+id/silvertext"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:layout_marginLeft="20dp"
+        android:text="Scale Cubes (Tele)"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.415" />
+
+    <Button
+        android:id="@+id/silverdown"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="silverDown"
+        android:text="- 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <Button
+        android:id="@+id/silverup"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="silverUp"
+        android:text="+ 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <TextView
+        android:id="@+id/goldcounter"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.324" />
+
+    <TextView
+        android:id="@+id/goldcounter2"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.343" />
+
+    <TextView
+        android:id="@+id/goldcounter3"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.797"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
+
+    <RadioGroup
+        android:layout_width="140dp"
+        android:layout_height="75dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/goldcounter2"
+        app:layout_constraintVertical_bias="0.198">
+
+        <RadioButton
+            android:id="@+id/radioButton21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wrong side"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton31"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Right side"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton41"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Crossed side"
+            android:textColor="#ffffff" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/goldtext"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:layout_marginLeft="20dp"
+        android:text="Switch Cubes (Tele)"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.248" />
+
+    <TextView
+        android:id="@+id/goldtext2"
+        android:layout_width="152dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="20dp"
+        android:text="Switch (Auto)"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.277" />
+
+    <TextView
+        android:id="@+id/goldtext3"
+        android:layout_width="152dp"
+        android:layout_height="27dp"
+        android:layout_marginLeft="20dp"
+        android:text="Scale (Auto)"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.602" />
+
+    <Button
+        android:id="@+id/pendown"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="penDown"
+        android:text="- 5"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.845" />
+
+    <Button
+        android:id="@+id/pendown2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="vaultUp"
+        android:text="+ 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673" />
+
+    <Button
+        android:id="@+id/penup"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="vaultDown"
+        android:text="- 1"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673" />
+
+    <Button
+        android:id="@+id/penup2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="penUp"
+        android:text="+ 5"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.845" />
+
+    <TextView
+        android:id="@+id/pencounter"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673" />
+
+    <TextView
+        android:id="@+id/pencounter3"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#f4ff30"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.845" />
+
+    <TextView
+        android:id="@+id/pentext"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:layout_marginLeft="20dp"
+        android:text="Vault Cubes (Tele)"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582" />
+
+    <TextView
+        android:id="@+id/pentext2"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:layout_marginLeft="20dp"
+        android:text="Penalty Points Given"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.746" />
+
+    <Button
+        android:id="@+id/sumbit"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#000000"
+        android:onClick="goldDown"
+        android:text="Submit"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.964" />
+
+    <RadioGroup
+        android:layout_width="140dp"
+        android:layout_height="75dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch9"
+        app:layout_constraintVertical_bias="0.1">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wrong side"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Right side"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Crossed side"
+            android:textColor="#ffffff" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/goldcounter3"
+        app:layout_constraintVertical_bias="0.5">
+
+        <RadioButton
+            android:id="@+id/radioButton111"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Platform"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton311"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ramp"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton211"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Climbed"
+            android:textColor="#ffffff" />
+
+        <RadioButton
+            android:id="@+id/radioButton211"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="None"
+            android:textColor="#ffffff" />
+
+    </RadioGroup>
+
+</android.support.constraint.ConstraintLayout>
