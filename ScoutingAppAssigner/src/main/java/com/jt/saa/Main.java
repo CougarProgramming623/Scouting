@@ -2,7 +2,6 @@ package com.jt.saa;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -21,8 +21,12 @@ public class Main {
 		System.out.println("Starting Scouting App Pre-Match Assigner!");
 		File excelFile = Utils.openFile(ExcelUtils.EXCEL_EXTENSION, "Excel Files");
 		int numDevices = Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
-		HashMap<Integer, Integer> deviceUsages = new HashMap<Integer, Integer>();// maps device id's to number of matches assigned
-		
+		int[] deviceUsages = new int[numDevices];// maps device id's to number of matches assigned
+		ArrayList<AssignerEntry>[] deviceOutputs = new ArrayList[numDevices];
+		for (int i = 0; i < deviceOutputs.length; i++) {
+			deviceOutputs[i] = new ArrayList<AssignerEntry>();
+		}
+
 		int matchColumn = -1;
 		List<Integer> redColumns = new ArrayList<Integer>(), blueColumns = new ArrayList<Integer>();
 		Workbook workbook = ExcelUtils.openExcelFile(excelFile);
@@ -48,6 +52,7 @@ public class Main {
 		System.out.println("blue " + blueColumns);
 		System.out.println("match " + matchColumn);
 		Iterator<Row> rowIter = sheet.iterator();
+		rowIter.next();// Skip the header row
 		while (rowIter.hasNext()) {
 			Row row = rowIter.next();
 			Cell matchCell = row.getCell(matchColumn);
@@ -73,7 +78,7 @@ public class Main {
 			if (matchCell == null)
 				good = false;
 			if (!good) {
-				System.err.println("Invalid line at row=" + row.getRowNum());
+				System.err.println("Invalid line at row=" + (row.getRowNum() + 1));
 				continue;
 			}
 
@@ -83,12 +88,47 @@ public class Main {
 			for (Cell cell : reds) {
 				redTeams.add((int) cell.getNumericCellValue());
 			}
-			
+
 			for (Cell cell : blues) {
-				redTeams.add((int) cell.getNumericCellValue());
+				blueTeams.add((int) cell.getNumericCellValue());
 			}
-			
+			int totalTeams = redTeams.size() + blueTeams.size();
+			if (totalTeams != redColumns.size() + blueColumns.size()) {
+				System.out.println("missing team at row=" + (row.getRowNum() + 1));
+			}
+
+			AssignerEntry entry;
+			while ((entry = getEntry(redTeams, blueTeams, match)) != null) {
+				int device = getLeastDevice(deviceUsages);
+				deviceUsages[device]++;
+				deviceOutputs[device].add(entry);
+			}
 
 		}
+		for (int i = 0; i < deviceOutputs.length; i++) {
+			System.out.println("device " + i + " " + deviceOutputs[i].toString());
+		}
 	}
+
+	// Returns the key of the device in the map which has the least value
+	private static int getLeastDevice(int[] deviceUsages) {
+		int deviceIndex = 0;
+		for (int i = 1; i < deviceUsages.length; i++) {
+			if (deviceUsages[i] < deviceUsages[deviceIndex]) {
+				deviceIndex = i;
+			}
+		}
+		return deviceIndex;
+	}
+
+	private static AssignerEntry getEntry(List<Integer> redTeams, List<Integer> blueTeams, int match) {
+		if (redTeams.size() > 0) {
+			return new AssignerEntry(match, redTeams.remove(0), true);
+		} else if (blueTeams.size() > 0) {
+			return new AssignerEntry(match, blueTeams.remove(0), false);
+		} else {
+			return null;
+		}
+	}
+
 }
