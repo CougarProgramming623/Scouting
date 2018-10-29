@@ -1,4 +1,4 @@
-package com.jt.saa;
+package com.jt.scoutcore;
 
 public class AssignerEntry {
 	public int match, team;
