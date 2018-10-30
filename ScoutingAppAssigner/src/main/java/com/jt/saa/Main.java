@@ -1,6 +1,7 @@
 package com.jt.saa;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Output;
 import com.jt.scoutcore.AssignerEntry;
+import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -106,7 +110,16 @@ public class Main {
 
 		}
 		for (int i = 0; i < deviceOutputs.length; i++) {
-			System.out.println("device " + i + " " + deviceOutputs[i].toString());
+			try {
+				File file = new File(Integer.toString(i));
+				Output out = new Output(new FileOutputStream(file));
+				Kryo kryo = ScoutingConstants.KRYO.get();
+				kryo.writeObject(out, deviceOutputs[i]);
+				out.close();
+				System.out.println("device " + i + " " + deviceOutputs[i].toString());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

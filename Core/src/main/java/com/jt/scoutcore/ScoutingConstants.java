@@ -1,5 +1,6 @@
 package com.jt.scoutcore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -18,6 +19,8 @@ public class ScoutingConstants {
 			kryo.register(MatchSubmission.class);
 			kryo.register(HashMap.class);
 			kryo.register(TeamColor.class);
+			kryo.register(ArrayList.class);
+			kryo.register(AssignerEntry.class);
 			return kryo;
 		};
 	};
