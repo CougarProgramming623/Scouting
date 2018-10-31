@@ -2,6 +2,8 @@ package com.jt.saa;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +23,7 @@ import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
+import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
 
 public class Main {
@@ -122,10 +125,22 @@ public class Main {
 			}
 
 		}
-		
+
 		List<JadbDevice> writtenDevices = new ArrayList<JadbDevice>();
 		for (int i = 0; i < deviceOutputs.length; i++) {
 			try {
+				JadbConnection connection = new JadbConnection();
+				List<JadbDevice> devices = connection.getDevices();
+				JadbDevice currentDevice = null;
+				for (JadbDevice device : devices) {
+					if (!writtenDevices.contains(device)) {// We found one we havnt pushed to
+						currentDevice = device;
+					}
+				}
+				if (currentDevice == null)
+					continue;
+				
+				//currentDevice.push(source, lastModified, mode, remote);
 				
 			} catch (Exception e) {
 				Utils.showError("Failed to save file on device!", "Failed");

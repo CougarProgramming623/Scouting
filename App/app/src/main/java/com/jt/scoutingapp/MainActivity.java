@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
 
                 MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
-                File file = new File(ScoutingConstants.ANDROID_SAVE_DIRECTORY, "test.dat");
+                File file = new File(ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY, "test.dat");
 
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);
@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 m.put("Final Position (End)", posa);
                 m.put("Crossed Baseline (Tele)", baseline);
 
+                file.getParentFile().mkdirs();
                 ScoutingUtils.write(m, file);
 
 
