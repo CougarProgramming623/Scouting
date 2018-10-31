@@ -44,7 +44,6 @@ public class Popup extends Activity{
             @Override
             public void onClick(View view) {
 
-
                 Intent intent = getIntent();
                 intent.putExtra("save", true);
                 setResult(RESULT_OK, intent);

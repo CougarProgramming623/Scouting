@@ -19,6 +19,7 @@ import com.jt.scoutcore.TeamColor;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 enum switchAuto {
@@ -69,7 +70,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frc2018);
 
-        matchlist = ScoutingUtils.readAssignments();
+        matchlist = new ArrayList<AssignerEntry>();
+        matchlist.add(new AssignerEntry(10, 2467, true));
+        matchlist.add(new AssignerEntry(11, 3410, false));
+        matchlist.add(new AssignerEntry(12, 102, false));
+        matchlist.add(new AssignerEntry(13, 3, true));
+        matchlist.add(new AssignerEntry(14, 981, true));
+        matchlist.add(new AssignerEntry(15, 3012, false));
+        matchlist.add(new AssignerEntry(16, 6969, true));
+        matchlist.add(new AssignerEntry(17, 2346, false));
+        matchlist.add(new AssignerEntry(18, 16, true));
+        //matchlist = ScoutingUtils.readAssignments();
 
         switchTele = findViewById(R.id.switchtcounter);
         silverValue = findViewById(R.id.scaletcounter);
@@ -92,8 +103,11 @@ public class MainActivity extends AppCompatActivity {
         */
 
         teamNumber.setText("Team " + matchlist.get(index).team);
-        matchAndColor.setText("Match " + matchlist.get(index).match + "| Color " + matchlist.get(index).match);
-
+        if(matchlist.get(index).red) {
+            matchAndColor.setText("Match " + matchlist.get(index).match + " | Red");
+        } else {
+            matchAndColor.setText("Match " + matchlist.get(index).match + " | Blue");
+        }
 
 
         submitData = findViewById(R.id.submit);
@@ -104,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 42);
             }
         });
+        /*
         File file = new File(Environment.getRootDirectory(), "app/" + ScoutingConstants.FOLDER_NAME + "/TestFile" + ScoutingConstants.EXTENSION);
 
         System.err.println(file.getAbsolutePath());
@@ -116,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+        */
     }
 
     public void goldUp (View view) {
@@ -251,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
-
+                /*
                 MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
                 File file = new File(ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY, "test." + ScoutingConstants.EXTENSION);
 
@@ -267,8 +283,16 @@ public class MainActivity extends AppCompatActivity {
 
                 boolean made = file.getParentFile().mkdirs();
                 System.err.println("\r\n\n\n\n\n\n\n\n***************************************************************************************Created well " + made +" Exists " + file.getParentFile().exists() + " dir " + file.getParentFile().isDirectory() + "\n\n\n\n******************************************************************\n\n\n\n");
-                ScoutingUtils.write(m, file);
 
+                ScoutingUtils.write(m, file);
+                */
+                index++;
+                teamNumber.setText("Team " + matchlist.get(index).team);
+                if(matchlist.get(index).red) {
+                    matchAndColor.setText("Match " + matchlist.get(index).match + " | Red");
+                } else {
+                    matchAndColor.setText("Match " + matchlist.get(index).match + " | Blue");
+                }
 
             /*
             System.out.println("*************************************************************");
