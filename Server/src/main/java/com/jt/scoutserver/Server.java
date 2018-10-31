@@ -1,6 +1,6 @@
 package com.jt.scoutserver;
 
-import static com.jt.scoutcore.ScoutingConstants.ANDROID_SAVE_DIRECTORY;
+import static com.jt.scoutcore.ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY;
 import static com.jt.scoutcore.ScoutingConstants.FOLDER_NAME;
 
 import java.awt.BorderLayout;
@@ -34,6 +34,7 @@ import se.vidstige.jadb.JadbException;
 import se.vidstige.jadb.RemoteFile;
 
 public class Server extends JFrame {
+	
 	public static final File APPDATA_STORAGE_FOLDER = new File(System.getenv("APPDATA"), FOLDER_NAME);
 	public static final File MATCHES_DIR = new File(APPDATA_STORAGE_FOLDER, "Matches");
 	private JTextArea console = new JTextArea(10, 30);
@@ -130,8 +131,8 @@ public class Server extends JFrame {
 			List<JadbDevice> devices = jadb.getDevices();
 			System.out.println("Detected " + devices.size() + (devices.size() == 1 ? " Device" : " Devices"));
 			for (JadbDevice device : devices) {
-				device.execute("mkdirs", ANDROID_SAVE_DIRECTORY);
-				List<RemoteFile> files = device.list(ANDROID_SAVE_DIRECTORY);
+				device.execute("mkdirs", ANDROID_MATCHES_SAVE_DIRECTORY);
+				List<RemoteFile> files = device.list(ANDROID_MATCHES_SAVE_DIRECTORY);
 				if (files.size() == 0)
 					System.out.println("No new files to pull from " + device.toString());
 				for (RemoteFile remoteFile : files) {
@@ -142,7 +143,7 @@ public class Server extends JFrame {
 						System.out.println("Skipping already existing file " + remoteFile.getPath() + " on " + device.toString());
 						continue;
 					}
-					device.pull(new RemoteFile(ANDROID_SAVE_DIRECTORY + "/" + remoteFile.getPath()), new File(MATCHES_DIR, remoteFile.getPath()));
+					device.pull(new RemoteFile(ANDROID_MATCHES_SAVE_DIRECTORY + "/" + remoteFile.getPath()), new File(MATCHES_DIR, remoteFile.getPath()));
 					System.out.println("Pulled file " + remoteFile.getPath() + " from " + device.toString());
 				}
 			}

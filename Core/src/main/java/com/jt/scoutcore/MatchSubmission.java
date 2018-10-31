@@ -86,7 +86,6 @@ public class MatchSubmission {
 		return obj.getClass();
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T get(String name, Class<T> type) {
 		Object obj = map.get(name);
 		if (obj == null)
@@ -101,17 +100,6 @@ public class MatchSubmission {
 
 	public MatchSubmission(HashMap<String, Object> map) {
 		this.map = map;
-	}
-
-	public MatchSubmission(File file) throws FileNotFoundException {
-		this(new FileInputStream(file));
-	}
-
-	@SuppressWarnings("unchecked")
-	public MatchSubmission(InputStream stream) {
-		Input in = new Input(stream);
-		map = ScoutingConstants.KRYO.get().readObject(in, ScoutingConstants.MAP_CLASS);
-		in.close();
 	}
 
 	public HashMap<String, Object> getMap() {

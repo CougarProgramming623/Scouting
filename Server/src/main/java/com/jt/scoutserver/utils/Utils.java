@@ -209,7 +209,7 @@ public class Utils {
 				return null;
 			}
 		}
-		if (FilenameUtils.isExtension(file.getName(), extension))
+		if (FilenameUtils.isExtension(file.getName(), extension) || option.equalsIgnoreCase("open"))//We dont want to modify the file if we are opening it
 			return file;
 		else
 			return new File(file.getPath() + '.' + extension);

@@ -3,38 +3,47 @@ package com.jt.scoutcore;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class ScoutingUtils {
 
-	public static MatchSubmission read(File file) {
-		try {
-			Kryo kryo = ScoutingConstants.KRYO.get();
-			Input input = new Input(new FileInputStream(file));
-			Object obj = kryo.readClassAndObject(input);
-			if (!(obj instanceof MatchSubmission)) {
-				throw new RuntimeException("Invalid " + obj.getClass());
-			}
-			input.close();
-			return (MatchSubmission) obj;
-		} catch (Exception e) {
+	public static List<AssignerEntry> readAssignments() {
+		return read(new File(ScoutingConstants.ANDROID_ASSIGNMENTS_FILE), ArrayList.class);
+	}
 
+	public static <T> T read(File file, Class<T> type) {
+		try {
+			Input in = new Input(new FileInputStream(file));
+			Object obj = ScoutingConstants.KRYO1.get().readClassAndObject(in);
+			assert type.isAssignableFrom(obj.getClass());
+			return (T) obj;
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static void write(MatchSubmission sub, File file) {
+	public static <T> void write(File file, Object object, Class<T> type) {
+		assert type.isAssignableFrom(object.getClass());
 		try {
 			Output out = new Output(new FileOutputStream(file));
-			Kryo kryo = ScoutingConstants.KRYO.get();
-			kryo.writeClassAndObject(out, sub);
+			ScoutingConstants.KRYO1.get().writeClassAndObject(out, object);
 			out.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+	}
+
+	public static MatchSubmission read(File file) {
+		return read(file, MatchSubmission.class);
+	}
+
+	public static void write(MatchSubmission sub, File file) {
+		write(file, sub, MatchSubmission.class);
 	}
 
 	public static String makeLength(String string, int length) {

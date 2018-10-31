@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,6 +20,8 @@ import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
+
+import se.vidstige.jadb.JadbDevice;
 
 public class Main {
 
@@ -52,9 +56,18 @@ public class Main {
 				}
 			}
 		}
-		System.out.println("red " + redColumns);
-		System.out.println("blue " + blueColumns);
-		System.out.println("match " + matchColumn);
+		if (matchColumn == -1) {
+			System.err.println("Missing match column!!\nExiting!");
+			return;
+		}
+		if (redColumns.size() == 0) {
+			System.err.println("No red columns!\nExiting!");
+			return;
+		}
+		if (blueColumns.size() == 0) {
+			System.err.println("No blue columns!\nExiting!");
+			return;
+		}
 		Iterator<Row> rowIter = sheet.iterator();
 		rowIter.next();// Skip the header row
 		while (rowIter.hasNext()) {
@@ -109,15 +122,13 @@ public class Main {
 			}
 
 		}
+		
+		List<JadbDevice> writtenDevices = new ArrayList<JadbDevice>();
 		for (int i = 0; i < deviceOutputs.length; i++) {
 			try {
-				File file = new File(Integer.toString(i));
-				Output out = new Output(new FileOutputStream(file));
-				Kryo kryo = ScoutingConstants.KRYO.get();
-				kryo.writeObject(out, deviceOutputs[i]);
-				out.close();
-				System.out.println("device " + i + " " + deviceOutputs[i].toString());
+				
 			} catch (Exception e) {
+				Utils.showError("Failed to save file on device!", "Failed");
 				throw new RuntimeException(e);
 			}
 		}

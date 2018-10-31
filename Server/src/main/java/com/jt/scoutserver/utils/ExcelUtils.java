@@ -46,7 +46,7 @@ public class ExcelUtils {
 
 				return workbook;
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException("Invalid Excel File", e);
 			}
 		} else {
 			throw new RuntimeException("File not found: " + file);
