@@ -9,12 +9,14 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutcore.TeamColor;
 
 import java.io.File;
+import java.util.List;
 
 enum switchAuto {
     WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
@@ -36,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     TextView vault;
     TextView switchValue;
     TextView scaleValue;
+    TextView teamNumber;
+    TextView matchAndColor;
+
+    List<AssignerEntry> matchlist;
+
+    int index = 0;
 
     Button submitData;
 
@@ -58,13 +66,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frc2018);
 
+        matchlist = ScoutingUtils.readAssignments();
+
         switchTele = findViewById(R.id.switchtcounter);
         silverValue = findViewById(R.id.scaletcounter);
         penValue = findViewById(R.id.pencounter);
         vault = findViewById(R.id.vaultcounter);
         switchValue = findViewById(R.id.goldcounter2);
         scaleValue = findViewById(R.id.goldcounter3);
-
+        teamNumber = findViewById(R.id.textView2);
+        matchAndColor = findViewById(R.id.textView);
         //intent.putExtra("goldVal", goldcounter);
         /*
         intent.putExtra("silverVal", silverCounter);
@@ -76,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("Latch", latch);
         intent.putExtra("Position", pos);
         */
+
+        teamNumber.setText("Team " + matchlist.get(index).team);
+        matchAndColor.setText("Match " + matchlist.get(index).match + "| Color " + matchlist.get(index).match);
+
 
 
         submitData = findViewById(R.id.submit);
