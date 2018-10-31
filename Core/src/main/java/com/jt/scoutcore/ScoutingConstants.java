@@ -1,5 +1,6 @@
 package com.jt.scoutcore;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,11 +9,11 @@ import com.esotericsoftware.kryo.Kryo;
 public class ScoutingConstants {
 
 	public static final String FOLDER_NAME = "JT Robo App";
-	//format:off
-	public static final String ANDROID_SAVE_DIRECTORY1 = "/sdcard/Android/data/com.jt.scoutingapp/files/", 
-			ANDROID_MATCHES_SAVE_DIRECTORY = ANDROID_SAVE_DIRECTORY1 + "matches/", EXTENSION = "jtm", 
-			ANDROID_ASSIGNMENTS_FILE_NAME = "assignments.jt", ANDROID_ASSIGNMENTS_FILE = ANDROID_SAVE_DIRECTORY1 + ANDROID_ASSIGNMENTS_FILE_NAME;
-	//format:on
+	public static final String s = File.separator;
+	public static final String ANDROID_SAVE_DIRECTORY1 = s + "storage" + s + "emulated" + s + "0" + s + "Android" + s + "data" + s + "com.jt.scoutingapp" + s + "files" + s;
+	public static final String ANDROID_MATCHES_SAVE_DIRECTORY = ANDROID_SAVE_DIRECTORY1 + "matches" + s, EXTENSION = "jtm";
+	public static final String ANDROID_ASSIGNMENTS_FILE_NAME = "assignments.jt";
+	public static final String ANDROID_ASSIGNMENTS_FILE = ANDROID_SAVE_DIRECTORY1 + ANDROID_ASSIGNMENTS_FILE_NAME;
 
 	@SuppressWarnings("rawtypes")
 	public static final Class<HashMap> MAP_CLASS = HashMap.class;

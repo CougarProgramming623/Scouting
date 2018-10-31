@@ -1,6 +1,8 @@
 package com.jt.scoutingapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutcore.TeamColor;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 enum switchAuto {
@@ -101,6 +104,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 42);
             }
         });
+        File file = new File(Environment.getRootDirectory(), "app/" + ScoutingConstants.FOLDER_NAME + "/TestFile" + ScoutingConstants.EXTENSION);
+
+        System.err.println(file.getAbsolutePath());
+        System.err.println("Created well " + file.getParentFile().mkdirs());
+        try {
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write("FUCK ANDROID".getBytes());
+
+            stream.close();
+        } catch (Exception e) {
+
+        }
     }
 
     public void goldUp (View view) {
@@ -238,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
 
                 MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
-                File file = new File(ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY, "test.dat");
+                File file = new File(ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY, "test." + ScoutingConstants.EXTENSION);
 
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);
@@ -250,7 +265,8 @@ public class MainActivity extends AppCompatActivity {
                 m.put("Final Position (End)", posa);
                 m.put("Crossed Baseline (Tele)", baseline);
 
-                file.getParentFile().mkdirs();
+                boolean made = file.getParentFile().mkdirs();
+                System.err.println("\r\n\n\n\n\n\n\n\n***************************************************************************************Created well " + made +" Exists " + file.getParentFile().exists() + " dir " + file.getParentFile().isDirectory() + "\n\n\n\n******************************************************************\n\n\n\n");
                 ScoutingUtils.write(m, file);
 
 
