@@ -9,9 +9,28 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.jt.scoutcore.MatchSubmission;
+import com.jt.scoutcore.ScoutingConstants;
+import com.jt.scoutcore.ScoutingUtils;
+import com.jt.scoutcore.TeamColor;
+
+import java.io.File;
+
+enum switchAuto {
+    WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
+}
+
+enum scaleAuto {
+    WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
+}
+
+enum finalPos {
+    PLATFORM, RAMP, CLIMBED, NO_ATTEMPT
+}
+
 public class MainActivity extends AppCompatActivity {
 
-    TextView goldValue;
+    TextView switchTele;
     TextView silverValue;
     TextView penValue;
     TextView vault;
@@ -20,12 +39,18 @@ public class MainActivity extends AppCompatActivity {
 
     Button submitData;
 
+    boolean baseline = false;
+
     int goldcounter = 0;
     int silvercounter = 0;
     int pencounter = 0;
     int vaultcounter = 0;
-    int switchcouner = 0;
+    int switchcounter = 0;
     int scalecounter = 0;
+
+    switchAuto switcha = switchAuto.NO_ATTEMPT;
+    scaleAuto scalea = scaleAuto.NO_ATTEMPT;
+    finalPos posa = finalPos.NO_ATTEMPT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +58,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frc2018);
 
-        goldValue = findViewById(R.id.goldcounter);
-        silverValue = findViewById(R.id.silvercounter);
-        penValue = findViewById(R.id.pencounter3);
-        vault = findViewById(R.id.pencounter);
+        switchTele = findViewById(R.id.switchtcounter);
+        silverValue = findViewById(R.id.scaletcounter);
+        penValue = findViewById(R.id.pencounter);
+        vault = findViewById(R.id.vaultcounter);
         switchValue = findViewById(R.id.goldcounter2);
         scaleValue = findViewById(R.id.goldcounter3);
 
-        submitData = findViewById(R.id.sumbit);
+        //intent.putExtra("goldVal", goldcounter);
+        /*
+        intent.putExtra("silverVal", silverCounter);
+        intent.putExtra("penaltyVal", penCounter);
+        intent.putExtra("Claiming", claiming);
+        intent.putExtra("Landing", landing);
+        intent.putExtra("Parking", parking);
+        intent.putExtra("Sampling", sample);
+        intent.putExtra("Latch", latch);
+        intent.putExtra("Position", pos);
+        */
+
+
+        submitData = findViewById(R.id.submit);
         submitData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Popup.class));
+                Intent intent = new Intent(MainActivity.this,Popup.class);
+                startActivityForResult(intent, 42);
             }
         });
     }
 
     public void goldUp (View view) {
         goldcounter++;
-        goldValue.setText(Integer.toString(goldcounter));
+        switchTele.setText(Integer.toString(goldcounter));
     }
 
     public void goldDown (View view) {
         if(goldcounter > 0) {
             goldcounter--;
-            goldValue.setText(Integer.toString(goldcounter));
+            switchTele.setText(Integer.toString(goldcounter));
         }
     }
     public void silverUp (View view) {
@@ -97,14 +136,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchUp (View view) {
-        switchcouner += 1;
-        switchValue.setText(Integer.toString(switchcouner));
+        switchcounter += 1;
+        switchValue.setText(Integer.toString(switchcounter));
     }
 
     public void switchDown (View view) {
-        if(switchcouner >= 1) {
-            switchcouner -= 1;
-            switchValue.setText(Integer.toString(switchcouner));
+        if(switchcounter >= 1) {
+            switchcounter -= 1;
+            switchValue.setText(Integer.toString(switchcounter));
         }
     }
 
@@ -120,6 +159,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void autoSwitchWrong (View view) {
+        switcha = switchAuto.WRONG_SIDE;
+    }
+
+    public void autoSwitchRight (View view) {
+        switcha = switchAuto.RIGHT_SIDE;
+    }
+
+    public void autoSwitchNo (View view) {
+        switcha = switchAuto.WRONG_SIDE;
+    }
+
+    public void autoScaleWrong (View view) {
+        scalea = scaleAuto.WRONG_SIDE;
+    }
+
+    public void autoScaleRight (View view) {
+        scalea = scaleAuto.RIGHT_SIDE;
+    }
+
+    public void autoScaleNo (View view) {
+        scalea = scaleAuto.NO_ATTEMPT;
+    }
+
+    public void autoPosClimbed (View view) {
+        posa = finalPos.CLIMBED;
+    }
+
+    public void autoPosPlat (View view) {
+        posa = finalPos.PLATFORM;
+    }
+
+    public void autoPosRamp (View view) {
+        posa = finalPos.RAMP;
+    }
+
+    public void autoPosNo (View view) {
+        posa = finalPos.NO_ATTEMPT;
+    }
+
+    public void baselineValue (View view) {
+        baseline = ((Switch)findViewById(R.id.baseline)).isChecked();
+    }
 
     public void disableLatch (View v) {
         Switch sw = findViewById(R.id.switch11);
@@ -135,5 +217,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
 
+                MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
+                File file = new File(ScoutingConstants.ANDROID_SAVE_DIRECTORY, "test.dat");
+
+                m.put("Switch Cubes (Tele)", goldcounter);
+                m.put("Scale Cubes (Tele)", silvercounter);
+                m.put("Vault Cubes (Tele)", vaultcounter);
+                m.put("Switch Cubes (Auto)", switchcounter);
+                m.put("Scale Cubes (Auto)", scalecounter);
+                m.put("Switch Attempt (Auto)", switcha);
+                m.put("Scale Attempt (Auto)", scalea);
+                m.put("Final Position (End)", posa);
+                m.put("Crossed Baseline (Tele)", baseline);
+
+                ScoutingUtils.write(m, file);
+
+
+            /*
+            System.out.println("*************************************************************");
+            System.out.println();
+            System.out.println();
+            System.out.println("WOWOWOOWOWOWOWOWOWOWOOWOOWO");
+            System.out.println(data);
+            System.out.println();
+            System.out.println();
+            System.out.println("*************************************************************");
+            */
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.jt.scoutingapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
@@ -30,6 +31,10 @@ public class Popup extends Activity{
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = getIntent();
+                intent.putExtra("save", false);
+                setResult(RESULT_CANCELED, intent);
+
                 finish();
             }
         });
@@ -38,10 +43,11 @@ public class Popup extends Activity{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
-                File file = new File(ScoutingConstants.ANDROID_SAVE_DIRECTORY, "test.dat");
-                ScoutingUtils.write(m, file);
 
+
+                Intent intent = getIntent();
+                intent.putExtra("save", true);
+                setResult(RESULT_OK, intent);
 
                 finish();
             }
