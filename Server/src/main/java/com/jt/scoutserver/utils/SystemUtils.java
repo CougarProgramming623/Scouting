@@ -13,7 +13,7 @@ public class SystemUtils {
 	static {
 		System.out.println("Loading native library");
 		System.loadLibrary("Scouting App Natives");
-
+		
 		nativeInit();
 	}
 
