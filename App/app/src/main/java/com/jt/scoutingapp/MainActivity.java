@@ -1,10 +1,16 @@
 package com.jt.scoutingapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.CompoundButton;
@@ -12,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Button;
 
 import com.jt.scoutcore.AssignerEntry;
+import com.jt.scoutcore.AssignerList;
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     TextView teamNumber;
     TextView matchAndColor;
 
-    List<AssignerEntry> matchlist;
+    AssignerList list;
 
     int index = 0;
 
@@ -66,8 +73,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //System.out.print(getExternalFilesDir());
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 23) {
+            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            // If do not grant write external storage permission.
+            Log.wtf("Test", "About to request permission!");
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                // Request user to grant write external storage permission.
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                Log.wtf("Test", "Requesting permission!!");
+            } else {
+                Log.wtf("Test", "No permission needed!");
+            }
+        }
+
+        MatchSubmission sub = new MatchSubmission(1, 1, TeamColor.BLUE);
+        File f = new File(ClientUtils.ANDROID_MATCHES_DIR, "testNEW.jtm");
+        System.err.println("*****About to create " + f.getParentFile().getAbsolutePath());
+        System.err.println("*****Created" + f.getParentFile().mkdir());
+
+        System.err.println("*****file: " + f.getAbsolutePath());
+        ScoutingUtils.write(sub, f);
+
+        finish();
+
+
         setContentView(R.layout.frc2018);
 
         matchlist = new ArrayList<AssignerEntry>();
@@ -118,20 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 42);
             }
         });
-        /*
-        File file = new File(Environment.getRootDirectory(), "app/" + ScoutingConstants.FOLDER_NAME + "/TestFile" + ScoutingConstants.EXTENSION);
-
-        System.err.println(file.getAbsolutePath());
-        System.err.println("Created well " + file.getParentFile().mkdirs());
-        try {
-            FileOutputStream stream = new FileOutputStream(file);
-            stream.write("FUCK ANDROID".getBytes());
-
-            stream.close();
-        } catch (Exception e) {
-
-        }
-        */
     }
 
     public void goldUp (View view) {
@@ -269,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK) {
                 /*
                 MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
-                File file = new File(ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY, "test." + ScoutingConstants.EXTENSION);
+                File file = new File(ClientUtils.ANDROID_SAVE_DIR, "test." + ScoutingConstants.EXTENSION);
 
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);

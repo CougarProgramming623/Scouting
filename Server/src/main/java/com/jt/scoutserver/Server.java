@@ -1,13 +1,12 @@
 package com.jt.scoutserver;
 
-import static com.jt.scoutcore.ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY;
-import static com.jt.scoutcore.ScoutingConstants.FOLDER_NAME;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -24,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.jt.scoutcore.MatchSubmission;
+import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutserver.utils.SystemUtils;
 import com.jt.scoutserver.utils.Utils;
@@ -34,9 +34,11 @@ import se.vidstige.jadb.JadbException;
 import se.vidstige.jadb.RemoteFile;
 
 public class Server extends JFrame {
-	
-	public static final File APPDATA_STORAGE_FOLDER = new File(System.getenv("APPDATA"), FOLDER_NAME);
-	public static final File MATCHES_DIR = new File(APPDATA_STORAGE_FOLDER, "Matches");
+
+	public static final String PHONE_SAVE_DIR = ScoutingUtils.getSaveDir(), PHONE_MATCHES_DIR = PHONE_SAVE_DIR + ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY_NAME;
+
+	public static final File APPDATA_STORAGE_FOLDER = new File(System.getenv("APPDATA"), ScoutingConstants.FOLDER_NAME);
+	public static final File COMPUTER_MATCHES_DIR = new File(APPDATA_STORAGE_FOLDER, "Matches");
 	private JTextArea console = new JTextArea(10, 30);
 	private DefaultListModel<MatchSubmission> model = new DefaultListModel<MatchSubmission>();
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
@@ -97,7 +99,7 @@ public class Server extends JFrame {
 		setContentPane(panel);
 		setVisible(true);
 
-		for (File file : MATCHES_DIR.listFiles()) {
+		for (File file : COMPUTER_MATCHES_DIR.listFiles()) {
 			if (file.isDirectory())
 				continue;
 			try {
@@ -124,26 +126,27 @@ public class Server extends JFrame {
 	}
 
 	public void pull() {
-		MATCHES_DIR.mkdirs();
+		COMPUTER_MATCHES_DIR.mkdirs();
 		System.out.println("\nPreparing to pull fines...");
 		try {
 			JadbConnection jadb = new JadbConnection();
 			List<JadbDevice> devices = jadb.getDevices();
 			System.out.println("Detected " + devices.size() + (devices.size() == 1 ? " Device" : " Devices"));
+			System.out.println("About to read " + PHONE_MATCHES_DIR);
 			for (JadbDevice device : devices) {
-				device.execute("mkdirs", ANDROID_MATCHES_SAVE_DIRECTORY);
-				List<RemoteFile> files = device.list(ANDROID_MATCHES_SAVE_DIRECTORY);
+				device.execute("mkdirs", PHONE_MATCHES_DIR);
+				List<RemoteFile> files = device.list(PHONE_MATCHES_DIR);
 				if (files.size() == 0)
 					System.out.println("No new files to pull from " + device.toString());
 				for (RemoteFile remoteFile : files) {
 					if (remoteFile.isDirectory())
 						continue;// This could be a symptom of another problem...
-					File local = new File(MATCHES_DIR, remoteFile.getPath());
+					File local = new File(COMPUTER_MATCHES_DIR, remoteFile.getPath());
 					if (local.exists()) {
 						System.out.println("Skipping already existing file " + remoteFile.getPath() + " on " + device.toString());
 						continue;
 					}
-					device.pull(new RemoteFile(ANDROID_MATCHES_SAVE_DIRECTORY + "/" + remoteFile.getPath()), new File(MATCHES_DIR, remoteFile.getPath()));
+					device.pull(new RemoteFile(PHONE_MATCHES_DIR + "/" + remoteFile.getPath()), new File(COMPUTER_MATCHES_DIR, remoteFile.getPath()));
 					System.out.println("Pulled file " + remoteFile.getPath() + " from " + device.toString());
 				}
 			}

@@ -159,7 +159,7 @@ public class Utils {
 	 */
 	public static List<File> getFilesWith(String attribute, Operator operator, String other) {
 		List<File> result = new ArrayList<File>();
-		for (File childFile : Server.MATCHES_DIR.listFiles()) {
+		for (File childFile : Server.COMPUTER_MATCHES_DIR.listFiles()) {
 			if (childFile.exists() && childFile.isFile() && FilenameUtils.isExtension(childFile.getName(), ScoutingConstants.EXTENSION)) {
 				MatchSubmission sub = ScoutingUtils.read(childFile);
 				if (sub.has(attribute)) {

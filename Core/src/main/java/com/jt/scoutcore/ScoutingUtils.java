@@ -1,24 +1,31 @@
 package com.jt.scoutcore;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileReader;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class ScoutingUtils {
-
-	public static List<AssignerEntry> readAssignments() {
-		return read(new File(ScoutingConstants.ANDROID_ASSIGNMENTS_FILE), ArrayList.class);
+	
+	public static String getSaveDir() {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File("./path.txt")));
+			String line = reader.readLine();
+			reader.close();
+			return line;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static <T> T read(File file, Class<T> type) {
 		try {
 			Input in = new Input(new FileInputStream(file));
-			Object obj = ScoutingConstants.KRYO1.get().readClassAndObject(in);
+			Object obj = ScoutingConstants.KRYO.get().readClassAndObject(in);
 			assert type.isAssignableFrom(obj.getClass());
 			return (T) obj;
 		} catch (Exception e) {
@@ -30,7 +37,7 @@ public class ScoutingUtils {
 		assert type.isAssignableFrom(object.getClass());
 		try {
 			Output out = new Output(new FileOutputStream(file));
-			ScoutingConstants.KRYO1.get().writeClassAndObject(out, object);
+			ScoutingConstants.KRYO.get().writeClassAndObject(out, object);
 			out.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);

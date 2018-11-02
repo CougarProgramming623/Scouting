@@ -1,6 +1,7 @@
 package com.jt.saa;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,14 +13,20 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.jt.scoutcore.AssignerEntry;
+import com.jt.scoutcore.AssignerList;
+import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
 import se.vidstige.jadb.JadbConnection;
 import se.vidstige.jadb.JadbDevice;
+import se.vidstige.jadb.RemoteFile;
 
 public class Main {
+
+	public static final String PHONE_SAVE_DIR = ScoutingUtils.getSaveDir(), PHONE_ASSIGNMENT_FILE = PHONE_SAVE_DIR + ScoutingConstants.ANDROID_ASSIGNMENTS_FILE_NAME;
+	private static int matchStart = 0;
 
 	public static void main(String[] args) {
 		System.out.println("Starting Scouting App Pre-Match Assigner!");
@@ -123,8 +130,9 @@ public class Main {
 		for (int i = 0; i < deviceOutputs.length; i++) {
 			try {
 				File file = new File(Integer.toString(i));
-				ScoutingUtils.write(file, deviceOutputs[i], ArrayList.class);
-				System.out.println("device " + i + " " + deviceOutputs[i].toString());
+				AssignerList list = new AssignerList(deviceOutputs[i], matchStart);
+				ScoutingUtils.write(file, list, AssignerList.class);
+				System.out.println("Attempting to device " + i + " : " + deviceOutputs[i].toString());
 
 				try {
 					JadbConnection connection = new JadbConnection();
@@ -133,17 +141,27 @@ public class Main {
 					for (JadbDevice device : devices) {
 						if (!writtenDevices.contains(device)) {// We found one we havnt pushed to
 							currentDevice = device;
+						} else {
 						}
 					}
-					if (currentDevice == null)
+					if (currentDevice == null) {
+						System.out.println("Waiting for new devices...");
+						i--;
+						try {
+							Thread.sleep(1000);
+						} catch (Exception e) {
+						}
 						continue;
-					
+					}
+					System.out.println("writing to " + currentDevice);
+					currentDevice.push(file, new RemoteFile(PHONE_ASSIGNMENT_FILE));
+					writtenDevices.add(currentDevice);
 				} catch (Exception e) {
-					Utils.showError("Failed to save file on device!", "Failed");
+					Utils.showError("Failed to save file on device!", "Failed to write to device " + e.getClass() + " : " + e.getMessage());
 					throw new RuntimeException(e);
 				}
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				// throw new RuntimeException(e);
 			}
 		}
 	}

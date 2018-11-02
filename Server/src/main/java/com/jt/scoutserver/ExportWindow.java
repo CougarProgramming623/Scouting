@@ -22,14 +22,14 @@ import com.jt.scoutserver.utils.Utils;
 import com.jt.scoutserver.utils.Utils.Operator;
 
 public class ExportWindow extends JFrame {
-	
+
 	private JComboBox<ExportOption> options = new JComboBox<ExportOption>();
 	private JPanel operators = new JPanel();
 	private JComboBox<Utils.Operator> operatorsBox = new JComboBox<Utils.Operator>();
 	private JComboBox<String> fieldNames = new JComboBox<String>();
 	private JButton export = new JButton("Export");
 	private JTextField fieldValue = new JTextField(20);
-	
+
 	public ExportWindow() {
 		super("Export Scouting Data");
 		JPanel panel = new JPanel(new BorderLayout());
@@ -78,8 +78,19 @@ public class ExportWindow extends JFrame {
 	}
 
 	private void updateCombo() {
+		if (options.getItemAt(options.getSelectedIndex()) != ExportOption.SORT_BY) {
+			operatorsBox.setEnabled(false);
+			fieldValue.setEnabled(false);
+			fieldNames.setEnabled(false);
+		}
 		for (Component c : operators.getComponents()) {
 			c.setEnabled(options.getItemAt(options.getSelectedIndex()) == ExportOption.CUSTOM);
+		}
+
+		if (options.getItemAt(options.getSelectedIndex()) == ExportOption.SORT_BY) {
+			operatorsBox.setEnabled(false);
+			fieldValue.setEnabled(false);
+			fieldNames.setEnabled(true);
 		}
 
 	}
@@ -113,6 +124,13 @@ public class ExportWindow extends JFrame {
 			ExcelWriter.write(file, rowStart, colStart, ExcelUtils.SINGLE_TEAM, teamNumber);
 		}),
 		CUSTOM("Custom", (operatorsBox, fieldName, fieldValue) -> {
+			File file = ExcelUtils.saveExcelFile();
+			if (file == null)
+				return;
+			List<File> files = Utils.getFilesWith(fieldName, operatorsBox.getItemAt(operatorsBox.getSelectedIndex()), fieldValue);
+			ExcelWriter.write(file, rowStart, colStart, ExcelUtils.ALL_FILES, 0, files);
+		}),
+		SORT_BY("Sort By", (operatorsBox, fieldName, fieldValue) -> {
 			File file = ExcelUtils.saveExcelFile();
 			if (file == null)
 				return;

@@ -73,7 +73,7 @@ public class ExcelWriter {
 	
 	public static List<File> allFiles() {
 		List<File> files = new ArrayList<File>();
-		for (File f : Server.MATCHES_DIR.listFiles()) {
+		for (File f : Server.COMPUTER_MATCHES_DIR.listFiles()) {
 			files.add(f);
 		}
 		return files;
