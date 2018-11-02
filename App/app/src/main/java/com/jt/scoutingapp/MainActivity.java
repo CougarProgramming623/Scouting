@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 enum switchAuto {
     WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
@@ -51,10 +52,9 @@ public class MainActivity extends AppCompatActivity {
     TextView scaleValue;
     TextView teamNumber;
     TextView matchAndColor;
+    AtomicBoolean hasPermission = new AtomicBoolean(false);
 
     AssignerList list;
-
-    int index = 0;
 
     Button submitData;
 
@@ -82,34 +82,37 @@ public class MainActivity extends AppCompatActivity {
                 // Request user to grant write external storage permission.
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 Log.wtf("Test", "Requesting permission!!");
+                hasPermission.set(false);
             } else {
+                hasPermission.set(true);
                 Log.wtf("Test", "No permission needed!");
+            }
+        } else {
+            hasPermission.set(true);
+        }
+        while(!hasPermission.get()) {
+            System.err.println("Waiting to get permissions...");
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
             }
         }
 
-        MatchSubmission sub = new MatchSubmission(1, 1, TeamColor.BLUE);
-        File f = new File(ClientUtils.ANDROID_MATCHES_DIR, "testNEW.jtm");
-        System.err.println("*****About to create " + f.getParentFile().getAbsolutePath());
-        System.err.println("*****Created" + f.getParentFile().mkdir());
-
-        System.err.println("*****file: " + f.getAbsolutePath());
-        ScoutingUtils.write(sub, f);
-
-        finish();
-
+        list = ClientUtils.readAssignments();
+        if(list.matchStart == 0) {
+            list.matchStart = 0;
+        } else {
+            for(int i = 0; i < list.entries.size(); i++) {
+                if(list.entries.get(i).match == list.matchStart) {
+                    list.matchStart = i;
+                    System.err.println("Starting with index " + i);
+                    break;
+                }
+            }
+        }
 
         setContentView(R.layout.frc2018);
 
-        matchlist = new ArrayList<AssignerEntry>();
-        matchlist.add(new AssignerEntry(10, 2467, true));
-        matchlist.add(new AssignerEntry(11, 3410, false));
-        matchlist.add(new AssignerEntry(12, 102, false));
-        matchlist.add(new AssignerEntry(13, 3, true));
-        matchlist.add(new AssignerEntry(14, 981, true));
-        matchlist.add(new AssignerEntry(15, 3012, false));
-        matchlist.add(new AssignerEntry(16, 6969, true));
-        matchlist.add(new AssignerEntry(17, 2346, false));
-        matchlist.add(new AssignerEntry(18, 16, true));
         //matchlist = ScoutingUtils.readAssignments();
 
         switchTele = findViewById(R.id.switchtcounter);
@@ -132,11 +135,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("Position", pos);
         */
 
-        teamNumber.setText("Team " + matchlist.get(index).team);
-        if(matchlist.get(index).red) {
-            matchAndColor.setText("Match " + matchlist.get(index).match + " | Red");
+        teamNumber.setText("Team " + list.getCurrent().team);
+        if(list.getCurrent().red) {
+            matchAndColor.setText("Match " + list.getCurrent().match + " | Red");
         } else {
-            matchAndColor.setText("Match " + matchlist.get(index).match + " | Blue");
+            matchAndColor.setText("Match " + list.getCurrent().match + " | Blue");
         }
 
 
@@ -283,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
-                /*
+
                 MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
                 File file = new File(ClientUtils.ANDROID_SAVE_DIR, "test." + ScoutingConstants.EXTENSION);
 
@@ -297,17 +300,15 @@ public class MainActivity extends AppCompatActivity {
                 m.put("Final Position (End)", posa);
                 m.put("Crossed Baseline (Tele)", baseline);
 
-                boolean made = file.getParentFile().mkdirs();
-                System.err.println("\r\n\n\n\n\n\n\n\n***************************************************************************************Created well " + made +" Exists " + file.getParentFile().exists() + " dir " + file.getParentFile().isDirectory() + "\n\n\n\n******************************************************************\n\n\n\n");
-
+                file.getParentFile().mkdirs();
                 ScoutingUtils.write(m, file);
-                */
-                index++;
-                teamNumber.setText("Team " + matchlist.get(index).team);
-                if(matchlist.get(index).red) {
-                    matchAndColor.setText("Match " + matchlist.get(index).match + " | Red");
+
+                list.matchStart++;
+                teamNumber.setText("Team " + list.getCurrent().team);
+                if(list.getCurrent().red) {
+                    matchAndColor.setText("Match " + list.getCurrent().match + " | Red");
                 } else {
-                    matchAndColor.setText("Match " + matchlist.get(index).match + " | Blue");
+                    matchAndColor.setText("Match " + list.getCurrent().match + " | Blue");
                 }
 
             /*

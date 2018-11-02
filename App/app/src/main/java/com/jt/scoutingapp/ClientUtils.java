@@ -2,14 +2,11 @@ package com.jt.scoutingapp;
 
 import android.os.Environment;
 
-import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.AssignerList;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ClientUtils {

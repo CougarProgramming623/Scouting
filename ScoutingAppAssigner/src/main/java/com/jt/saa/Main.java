@@ -32,6 +32,7 @@ public class Main {
 		System.out.println("Starting Scouting App Pre-Match Assigner!");
 		File excelFile = Utils.openFile(ExcelUtils.EXCEL_EXTENSION, "Excel Files");
 		int numDevices = Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
+		matchStart = Utils.getIntInput(1, 1000, "Enter Match Number to start on", "Enter 0 to start on the first match");
 		int[] deviceUsages = new int[numDevices];// maps device id's to number of matches assigned
 		ArrayList<AssignerEntry>[] deviceOutputs = new ArrayList[numDevices];
 		for (int i = 0; i < deviceOutputs.length; i++) {
@@ -132,7 +133,6 @@ public class Main {
 				File file = new File(Integer.toString(i));
 				AssignerList list = new AssignerList(deviceOutputs[i], matchStart);
 				ScoutingUtils.write(file, list, AssignerList.class);
-				System.out.println("Attempting to device " + i + " : " + deviceOutputs[i].toString());
 
 				try {
 					JadbConnection connection = new JadbConnection();
@@ -153,7 +153,7 @@ public class Main {
 						}
 						continue;
 					}
-					System.out.println("writing to " + currentDevice);
+					System.out.println("Attempting to write to device " + i + " : " + deviceOutputs[i].toString());
 					currentDevice.push(file, new RemoteFile(PHONE_ASSIGNMENT_FILE));
 					writtenDevices.add(currentDevice);
 				} catch (Exception e) {
