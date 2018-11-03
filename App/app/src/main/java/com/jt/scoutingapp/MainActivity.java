@@ -1,11 +1,9 @@
 package com.jt.scoutingapp;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.AssignerList;
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingConstants;
@@ -25,22 +22,11 @@ import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutcore.TeamColor;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-enum switchAuto {
-    WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
-}
+import static com.jt.scoutcore.FRCEnums.*;
 
-enum scaleAuto {
-    WRONG_SIDE, RIGHT_SIDE, NO_ATTEMPT
-}
 
-enum finalPos {
-    PLATFORM, RAMP, CLIMBED, NO_ATTEMPT
-}
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
     int switchcounter = 0;
     int scalecounter = 0;
 
-    switchAuto switcha = switchAuto.NO_ATTEMPT;
-    scaleAuto scalea = scaleAuto.NO_ATTEMPT;
-    finalPos posa = finalPos.NO_ATTEMPT;
+    SwitchAuto switcha = SwitchAuto.NO_ATTEMPT;
+    ScaleAuto scalea = ScaleAuto.NO_ATTEMPT;
+    FinalPos posa = FinalPos.NO_ATTEMPT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,43 +211,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void autoSwitchWrong (View view) {
-        switcha = switchAuto.WRONG_SIDE;
+        switcha = SwitchAuto.WRONG_SIDE;
     }
 
     public void autoSwitchRight (View view) {
-        switcha = switchAuto.RIGHT_SIDE;
+        switcha = SwitchAuto.RIGHT_SIDE;
     }
 
     public void autoSwitchNo (View view) {
-        switcha = switchAuto.WRONG_SIDE;
+        switcha = SwitchAuto.WRONG_SIDE;
     }
 
     public void autoScaleWrong (View view) {
-        scalea = scaleAuto.WRONG_SIDE;
+        scalea = ScaleAuto.WRONG_SIDE;
     }
 
     public void autoScaleRight (View view) {
-        scalea = scaleAuto.RIGHT_SIDE;
+        scalea = ScaleAuto.RIGHT_SIDE;
     }
 
     public void autoScaleNo (View view) {
-        scalea = scaleAuto.NO_ATTEMPT;
+        scalea = ScaleAuto.NO_ATTEMPT;
     }
 
     public void autoPosClimbed (View view) {
-        posa = finalPos.CLIMBED;
+        posa = FinalPos.CLIMBED;
     }
 
     public void autoPosPlat (View view) {
-        posa = finalPos.PLATFORM;
+        posa = FinalPos.PLATFORM;
     }
 
     public void autoPosRamp (View view) {
-        posa = finalPos.RAMP;
+        posa = FinalPos.RAMP;
     }
 
     public void autoPosNo (View view) {
-        posa = finalPos.NO_ATTEMPT;
+        posa = FinalPos.NO_ATTEMPT;
     }
 
     public void baselineValue (View view) {
@@ -287,8 +273,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
 
-                MatchSubmission m = new MatchSubmission(1, 1, TeamColor.BLUE);
-                File file = new File(ClientUtils.ANDROID_SAVE_DIR, "test." + ScoutingConstants.EXTENSION);
+                MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
+                File file = new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + list.getCurrent().match + "_Team_" + list.getCurrent().team + "." + ScoutingConstants.EXTENSION);
 
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);

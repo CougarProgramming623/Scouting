@@ -99,6 +99,19 @@ public class Server extends JFrame {
 		setContentPane(panel);
 		setVisible(true);
 
+		refreshFiles();
+
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+				SystemUtils.nativeExit();
+				System.exit(0);
+			}
+		});
+	}
+
+	private void refreshFiles() {
 		for (File file : COMPUTER_MATCHES_DIR.listFiles()) {
 			if (file.isDirectory())
 				continue;
@@ -114,20 +127,12 @@ public class Server extends JFrame {
 				System.out.println("invalid file " + file);
 			}
 		}
-
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-				SystemUtils.nativeExit();
-				System.exit(0);
-			}
-		});
 	}
 
 	public void pull() {
 		COMPUTER_MATCHES_DIR.mkdirs();
 		System.out.println("\nPreparing to pull fines...");
+		boolean pulled = false;
 		try {
 			JadbConnection jadb = new JadbConnection();
 			List<JadbDevice> devices = jadb.getDevices();
@@ -148,6 +153,7 @@ public class Server extends JFrame {
 					}
 					device.pull(new RemoteFile(PHONE_MATCHES_DIR + "/" + remoteFile.getPath()), new File(COMPUTER_MATCHES_DIR, remoteFile.getPath()));
 					System.out.println("Pulled file " + remoteFile.getPath() + " from " + device.toString());
+					pulled = true;
 				}
 			}
 
@@ -155,6 +161,9 @@ public class Server extends JFrame {
 			Utils.showNotification("Unable to access an android device", "Failed to create an adb connection...");
 			System.out.println("Failed to connect to adb");
 			e.printStackTrace(System.out);
+		}
+		if (pulled) {
+			refreshFiles();
 		}
 
 	}

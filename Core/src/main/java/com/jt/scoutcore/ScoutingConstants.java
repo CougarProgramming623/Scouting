@@ -25,6 +25,9 @@ public class ScoutingConstants {
 			kryo.register(ArrayList.class);
 			kryo.register(AssignerList.class);
 			kryo.register(AssignerEntry.class);
+			for(Class clazz : FRCEnums.class.getDeclaredClasses()) {
+			    kryo.register(clazz);
+            }
 			return kryo;
 		};
 	};
