@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -25,6 +23,7 @@ import javax.swing.JTextArea;
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
+import com.jt.scoutserver.utils.AndroidUtils;
 import com.jt.scoutserver.utils.SystemUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -147,11 +146,13 @@ public class Server extends JFrame {
 					if (remoteFile.isDirectory())
 						continue;// This could be a symptom of another problem...
 					File local = new File(COMPUTER_MATCHES_DIR, remoteFile.getPath());
+					RemoteFile fileToPull = new RemoteFile(PHONE_MATCHES_DIR + "/" + remoteFile.getPath());
+					System.out.println("has file " + AndroidUtils.hasFile(device, fileToPull) + ", " + fileToPull.getPath());
 					if (local.exists()) {
 						System.out.println("Skipping already existing file " + remoteFile.getPath() + " on " + device.toString());
 						continue;
 					}
-					device.pull(new RemoteFile(PHONE_MATCHES_DIR + "/" + remoteFile.getPath()), new File(COMPUTER_MATCHES_DIR, remoteFile.getPath()));
+					device.pull(fileToPull, new File(COMPUTER_MATCHES_DIR, remoteFile.getPath()));
 					System.out.println("Pulled file " + remoteFile.getPath() + " from " + device.toString());
 					pulled = true;
 				}

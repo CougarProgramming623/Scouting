@@ -1,7 +1,6 @@
 package com.jt.saa;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +15,7 @@ import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.AssignerList;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
+import com.jt.scoutserver.utils.AndroidUtils;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -153,13 +153,15 @@ public class Main {
 						}
 						continue;
 					}
-					System.out.println("Attempting to write to device " + i + " : " + deviceOutputs[i].toString());
-					currentDevice.push(file, new RemoteFile(PHONE_ASSIGNMENT_FILE));
+					System.out.println("Attempting to write to device " + (i + 1) + " : " + deviceOutputs[i].toString());
+					RemoteFile remoteFile = new RemoteFile(PHONE_ASSIGNMENT_FILE);
+					currentDevice.push(file, remoteFile);
 					writtenDevices.add(currentDevice);
 					Thread.sleep(100);
 					file.deleteOnExit();
 				} catch (Exception e) {
 					Utils.showError("Failed to save file on device!", "Failed to write to device " + e.getClass() + " : " + e.getMessage());
+					i--;
 					throw new RuntimeException(e);
 				}
 			} catch (Exception e) {

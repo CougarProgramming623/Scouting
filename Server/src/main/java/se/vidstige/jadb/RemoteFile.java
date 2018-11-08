@@ -4,31 +4,49 @@ package se.vidstige.jadb;
  * Created by vidstige on 2014-03-20
  */
 public class RemoteFile {
-    private final String path;
+	private final String path;
 
-    public RemoteFile(String path) { this.path = path; }
+	public RemoteFile(String path) {
+		this.path = path;
+	}
 
-    public String getName() { throw new UnsupportedOperationException(); }
-    public int getSize() { throw new UnsupportedOperationException(); }
-    public long getLastModified() { throw new UnsupportedOperationException(); }
-    public boolean isDirectory() { throw new UnsupportedOperationException(); }
+	public String getName() {
+		throw new UnsupportedOperationException();
+	}
 
-    public String getPath() { return path;}
+	public int getSize() {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public long getLastModified() {
+		throw new UnsupportedOperationException();
+	}
 
-        RemoteFile that = (RemoteFile) o;
+	public boolean isDirectory() {
+		throw new UnsupportedOperationException();
+	}
 
-        if (!path.equals(that.path)) return false;
+	public String getPath() {
+		return path;
+	}
 
-        return true;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-    @Override
-    public int hashCode() {
-        return path.hashCode();
-    }
+		RemoteFile that = (RemoteFile) o;
+
+		if (!path.equals(that.path))
+			return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return path.hashCode();
+	}
 }
