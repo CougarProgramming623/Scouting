@@ -279,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);
                 m.put("Vault Cubes (Tele)", vaultcounter);
+                m.put("Team Penalty Points (Tele)", penValue);
                 m.put("Switch Cubes (Auto)", switchcounter);
                 m.put("Scale Cubes (Auto)", scalecounter);
                 m.put("Switch Attempt (Auto)", switcha);
