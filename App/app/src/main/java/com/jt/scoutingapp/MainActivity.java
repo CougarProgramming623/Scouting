@@ -3,13 +3,20 @@ package com.jt.scoutingapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -38,11 +45,18 @@ public class MainActivity extends AppCompatActivity {
     TextView scaleValue;
     TextView teamNumber;
     TextView matchAndColor;
+
+    RadioGroup switchAutoButtons;
+    RadioGroup scaleAutoButtons;
+    RadioGroup posAutoButtons;
+
     AtomicBoolean hasPermission = new AtomicBoolean(false);
 
     AssignerList list;
 
     Button submitData;
+
+    Switch baselineSwitcher;
 
     boolean baseline = false;
 
@@ -109,23 +123,16 @@ public class MainActivity extends AppCompatActivity {
         scaleValue = findViewById(R.id.goldcounter3);
         teamNumber = findViewById(R.id.textView2);
         matchAndColor = findViewById(R.id.textView);
-        //intent.putExtra("goldVal", goldcounter);
-        /*
-        intent.putExtra("silverVal", silverCounter);
-        intent.putExtra("penaltyVal", penCounter);
-        intent.putExtra("Claiming", claiming);
-        intent.putExtra("Landing", landing);
-        intent.putExtra("Parking", parking);
-        intent.putExtra("Sampling", sample);
-        intent.putExtra("Latch", latch);
-        intent.putExtra("Position", pos);
-        */
+        switchAutoButtons = findViewById(R.id.switchautobuttons);
+        scaleAutoButtons = findViewById(R.id.scaleautobuttons);
+        posAutoButtons = findViewById(R.id.finalpositionbuttons);
+        baselineSwitcher = findViewById(R.id.baseline);
 
-        teamNumber.setText("Team " + list.getCurrent().team);
+        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
         if(list.getCurrent().red) {
-            matchAndColor.setText("Match " + list.getCurrent().match + " | Red");
+            matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
         } else {
-            matchAndColor.setText("Match " + list.getCurrent().match + " | Blue");
+            matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
         }
 
 
@@ -140,23 +147,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goldUp (View view) {
-        goldcounter++;
-        switchTele.setText(Integer.toString(goldcounter));
+
+        try {
+            goldcounter = Integer.parseInt(switchTele.getText().toString());
+            if(goldcounter < 0) {
+                goldcounter = 0;
+            } else {
+                goldcounter++;
+                switchTele.setText(Integer.toString(goldcounter));
+            }
+        } catch(Exception e) {
+            goldcounter = 0;
+        }
     }
 
     public void goldDown (View view) {
-        if(goldcounter > 0) {
+        try {
+            goldcounter = Integer.parseInt(switchTele.getText().toString());
+        } catch(Exception e) {
+            goldcounter = 0;
+        }
+        if(goldcounter < 0) {
+            goldcounter = 0;
+        } else if (goldcounter > 0) {
             goldcounter--;
             switchTele.setText(Integer.toString(goldcounter));
         }
     }
     public void silverUp (View view) {
+        try {
+            silvercounter = Integer.parseInt(silverValue.getText().toString());
+        } catch(Exception e) {
+            silvercounter = 0;
+        }
         silvercounter++;
         silverValue.setText(Integer.toString(silvercounter));
     }
 
     public void silverDown (View view) {
         if(silvercounter > 0) {
+            try {
+                silvercounter = Integer.parseInt(silverValue.getText().toString());
+            } catch(Exception e) {
+                silvercounter = 0;
+            }
             silvercounter--;
             silverValue.setText(Integer.toString(silvercounter));
         }
@@ -164,47 +198,87 @@ public class MainActivity extends AppCompatActivity {
 
     public void penUp (View view) {
         if(pencounter < 0) {
+            try {
+                pencounter = Integer.parseInt(penValue.getText().toString());
+            } catch(Exception e) {
+                pencounter = 0;
+            }
             pencounter += 5;
             penValue.setText(Integer.toString(pencounter));
         }
     }
 
     public void penDown (View view) {
-            pencounter -= 5;
-            penValue.setText(Integer.toString(pencounter));
+        try {
+            pencounter = Integer.parseInt(penValue.getText().toString());
+        } catch(Exception e) {
+            pencounter = 0;
+        }
+        pencounter -= 5;
+        penValue.setText(Integer.toString(pencounter));
     }
 
     public void vaultUp (View view) {
-            vaultcounter += 1;
-            vault.setText(Integer.toString(vaultcounter));
+        try {
+            vaultcounter = Integer.parseInt(vault.getText().toString());
+        } catch(Exception e) {
+            vaultcounter = 0;
+        }
+        vaultcounter += 1;
+        vault.setText(Integer.toString(vaultcounter));
     }
 
     public void vaultDown (View view) {
         if(vaultcounter >= 1) {
+            try {
+                vaultcounter = Integer.parseInt(vault.getText().toString());
+            } catch(Exception e) {
+                vaultcounter = 0;
+            }
             vaultcounter -= 1;
             vault.setText(Integer.toString(vaultcounter));
         }
     }
 
     public void switchUp (View view) {
+        try {
+            switchcounter = Integer.parseInt(switchValue.getText().toString());
+        } catch(Exception e) {
+            vaultcounter = 0;
+        }
         switchcounter += 1;
         switchValue.setText(Integer.toString(switchcounter));
     }
 
     public void switchDown (View view) {
         if(switchcounter >= 1) {
+            try {
+                switchcounter = Integer.parseInt(switchValue.getText().toString());
+            } catch(Exception e) {
+                vaultcounter = 0;
+            }
             switchcounter -= 1;
             switchValue.setText(Integer.toString(switchcounter));
         }
     }
 
     public void scaleUp (View view) {
+        try {
+            scalecounter = Integer.parseInt(scaleValue.getText().toString());
+        } catch(Exception e) {
+            scalecounter = 0;
+        }
         scalecounter += 1;
         scaleValue.setText(Integer.toString(scalecounter));
     }
 
     public void scaleDown (View view) {
         if(scalecounter >= 1) {
+            try {
+                scalecounter = Integer.parseInt(scaleValue.getText().toString());
+            } catch(Exception e) {
+                scalecounter = 0;
+            }
             scalecounter -= 1;
             scaleValue.setText(Integer.toString(scalecounter));
         }
@@ -275,11 +349,10 @@ public class MainActivity extends AppCompatActivity {
 
                 MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
                 File file = new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + list.getCurrent().match + "_Team_" + list.getCurrent().team + "." + ScoutingConstants.EXTENSION);
-
                 m.put("Switch Cubes (Tele)", goldcounter);
                 m.put("Scale Cubes (Tele)", silvercounter);
                 m.put("Vault Cubes (Tele)", vaultcounter);
-                m.put("Team Penalty Points (Tele)", penValue);
+                m.put("Team Penalty Points (Tele)", pencounter);
                 m.put("Switch Cubes (Auto)", switchcounter);
                 m.put("Scale Cubes (Auto)", scalecounter);
                 m.put("Switch Attempt (Auto)", switcha);
@@ -291,23 +364,39 @@ public class MainActivity extends AppCompatActivity {
                 ScoutingUtils.write(m, file);
 
                 list.matchStart++;
-                teamNumber.setText("Team " + list.getCurrent().team);
+                teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
                 if(list.getCurrent().red) {
-                    matchAndColor.setText("Match " + list.getCurrent().match + " | Red");
+                    matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
                 } else {
-                    matchAndColor.setText("Match " + list.getCurrent().match + " | Blue");
+                    matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
                 }
 
-            /*
-            System.out.println("*************************************************************");
-            System.out.println();
-            System.out.println();
-            System.out.println("WOWOWOOWOWOWOWOWOWOWOOWOOWO");
-            System.out.println(data);
-            System.out.println();
-            System.out.println();
-            System.out.println("*************************************************************");
-            */
+                goldcounter = 0;
+                silvercounter = 0;
+                pencounter = 0;
+                vaultcounter = 0;
+                switchcounter = 0;
+                scalecounter = 0;
+
+                baseline = false;
+                baselineSwitcher.setChecked(false);
+
+                switchTele.setText(Integer.toString(goldcounter));
+                silverValue.setText(Integer.toString(silvercounter));
+                penValue.setText(Integer.toString(pencounter));
+                vault.setText(Integer.toString(vaultcounter));
+                switchValue.setText(Integer.toString(switchcounter));
+                scaleValue.setText(Integer.toString(scalecounter));
+
+                switchAutoButtons.clearCheck();
+                scaleAutoButtons.clearCheck();
+                posAutoButtons.clearCheck();
+
+                switcha = SwitchAuto.NO_ATTEMPT;
+                scalea = ScaleAuto.NO_ATTEMPT;
+                posa = FinalPos.NO_ATTEMPT;
+
+
         }
     }
 }
