@@ -30,7 +30,6 @@ import com.jt.scoutserver.Server;
 public class Utils {
 
 	public static String toProperEnglishName(String javaName) {
-
 		if (javaName.toUpperCase().equals(javaName)) {// All letters are uppercase. Its the name of a constant
 			char[] result = new char[javaName.length()];
 			boolean lastWasSpace = true;// True to capitalize the first one
@@ -209,7 +208,7 @@ public class Utils {
 				return null;
 			}
 		}
-		if (FilenameUtils.isExtension(file.getName(), extension) || option.equalsIgnoreCase("open"))//We dont want to modify the file if we are opening it
+		if (FilenameUtils.isExtension(file.getName(), extension) || option.equalsIgnoreCase("open"))// We dont want to modify the file if we are opening it
 			return file;
 		else
 			return new File(file.getPath() + '.' + extension);
