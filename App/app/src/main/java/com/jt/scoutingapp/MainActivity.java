@@ -97,57 +97,59 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
             }
         }
-
-        list = ClientUtils.readAssignments();
-        if(list.matchStart == 0) {
-            list.matchStart = 0;
-        } else {
-            for(int i = 0; i < list.entries.size(); i++) {
-                if(list.entries.get(i).match == list.matchStart) {
-                    list.matchStart = i;
-                    System.err.println("Starting with index " + i);
-                    break;
+        try {
+            list = ClientUtils.readAssignments();
+            if (list.matchStart == 0) {
+                list.matchStart = 0;
+            } else {
+                for (int i = 0; i < list.entries.size(); i++) {
+                    if (list.entries.get(i).match == list.matchStart) {
+                        list.matchStart = i;
+                        System.err.println("Starting with index " + i);
+                        break;
+                    }
                 }
             }
-        }
 
-        setContentView(R.layout.frc2018);
+            setContentView(R.layout.frc2018);
 
-        //matchlist = ScoutingUtils.readAssignments();
+            //matchlist = ScoutingUtils.readAssignments();
 
-        switchTele = findViewById(R.id.switchtcounter);
-        silverValue = findViewById(R.id.scaletcounter);
-        penValue = findViewById(R.id.pencounter);
-        vault = findViewById(R.id.vaultcounter);
-        switchValue = findViewById(R.id.goldcounter2);
-        scaleValue = findViewById(R.id.goldcounter3);
-        teamNumber = findViewById(R.id.textView2);
-        matchAndColor = findViewById(R.id.textView);
-        switchAutoButtons = findViewById(R.id.switchautobuttons);
-        scaleAutoButtons = findViewById(R.id.scaleautobuttons);
-        posAutoButtons = findViewById(R.id.finalpositionbuttons);
-        baselineSwitcher = findViewById(R.id.baseline);
+            switchTele = findViewById(R.id.switchtcounter);
+            silverValue = findViewById(R.id.scaletcounter);
+            penValue = findViewById(R.id.pencounter);
+            vault = findViewById(R.id.vaultcounter);
+            switchValue = findViewById(R.id.goldcounter2);
+            scaleValue = findViewById(R.id.goldcounter3);
+            teamNumber = findViewById(R.id.textView2);
+            matchAndColor = findViewById(R.id.textView);
+            switchAutoButtons = findViewById(R.id.switchautobuttons);
+            scaleAutoButtons = findViewById(R.id.scaleautobuttons);
+            posAutoButtons = findViewById(R.id.finalpositionbuttons);
+            baselineSwitcher = findViewById(R.id.baseline);
 
-        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-        if(list.getCurrent().red) {
-            matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
-        } else {
-            matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
-        }
-
-
-        submitData = findViewById(R.id.submit);
-        submitData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Popup.class);
-                startActivityForResult(intent, 42);
+            teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
+            if (list.getCurrent().red) {
+                matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
+            } else {
+                matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
             }
-        });
+
+
+            submitData = findViewById(R.id.submit);
+            submitData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, Popup.class);
+                    startActivityForResult(intent, 42);
+                }
+            });
+        } catch(Exception e) {
+            setContentView(R.layout.no_assignments);
+        }
     }
 
     public void goldUp (View view) {
-
         try {
             goldcounter = Integer.parseInt(switchTele.getText().toString());
             if(goldcounter < 0) {
@@ -364,37 +366,41 @@ public class MainActivity extends AppCompatActivity {
                 ScoutingUtils.write(m, file);
 
                 list.matchStart++;
-                teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-                if(list.getCurrent().red) {
-                    matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
+                if(list.matchStart == list.entries.size()) {
+                    setContentView(R.layout.out_of_bounds);
                 } else {
-                    matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
+                    teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
+                    if (list.getCurrent().red) {
+                        matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
+                    } else {
+                        matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
+                    }
+
+                    goldcounter = 0;
+                    silvercounter = 0;
+                    pencounter = 0;
+                    vaultcounter = 0;
+                    switchcounter = 0;
+                    scalecounter = 0;
+
+                    baseline = false;
+                    baselineSwitcher.setChecked(false);
+
+                    switchTele.setText(Integer.toString(goldcounter));
+                    silverValue.setText(Integer.toString(silvercounter));
+                    penValue.setText(Integer.toString(pencounter));
+                    vault.setText(Integer.toString(vaultcounter));
+                    switchValue.setText(Integer.toString(switchcounter));
+                    scaleValue.setText(Integer.toString(scalecounter));
+
+                    switchAutoButtons.clearCheck();
+                    scaleAutoButtons.clearCheck();
+                    posAutoButtons.clearCheck();
+
+                    switcha = SwitchAuto.NO_ATTEMPT;
+                    scalea = ScaleAuto.NO_ATTEMPT;
+                    posa = FinalPos.NO_ATTEMPT;
                 }
-
-                goldcounter = 0;
-                silvercounter = 0;
-                pencounter = 0;
-                vaultcounter = 0;
-                switchcounter = 0;
-                scalecounter = 0;
-
-                baseline = false;
-                baselineSwitcher.setChecked(false);
-
-                switchTele.setText(Integer.toString(goldcounter));
-                silverValue.setText(Integer.toString(silvercounter));
-                penValue.setText(Integer.toString(pencounter));
-                vault.setText(Integer.toString(vaultcounter));
-                switchValue.setText(Integer.toString(switchcounter));
-                scaleValue.setText(Integer.toString(scalecounter));
-
-                switchAutoButtons.clearCheck();
-                scaleAutoButtons.clearCheck();
-                posAutoButtons.clearCheck();
-
-                switcha = SwitchAuto.NO_ATTEMPT;
-                scalea = ScaleAuto.NO_ATTEMPT;
-                posa = FinalPos.NO_ATTEMPT;
 
 
         }
