@@ -2,6 +2,7 @@ package com.jt.scoutcore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.esotericsoftware.kryo.Kryo;
 
@@ -20,14 +21,11 @@ public class ScoutingConstants {
 		protected Kryo initialValue() {
 			Kryo kryo = new Kryo();
 			kryo.register(MatchSubmission.class);
-			kryo.register(HashMap.class);
+			kryo.register(LinkedHashMap.class);
 			kryo.register(TeamColor.class);
 			kryo.register(ArrayList.class);
 			kryo.register(AssignerList.class);
 			kryo.register(AssignerEntry.class);
-			for(Class clazz : FRCEnums.class.getDeclaredClasses()) {
-			    kryo.register(clazz);
-            }
 			return kryo;
 		};
 	};

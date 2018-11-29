@@ -1,19 +1,13 @@
 package com.jt.scoutcore;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
-
-import com.esotericsoftware.kryo.io.Input;
 
 public class MatchSubmission {
 
 	private static final String TEAM_NUMBER_KEY = "Team", MATCH_NUMBER_KEY = "Match", COLOR_KEY = "Color";
 
-	private HashMap<String, Object> map;
+	private LinkedHashMap<String, Object> map;
 
 	// For serialization
 
@@ -21,9 +15,9 @@ public class MatchSubmission {
 	}
 
 	public MatchSubmission(int teamNumber, int matchNumber, TeamColor color) {
-		map = new HashMap<String, Object>();
+		map = new LinkedHashMap<String, Object>();
+        setMatchNumber(matchNumber);
 		setTeamNumber(teamNumber);
-		setMatchNumber(matchNumber);
 		setColor(color);
 	}
 
@@ -98,11 +92,11 @@ public class MatchSubmission {
 		return map.get(name);
 	}
 
-	public MatchSubmission(HashMap<String, Object> map) {
+	public MatchSubmission(LinkedHashMap<String, Object> map) {
 		this.map = map;
 	}
 
-	public HashMap<String, Object> getMap() {
+	public LinkedHashMap<String, Object> getMap() {
 		return map;
 	}
 
