@@ -3,18 +3,14 @@ package com.jt.scoutingapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -31,45 +27,22 @@ import com.jt.scoutcore.TeamColor;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.jt.scoutcore.FRCEnums.*;
 
 
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView switchTele;
-    TextView silverValue;
-    TextView penValue;
-    TextView vault;
-    TextView switchValue;
-    TextView scaleValue;
-    TextView teamNumber;
-    TextView matchAndColor;
-
-    RadioGroup switchAutoButtons;
-    RadioGroup scaleAutoButtons;
-    RadioGroup posAutoButtons;
-
     AtomicBoolean hasPermission = new AtomicBoolean(false);
-
     AssignerList list;
 
     Button submitData;
+    TextView teamNumber, matchNumber;
 
-    Switch baselineSwitcher;
+    TextView silver, gold, penalty;
+    Switch claiming, landing, parking, latch;
+    RadioGroup craterstatus, samplestatus;
+    RadioButton nosample, notincrater;
 
-    boolean baseline = false;
-
-    int goldcounter = 0;
-    int silvercounter = 0;
-    int pencounter = 0;
-    int vaultcounter = 0;
-    int switchcounter = 0;
-    int scalecounter = 0;
-
-    SwitchAuto switcha = SwitchAuto.NO_ATTEMPT;
-    ScaleAuto scalea = ScaleAuto.NO_ATTEMPT;
-    FinalPos posa = FinalPos.NO_ATTEMPT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,246 +72,135 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             list = ClientUtils.readAssignments();
-            if (list.matchStart == 0) {
-                list.matchStart = 0;
-            } else {
-                for (int i = 0; i < list.entries.size(); i++) {
-                    if (list.entries.get(i).match == list.matchStart) {
-                        list.matchStart = i;
-                        System.err.println("Starting with index " + i);
-                        break;
-                    }
-                }
-            }
-
-            setContentView(R.layout.frc2018);
-
-            //matchlist = ScoutingUtils.readAssignments();
-
-            switchTele = findViewById(R.id.switchtcounter);
-            silverValue = findViewById(R.id.scaletcounter);
-            penValue = findViewById(R.id.pencounter);
-            vault = findViewById(R.id.vaultcounter);
-            switchValue = findViewById(R.id.goldcounter2);
-            scaleValue = findViewById(R.id.goldcounter3);
-            teamNumber = findViewById(R.id.textView2);
-            matchAndColor = findViewById(R.id.textView);
-            switchAutoButtons = findViewById(R.id.switchautobuttons);
-            scaleAutoButtons = findViewById(R.id.scaleautobuttons);
-            posAutoButtons = findViewById(R.id.finalpositionbuttons);
-            baselineSwitcher = findViewById(R.id.baseline);
-
-            teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-            if (list.getCurrent().red) {
-                matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
-            } else {
-                matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
-            }
-
-
-            submitData = findViewById(R.id.submit);
-            submitData.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, Popup.class);
-                    startActivityForResult(intent, 42);
-                }
-            });
         } catch(Exception e) {
             setContentView(R.layout.no_assignments);
+            e.printStackTrace();
+            return;
         }
-    }
-
-    public void goldUp (View view) {
-        try {
-            goldcounter = Integer.parseInt(switchTele.getText().toString());
-            if(goldcounter < 0) {
-                goldcounter = 0;
-            } else {
-                goldcounter++;
-                switchTele.setText(Integer.toString(goldcounter));
+        if (list.matchStart == 0) {
+            list.matchStart = 0;
+        } else {
+            for (int i = 0; i < list.entries.size(); i++) {
+                if (list.entries.get(i).match == list.matchStart) {
+                    list.matchStart = i;
+                    System.err.println("Starting with index " + i);
+                    break;
+                }
             }
-        } catch(Exception e) {
-            goldcounter = 0;
         }
-    }
 
-    public void goldDown (View view) {
-        try {
-            goldcounter = Integer.parseInt(switchTele.getText().toString());
-        } catch(Exception e) {
-            goldcounter = 0;
-        }
-        if(goldcounter < 0) {
-            goldcounter = 0;
-        } else if (goldcounter > 0) {
-            goldcounter--;
-            switchTele.setText(Integer.toString(goldcounter));
-        }
-    }
-    public void silverUp (View view) {
-        try {
-            silvercounter = Integer.parseInt(silverValue.getText().toString());
-        } catch(Exception e) {
-            silvercounter = 0;
-        }
-        silvercounter++;
-        silverValue.setText(Integer.toString(silvercounter));
-    }
+        setContentView(R.layout.activity_main);
 
-    public void silverDown (View view) {
-        if(silvercounter > 0) {
-            try {
-                silvercounter = Integer.parseInt(silverValue.getText().toString());
-            } catch(Exception e) {
-                silvercounter = 0;
+        teamNumber = findViewById(R.id.team);
+        matchNumber = findViewById(R.id.match);
+
+        silver = findViewById(R.id.silvercounter);
+        gold = findViewById(R.id.goldcounter);
+        penalty = findViewById(R.id.pencounter);
+        claiming = findViewById(R.id.claiming);
+        landing = findViewById(R.id.landing);
+        parking = findViewById(R.id.parking);
+        latch = findViewById(R.id.latch);
+        craterstatus = findViewById(R.id.craterstatus);
+        samplestatus = findViewById(R.id.samplestatus);
+        nosample = findViewById(R.id.nosample);
+        notincrater = findViewById(R.id.notincrater);
+
+        submitData = findViewById(R.id.submit);
+        submitData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Popup.class);
+                startActivityForResult(intent, 42);
             }
-            silvercounter--;
-            silverValue.setText(Integer.toString(silvercounter));
+        });
+        init();
+    }
+
+    public void init() {
+        silver.setText("0");
+        gold.setText("0");
+        penalty.setText("0");
+        claiming.setChecked(false);
+        landing.setChecked(false);
+        parking.setChecked(false);
+        latch.setChecked(false);
+        craterstatus.check(notincrater.getId());
+        samplestatus.check(nosample.getId());
+
+        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
+        if (list.getCurrent().red) {
+            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
+        } else {
+            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
         }
     }
 
-    public void penUp (View view) {
-        if(pencounter < 0) {
-            try {
-                pencounter = Integer.parseInt(penValue.getText().toString());
-            } catch(Exception e) {
-                pencounter = 0;
-            }
-            pencounter += 5;
-            penValue.setText(Integer.toString(pencounter));
-        }
-    }
-
-    public void penDown (View view) {
+    public static int getIntOrZero(CharSequence s) {
         try {
-            pencounter = Integer.parseInt(penValue.getText().toString());
-        } catch(Exception e) {
-            pencounter = 0;
-        }
-        pencounter -= 5;
-        penValue.setText(Integer.toString(pencounter));
-    }
-
-    public void vaultUp (View view) {
-        try {
-            vaultcounter = Integer.parseInt(vault.getText().toString());
-        } catch(Exception e) {
-            vaultcounter = 0;
-        }
-        vaultcounter += 1;
-        vault.setText(Integer.toString(vaultcounter));
-    }
-
-    public void vaultDown (View view) {
-        if(vaultcounter >= 1) {
-            try {
-                vaultcounter = Integer.parseInt(vault.getText().toString());
-            } catch(Exception e) {
-                vaultcounter = 0;
-            }
-            vaultcounter -= 1;
-            vault.setText(Integer.toString(vaultcounter));
+            return Integer.parseInt(s.toString());
+        } catch (NumberFormatException e) {
+            return 0;
         }
     }
 
-    public void switchUp (View view) {
-        try {
-            switchcounter = Integer.parseInt(switchValue.getText().toString());
-        } catch(Exception e) {
-            vaultcounter = 0;
+    private static class Range {
+        int min, max;
+        public Range(int min, int max) {
+            this.min = min;
+            this.max = max;
         }
-        switchcounter += 1;
-        switchValue.setText(Integer.toString(switchcounter));
-    }
 
-    public void switchDown (View view) {
-        if(switchcounter >= 1) {
-            try {
-                switchcounter = Integer.parseInt(switchValue.getText().toString());
-            } catch(Exception e) {
-                vaultcounter = 0;
-            }
-            switchcounter -= 1;
-            switchValue.setText(Integer.toString(switchcounter));
+        public int clamp(int input) {
+            input = Math.max(input, min);//Make > min
+            input = Math.min(input, max);//Make < max
+            return input;
         }
     }
 
-    public void scaleUp (View view) {
-        try {
-            scalecounter = Integer.parseInt(scaleValue.getText().toString());
-        } catch(Exception e) {
-            scalecounter = 0;
-        }
-        scalecounter += 1;
-        scaleValue.setText(Integer.toString(scalecounter));
+    //min and max are inclusive
+    public void updateItem(TextView counter, int increment, Range range) {
+        int value = getIntOrZero(counter.getText().toString());
+        value += increment;
+        value = range.clamp(value);
+        counter.setText(Integer.toString(value));
     }
 
-    public void scaleDown (View view) {
-        if(scalecounter >= 1) {
-            try {
-                scalecounter = Integer.parseInt(scaleValue.getText().toString());
-            } catch(Exception e) {
-                scalecounter = 0;
-            }
-            scalecounter -= 1;
-            scaleValue.setText(Integer.toString(scalecounter));
-        }
+    private static final Range ZERO_TO_POS_INF = new Range(0, Integer.MAX_VALUE), NEG_INF_TO_ZERO = new Range(Integer.MIN_VALUE, 0);
+
+    public void silverUp(View view) {
+        updateItem(silver, +1, ZERO_TO_POS_INF);
     }
 
-    public void autoSwitchWrong (View view) {
-        switcha = SwitchAuto.WRONG_SIDE;
+    public void silverDown(View view) {
+        updateItem(silver, -1, ZERO_TO_POS_INF);
     }
 
-    public void autoSwitchRight (View view) {
-        switcha = SwitchAuto.RIGHT_SIDE;
+    public void goldUp(View view) {
+        updateItem(gold, +1, ZERO_TO_POS_INF);
     }
 
-    public void autoSwitchNo (View view) {
-        switcha = SwitchAuto.WRONG_SIDE;
+    public void goldDown(View view) {
+        updateItem(gold, -1, ZERO_TO_POS_INF);
     }
 
-    public void autoScaleWrong (View view) {
-        scalea = ScaleAuto.WRONG_SIDE;
+    public void penUp(View view) {
+        updateItem(penalty, +5, NEG_INF_TO_ZERO);
     }
 
-    public void autoScaleRight (View view) {
-        scalea = ScaleAuto.RIGHT_SIDE;
-    }
-
-    public void autoScaleNo (View view) {
-        scalea = ScaleAuto.NO_ATTEMPT;
-    }
-
-    public void autoPosClimbed (View view) {
-        posa = FinalPos.CLIMBED;
-    }
-
-    public void autoPosPlat (View view) {
-        posa = FinalPos.PLATFORM;
-    }
-
-    public void autoPosRamp (View view) {
-        posa = FinalPos.RAMP;
-    }
-
-    public void autoPosNo (View view) {
-        posa = FinalPos.NO_ATTEMPT;
-    }
-
-    public void baselineValue (View view) {
-        baseline = ((Switch)findViewById(R.id.baseline)).isChecked();
+    public void penDown(View view) {
+        updateItem(penalty, -5, NEG_INF_TO_ZERO);
     }
 
     public void disableLatch (View v) {
-        Switch sw = findViewById(R.id.switch11);
+        Switch sw = findViewById(R.id.landing);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
-                    findViewById(R.id.switch2).setEnabled(false);
+                    findViewById(R.id.latch).setEnabled(false);
                     //findViewById(R.id.switch2).set
                 } else {
-                    findViewById(R.id.switch2).setEnabled(true);
+                    findViewById(R.id.latch).setEnabled(true);
                 }
             }
         });
@@ -347,62 +209,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        silver = findViewById(R.id.silvercounter);
+        gold = findViewById(R.id.goldcounter);
+        penalty = findViewById(R.id.pencounter);
+        claiming = findViewById(R.id.claiming);
+        landing = findViewById(R.id.landing);
+        parking = findViewById(R.id.parking);
+        latch = findViewById(R.id.latch);
+        craterstatus = findViewById(R.id.craterstatus);
+        samplestatus = findViewById(R.id.samplestatus);
+
         if(resultCode == RESULT_OK) {
+            MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
+            File file = new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + list.getCurrent().match + "_Team_" + list.getCurrent().team + "." + ScoutingConstants.EXTENSION);
+            m.put("Silver Balls", getIntOrZero(silver.getText()));
+            m.put("Gold Cubes", getIntOrZero(gold.getText()));
+            m.put("Penalty Points", getIntOrZero(penalty.getText()));
+            m.put("Claming", claiming.isChecked());
+            m.put("Landing", landing.isChecked());
+            m.put("Parking", parking.isChecked());
+            m.put("Latch", latch.isChecked());
+            m.put("Crater Parking", findViewById(craterstatus.getCheckedRadioButtonId()).getTag().toString());
+            m.put("Sample (Auto)", findViewById(samplestatus.getCheckedRadioButtonId()).getTag().toString());
 
-                MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
-                File file = new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + list.getCurrent().match + "_Team_" + list.getCurrent().team + "." + ScoutingConstants.EXTENSION);
-                m.put("Switch Cubes (Tele)", goldcounter);
-                m.put("Scale Cubes (Tele)", silvercounter);
-                m.put("Vault Cubes (Tele)", vaultcounter);
-                m.put("Team Penalty Points (Tele)", pencounter);
-                m.put("Switch Cubes (Auto)", switchcounter);
-                m.put("Scale Cubes (Auto)", scalecounter);
-                m.put("Switch Attempt (Auto)", switcha);
-                m.put("Scale Attempt (Auto)", scalea);
-                m.put("Final Position (End)", posa);
-                m.put("Crossed Baseline (Tele)", baseline);
+            file.getParentFile().mkdirs();
+            ScoutingUtils.write(m, file);
 
-                file.getParentFile().mkdirs();
-                ScoutingUtils.write(m, file);
-
-                list.matchStart++;
-                if(list.matchStart == list.entries.size()) {
-                    setContentView(R.layout.out_of_bounds);
-                } else {
-                    teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-                    if (list.getCurrent().red) {
-                        matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
-                    } else {
-                        matchAndColor.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
-                    }
-
-                    goldcounter = 0;
-                    silvercounter = 0;
-                    pencounter = 0;
-                    vaultcounter = 0;
-                    switchcounter = 0;
-                    scalecounter = 0;
-
-                    baseline = false;
-                    baselineSwitcher.setChecked(false);
-
-                    switchTele.setText(Integer.toString(goldcounter));
-                    silverValue.setText(Integer.toString(silvercounter));
-                    penValue.setText(Integer.toString(pencounter));
-                    vault.setText(Integer.toString(vaultcounter));
-                    switchValue.setText(Integer.toString(switchcounter));
-                    scaleValue.setText(Integer.toString(scalecounter));
-
-                    switchAutoButtons.clearCheck();
-                    scaleAutoButtons.clearCheck();
-                    posAutoButtons.clearCheck();
-
-                    switcha = SwitchAuto.NO_ATTEMPT;
-                    scalea = ScaleAuto.NO_ATTEMPT;
-                    posa = FinalPos.NO_ATTEMPT;
-                }
-
-
+            list.matchStart++;
+            if(list.matchStart == list.entries.size()) {
+                setContentView(R.layout.out_of_bounds);
+            } else {
+                init();
+            }
         }
     }
 }

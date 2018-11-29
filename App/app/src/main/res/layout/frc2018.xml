@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="4dp"
-    android:background="#8B0000"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:background="#8B0000"
     tools:context=".MainActivity">
 
     <TextView
-    android:id="@+id/textView"
-    android:textColor="#ffffff"
-    android:layout_width="200dp"
-    android:layout_height="30dp"
-    android:layout_marginLeft="20dp"
-    android:text="Match #000"
-    android:textSize="18sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintHorizontal_bias="0.033"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.126" />
+        android:id="@+id/match"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:text="Match #000"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.033"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/team"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:textColor="#ffffff"
         android:layout_marginLeft="20dp"
         android:text="Team 0000"
+        android:textColor="#ffffff"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.033"
@@ -44,8 +43,8 @@
         android:layout_width="139dp"
         android:layout_height="41dp"
         android:layout_marginRight="20dp"
-        android:text="Baseline"
         android:onClick="baselineValue"
+        android:text="Baseline"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -150,11 +149,11 @@
         android:layout_width="90dp"
         android:layout_height="64dp"
         android:layout_marginLeft="20dp"
+        android:inputType="number"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#f4ff30"
         android:textSize="35sp"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.165"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -229,11 +228,11 @@
         android:layout_width="60dp"
         android:layout_height="54dp"
         android:layout_marginLeft="20dp"
+        android:inputType="number"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#f4ff30"
         android:textSize="25sp"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -246,11 +245,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
+        android:inputType="number"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#f4ff30"
         android:textSize="25sp"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -321,9 +320,9 @@
         android:layout_height="27dp"
         android:layout_marginLeft="20dp"
         android:text="Switch (Auto)"
-        android:textStyle="bold"
         android:textColor="#ffffff"
         android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -412,11 +411,11 @@
         android:layout_width="90dp"
         android:layout_height="71dp"
         android:layout_marginLeft="20dp"
+        android:inputType="number"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#f4ff30"
         android:textSize="35sp"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.165"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -429,11 +428,11 @@
         android:layout_width="90dp"
         android:layout_height="64dp"
         android:layout_marginLeft="20dp"
+        android:inputType="number"
         android:text="0"
         android:textAlignment="center"
         android:textColor="#f4ff30"
         android:textSize="35sp"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.165"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -500,7 +499,7 @@
         app:layout_constraintVertical_bias="0.1">
 
         <RadioButton
-            android:id="@+id/radioButton1"
+            android:id="@+id/wrongsample"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -509,7 +508,7 @@
             android:textColor="#ffffff" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/correctsample"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -518,11 +517,11 @@
             android:textColor="#ffffff" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/nosample"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="autoSwitchNo"
             android:layout_weight="1"
+            android:onClick="autoSwitchNo"
             android:text="No attempt"
             android:textColor="#ffffff" />
 
@@ -546,8 +545,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Platform"
             android:onClick="autoPosPlat"
+            android:text="Platform"
             android:textColor="#ffffff" />
 
         <RadioButton
@@ -555,8 +554,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ramp"
             android:onClick="autoPosRamp"
+            android:text="Ramp"
             android:textColor="#ffffff" />
 
         <RadioButton
