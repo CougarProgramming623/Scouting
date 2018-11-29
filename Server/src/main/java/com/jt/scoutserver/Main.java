@@ -1,11 +1,13 @@
 package com.jt.scoutserver;
 
+import javax.swing.UIManager;
+
 import com.jt.scoutserver.utils.SystemUtils;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		/*
 		 * Random r = new Random(); for (int i = 100; i < 100 + 4 * 80; i++) { MatchSubmission sub = new MatchSubmission(r.nextInt(3000), 1,
 		 * r.nextBoolean() ? TeamColor.BLUE : TeamColor.RED); sub.put("Test1", r.nextInt(100)); sub.put("Test2", r.nextBoolean()); sub.put("Test3",

@@ -59,10 +59,13 @@ public class ExcelWriter {
 
 	}
 
-	private static void writeHeader(Row header, HashMap<String, Integer> headers) {
+	private static void writeHeader(Sheet sheet, Row header, HashMap<String, Integer> headers) {
 		for (Entry<String, Integer> entry : headers.entrySet()) {
 			String key = entry.getKey();
-			header.createCell(entry.getValue()).setCellValue(key);
+			Cell cell = header.createCell(entry.getValue());
+			cell.setCellValue(key);
+			sheet.setColumnWidth(cell.getColumnIndex(), key.length() * 300);
+			
 		}
 	}
 
@@ -86,6 +89,7 @@ public class ExcelWriter {
 		int rowNum = rowStart;
 		Row header = sheet.createRow(rowNum++);
 		writeHeader(header, headers);
+		int subCount = 0;
 
 		for (File childFile : files) {
 			if (childFile.exists() && childFile.isFile() && FilenameUtils.isExtension(childFile.getName(), ScoutingConstants.EXTENSION)) {
@@ -93,11 +97,12 @@ public class ExcelWriter {
 				if (id.matchFile(sub, data)) {
 					Row row = sheet.createRow(rowNum++);
 					writeRow(row, headers, sub);
+					subCount++;
 				}
 			}
 		}
 		if (ExcelUtils.writeExcelFile(workbook, file)) {
-			Utils.showInfo("Exported file successfully", "Saved data to file \"" + file + "\" successfully");
+			Utils.showInfo("Exported file successfully", "Saved data to file \"" + file + "\" successfully\n" + "Includes " + subCount + " match-submissions"); 
 		}
 	}
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.UIManager;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,11 +30,18 @@ public class Main {
 	public static final String PHONE_SAVE_DIR = ScoutingUtils.getSaveDir(), PHONE_ASSIGNMENT_FILE = PHONE_SAVE_DIR + ScoutingConstants.ANDROID_ASSIGNMENTS_FILE_NAME;
 	private static int matchStart = 0;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		System.out.println("Starting Scouting App Pre-Match Assigner!");
 		File excelFile = Utils.openFile(ExcelUtils.EXCEL_EXTENSION, "Excel Files");
+		if (excelFile == null)
+			return;
 		int numDevices = Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
-		matchStart = Utils.getIntInput(0, 1000, "Enter Match Number to start on", "Enter 0 to start on the first match");
+		if (numDevices == Integer.MIN_VALUE)
+			return;
+		matchStart = Utils.getIntInput(0, 10000, "Enter Match Number to start on", "Enter 0 to start on the first match");
+		if (matchStart == Integer.MIN_VALUE)
+			return;
 		int[] deviceUsages = new int[numDevices];// maps device id's to number of matches assigned
 		ArrayList<AssignerEntry>[] deviceOutputs = new ArrayList[numDevices];
 		for (int i = 0; i < deviceOutputs.length; i++) {

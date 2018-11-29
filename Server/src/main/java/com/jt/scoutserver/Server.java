@@ -111,19 +111,24 @@ public class Server extends JFrame {
 	}
 
 	private void refreshFiles() {
-		for (File file : COMPUTER_MATCHES_DIR.listFiles()) {
-			if (file.isDirectory())
-				continue;
-			try {
-				MatchSubmission submission = ScoutingUtils.read(file);
-				if (!model.contains(submission)) {
-					model.addElement(submission);
-					list.repaint();
-					Thread.sleep(1);
+		File[] files = COMPUTER_MATCHES_DIR.listFiles();
+		if (files == null)
+			COMPUTER_MATCHES_DIR.mkdirs();
+		else {
+			for (File file : files) {
+				if (file.isDirectory())
+					continue;
+				try {
+					MatchSubmission submission = ScoutingUtils.read(file);
+					if (!model.contains(submission)) {
+						model.addElement(submission);
+						list.repaint();
+						Thread.sleep(1);
+					}
+				} catch (Exception e) {
+					// ignore
+					System.out.println("invalid file " + file);
 				}
-			} catch (Exception e) {
-				// ignore
-				System.out.println("invalid file " + file);
 			}
 		}
 	}

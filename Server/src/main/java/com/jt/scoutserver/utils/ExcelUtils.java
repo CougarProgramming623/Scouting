@@ -28,7 +28,7 @@ public class ExcelUtils {
 			return m.getMatchNumber() == (int) data;
 		};
 	};
-	
+
 	public static final MatchSubmissionIdentifier SINGLE_TEAM = new MatchSubmissionIdentifier() {
 		public boolean matchFile(MatchSubmission m, long data) {
 			return m.getTeamNumber() == (int) data;
