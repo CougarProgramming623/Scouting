@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:background="#8B0000"
-    tools:context=".MainActivity">
+    tools:context=".FTC2018">
 
     <TextView
         android:id="@+id/match"

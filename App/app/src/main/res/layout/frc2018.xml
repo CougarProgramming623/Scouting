@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:background="#8B0000"
-    tools:context=".MainActivity">
+    tools:context=".FTC2018">
 
     <TextView
         android:id="@+id/match"
@@ -217,11 +217,11 @@
         android:textColor="#f4ff30"
         android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.223"
+        app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.009" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <EditText
         android:id="@+id/goldcounter2"
@@ -312,7 +312,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.248" />
+        app:layout_constraintVertical_bias="0.278" />
 
     <TextView
         android:id="@+id/goldtext2"

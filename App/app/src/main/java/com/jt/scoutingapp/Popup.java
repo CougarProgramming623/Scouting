@@ -3,29 +3,19 @@ package com.jt.scoutingapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
-import com.jt.scoutcore.MatchSubmission;
-import com.jt.scoutcore.ScoutingConstants;
-import com.jt.scoutcore.ScoutingUtils;
-import com.jt.scoutcore.TeamColor;
+public class Popup extends Activity {
 
-import java.io.File;
-
-import static android.os.Environment.getExternalStorageDirectory;
-
-public class Popup extends Activity{
-
-    Button close;
-    Button submit;
+    private Button close;
+    private Button submit;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.frc2018popup);
+        setContentView(R.layout.submit_popup);
 
         close = findViewById(R.id.no);
         close.setOnClickListener(new View.OnClickListener() {
