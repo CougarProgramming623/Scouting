@@ -130,4 +130,41 @@ public abstract class ScoutingActivity extends AppCompatActivity {
         }
     }
 
+    public static int getIntOrZero(TextView view) {
+        return getIntOrZero(view.getText());
+    }
+
+    public static int getIntOrZero(CharSequence s) {
+        try {
+            return Integer.parseInt(s.toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private static class Range {
+        int min, max;
+        public Range(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public int clamp(int input) {
+            input = Math.max(input, min);//Make > min
+            input = Math.min(input, max);//Make < max
+            return input;
+        }
+    }
+
+    //min and max are inclusive
+    public void updateItem(TextView counter, int increment, Range range) {
+        int value = getIntOrZero(counter.getText().toString());
+        value += increment;
+        value = range.clamp(value);
+        counter.setText(Integer.toString(value));
+    }
+
+    protected static final Range ZERO_TO_POS_INF = new Range(0, Integer.MAX_VALUE), NEG_INF_TO_ZERO = new Range(Integer.MIN_VALUE, 0);
+
+
 }

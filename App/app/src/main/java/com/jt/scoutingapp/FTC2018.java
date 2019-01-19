@@ -12,10 +12,10 @@ import com.jt.scoutcore.MatchSubmission;
 
 public class FTC2018 extends ScoutingActivity {
 
-    TextView silver, gold, penalty;
-    Switch claiming, landing, parking, latch;
-    RadioGroup craterstatus, samplestatus;
-    RadioButton nosample, notincrater;
+    private TextView silver, gold, penalty;
+    private Switch claiming, landing, parking, latch;
+    private RadioGroup craterstatus, samplestatus;
+    private RadioButton nosample, notincrater;
 
 
     public void create() {
@@ -47,38 +47,6 @@ public class FTC2018 extends ScoutingActivity {
         samplestatus.check(nosample.getId());
     }
 
-    public static int getIntOrZero(CharSequence s) {
-        try {
-            return Integer.parseInt(s.toString());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private static class Range {
-        int min, max;
-        public Range(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public int clamp(int input) {
-            input = Math.max(input, min);//Make > min
-            input = Math.min(input, max);//Make < max
-            return input;
-        }
-    }
-
-    //min and max are inclusive
-    public void updateItem(TextView counter, int increment, Range range) {
-        int value = getIntOrZero(counter.getText().toString());
-        value += increment;
-        value = range.clamp(value);
-        counter.setText(Integer.toString(value));
-    }
-
-    private static final Range ZERO_TO_POS_INF = new Range(0, Integer.MAX_VALUE), NEG_INF_TO_ZERO = new Range(Integer.MIN_VALUE, 0);
-
     public void silverUp(View view) {
         updateItem(silver, +1, ZERO_TO_POS_INF);
     }
@@ -99,9 +67,7 @@ public class FTC2018 extends ScoutingActivity {
         updateItem(penalty, +5, NEG_INF_TO_ZERO);
     }
 
-    public void penDown(View view) {
-        updateItem(penalty, -5, NEG_INF_TO_ZERO);
-    }
+    public void penDown(View view) { updateItem(penalty, -5, NEG_INF_TO_ZERO); }
 
     public void disableLatch (View v) {
         Switch sw = findViewById(R.id.landing);
