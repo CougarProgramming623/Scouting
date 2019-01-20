@@ -12,6 +12,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.jt.scoutcore.AssignerList;
@@ -95,18 +97,22 @@ public abstract class ScoutingActivity extends AppCompatActivity {
                 }
             }
         }
-
+        //Call create first so that the user can set their layout
+        create();
         teamNumber = findViewById(R.id.team);
         matchNumber = findViewById(R.id.match);
         submitButton = findViewById(R.id.submit);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ScoutingActivity.this, Popup.class);
-                startActivityForResult(intent, 42);
-            }
-        });
-        create();
+        if(submitButton != null) {
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ScoutingActivity.this, Popup.class);
+                    startActivityForResult(intent, 42);
+                }
+            });
+        } else {
+            Log.e("UI", "Unable to find submit button!");
+        }
         resetSuperclass();
     }
 
@@ -128,6 +134,17 @@ public abstract class ScoutingActivity extends AppCompatActivity {
                 resetSuperclass();
             }
         }
+    }
+
+    /**
+     * Returns the tag of the selected radio button in the radio group or null if no radio button is currently selected
+     * @return The tag of the selected radio button, or null
+     */
+    public String getRadioGroupStringSelection(RadioGroup group) {
+        View view = findViewById(group.getCheckedRadioButtonId());
+        if(view == null)
+            return null;
+        return (view.getTag() == null) ? null : view.getTag().toString();
     }
 
     public static int getIntOrZero(TextView view) {

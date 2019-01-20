@@ -15,8 +15,9 @@ public class FRC2018 extends ScoutingActivity {
 
     public void create() {
         setContentView(R.layout.frc2018);
+
         switchTele = findViewById(R.id.switch_tele);
-        switchAuto = findViewById(R.id.location_auto);
+        switchAuto = findViewById(R.id.switch_auto);
         scaleTele = findViewById(R.id.scale_tele);
         scaleAuto = findViewById(R.id.scale_auto);
         penaltyPoints = findViewById(R.id.penalty_counter);
@@ -33,7 +34,7 @@ public class FRC2018 extends ScoutingActivity {
         penaltyPoints.setText("0");
         vault.setText("0");
         baseline.setChecked(false);
-        finalPosition.clearCheck();
+        finalPosition.check(findViewById(R.id.no_attempt).getId());
     }
 
     public void onSubmit(MatchSubmission m) {
@@ -44,7 +45,8 @@ public class FRC2018 extends ScoutingActivity {
         m.put("Penalty Points", getIntOrZero(penaltyPoints));
         m.put("Vault Cubes", getIntOrZero(vault));
         m.put("Baseline", Boolean.toString(baseline.isChecked()));
-        m.put("Ending Location", findViewById(finalPosition.getCheckedRadioButtonId()).getTag().toString());
+
+        m.put("Ending Location", getRadioGroupStringSelection(finalPosition));
     }
 
     public void teleSwitchDown(View view) { updateItem(switchTele, -1, ZERO_TO_POS_INF);}
@@ -67,7 +69,7 @@ public class FRC2018 extends ScoutingActivity {
 
     public void vaultUp(View view) { updateItem(vault, +1, ZERO_TO_POS_INF); }
 
-    public void penaltyDown(View view) { updateItem(penaltyPoints, -1, ZERO_TO_POS_INF); }
+    public void penaltyDown(View view) { updateItem(penaltyPoints, -5, ZERO_TO_POS_INF); }
 
-    public void penaltyUp(View view) { updateItem(penaltyPoints, +1, ZERO_TO_POS_INF); }
+    public void penaltyUp(View view) { updateItem(penaltyPoints, +5, ZERO_TO_POS_INF); }
 }

@@ -3,13 +3,22 @@
     package="com.jt.scoutingapp">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <supports-screen
+        android:largsScreen="true"
+        android:normalScreen="true"
+        android:smallScreen="true"
+        android:xlargsScreen="true"
+        />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FRC2018">
+        <activity android:name=".FRC2018"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,6 +28,8 @@
 
         <activity android:name=".Popup"
             android:theme="@style/AppTheme.PopupTransparency"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             ></activity>
     </application>
 
