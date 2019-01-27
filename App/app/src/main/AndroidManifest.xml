@@ -3,12 +3,6 @@
     package="com.jt.scoutingapp">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <supports-screen
-        android:largsScreen="true"
-        android:normalScreen="true"
-        android:smallScreen="true"
-        android:xlargsScreen="true"
-        />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
