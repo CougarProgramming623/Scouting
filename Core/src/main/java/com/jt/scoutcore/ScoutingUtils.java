@@ -10,7 +10,11 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
 public class ScoutingUtils {
-	
+
+    public static int clamp(int value , int min, int max) {
+        return Math.max(Math.min(value, max), min);
+    }
+
 	public static String getSaveDir() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File("./path.txt")));

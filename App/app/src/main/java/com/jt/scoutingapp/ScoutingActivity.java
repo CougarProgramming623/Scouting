@@ -1,6 +1,8 @@
 package com.jt.scoutingapp;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -12,13 +14,12 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.jt.scoutcore.AssignerList;
+import com.jt.scoutcore.AssignerEntry;
+import com.jt.scoutcore.AssignmentsBase;
 import com.jt.scoutcore.MatchSubmission;
-import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 import com.jt.scoutcore.TeamColor;
 
@@ -28,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class ScoutingActivity extends AppCompatActivity {
 
     protected AtomicBoolean hasPermission = new AtomicBoolean(false);
-    protected AssignerList list;
+    protected AssignmentsBase list;
 
     private Button submitButton;
     private TextView teamNumber, matchNumber;
@@ -43,7 +44,60 @@ public abstract class ScoutingActivity extends AppCompatActivity {
     //Called each time the user presses submit
     public abstract void onSubmit(MatchSubmission m);
 
+
+    //Used in this method
+    private AssignerEntry nextUnscouted = null;
     private void resetSuperclass() {
+        AssignerEntry current = list.getCurrent();
+        if(current == null) {
+            throw new Error("Current shouldnt be null!");
+        }
+        File currentFile = ClientUtils.getMatchFile(current.match, current.team);
+        for(File file : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
+            if(currentFile.equals(file)) {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Match Already Scouted!");
+                alertDialog.setMessage("You already scouted match #" + current.match + " for team " + current.team + "\nWhat would you like to do?");
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Re scout this match (will override old data)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;//Nothing we are already on the match
+                    }
+                });
+                if(list.getRemainingAssignments().size() > 0) {
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip to the next assignment", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            list.next();
+                            resetSuperclass();
+                        }
+                    });
+                }
+                for(AssignerEntry entry : list.getAllAssignments()) {
+                    File entryFile = ClientUtils.getMatchFile(entry.match, entry.team);
+                    boolean notScouted = true;
+                    for(File file1 : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
+                        if(entryFile.equals(file1)) {
+                            notScouted = false;//We found the file. Its already scouted
+                        }
+                    }
+                    if(notScouted) {
+                        nextUnscouted = entry;
+                        break;
+                    }
+                }
+                if(nextUnscouted != null) {
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Skip to the next unscouted match (match #" + nextUnscouted.match + " team " + nextUnscouted.team, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            list.goToMatch(nextUnscouted.match, nextUnscouted.team);
+                            resetSuperclass();
+                        }
+                    });
+                }
+
+                alertDialog.show();
+            }
+        }
+
         teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
         if (list.getCurrent().red) {
             matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
@@ -86,17 +140,6 @@ public abstract class ScoutingActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
-        if (list.matchStart == 0) {
-            list.matchStart = 0;
-        } else {
-            for (int i = 0; i < list.entries.size(); i++) {
-                if (list.entries.get(i).match == list.matchStart) {
-                    list.matchStart = i;
-                    System.err.println("Starting with index " + i);
-                    break;
-                }
-            }
-        }
         //Call create first so that the user can set their layout
         create();
         teamNumber = findViewById(R.id.team);
@@ -123,12 +166,11 @@ public abstract class ScoutingActivity extends AppCompatActivity {
             MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
             onSubmit(m);
 
-            File file = new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + list.getCurrent().match + "_Team_" + list.getCurrent().team + "." + ScoutingConstants.EXTENSION);
+            File file = ClientUtils.getMatchFile(list.getCurrent().match, list.getCurrent().team);
             ClientUtils.ANDROID_MATCHES_DIR.mkdirs();
             ScoutingUtils.write(m, file);
 
-            list.matchStart++;
-            if(list.matchStart == list.entries.size()) {
+            if(list.next() == null) {
                 setContentView(R.layout.end_of_assignments);
             } else {
                 resetSuperclass();

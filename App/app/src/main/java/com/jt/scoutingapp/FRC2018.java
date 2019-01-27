@@ -69,7 +69,7 @@ public class FRC2018 extends ScoutingActivity {
 
     public void vaultUp(View view) { updateItem(vault, +1, ZERO_TO_POS_INF); }
 
-    public void penaltyDown(View view) { updateItem(penaltyPoints, -5, ZERO_TO_POS_INF); }
+    public void penaltyDown(View view) { updateItem(penaltyPoints, -5, NEG_INF_TO_ZERO); }
 
-    public void penaltyUp(View view) { updateItem(penaltyPoints, +5, ZERO_TO_POS_INF); }
+    public void penaltyUp(View view) { updateItem(penaltyPoints, +5, NEG_INF_TO_ZERO); }
 }

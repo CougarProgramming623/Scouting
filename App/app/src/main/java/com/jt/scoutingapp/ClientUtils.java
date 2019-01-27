@@ -3,6 +3,7 @@ package com.jt.scoutingapp;
 import android.os.Environment;
 
 import com.jt.scoutcore.AssignerList;
+import com.jt.scoutcore.AssignmentsBase;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
 
@@ -20,7 +21,15 @@ public class ClientUtils {
     public static final File ANDROID_ASSIGNMENTS_FILE = new File(ANDROID_SAVE_DIR, ScoutingConstants.ANDROID_ASSIGNMENTS_FILE_NAME),
     ANDROID_MATCHES_DIR = new File(ANDROID_SAVE_DIR, ScoutingConstants.ANDROID_MATCHES_SAVE_DIRECTORY_NAME);
 
-    public static AssignerList readAssignments() {
-        return ScoutingUtils.read(ANDROID_ASSIGNMENTS_FILE, AssignerList.class);
+    static {
+        ANDROID_MATCHES_DIR.mkdirs();
+    }
+
+    public static AssignmentsBase readAssignments() {
+        return ScoutingUtils.read(ANDROID_ASSIGNMENTS_FILE, AssignmentsBase.class);
+    }
+
+    public static File getMatchFile(int match, int team) {
+        return  new File(ClientUtils.ANDROID_MATCHES_DIR, "Match_" + match + "_Team_" + team + "." + ScoutingConstants.EXTENSION);
     }
 }
