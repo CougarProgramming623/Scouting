@@ -64,8 +64,7 @@ public class ExcelWriter {
 			String key = entry.getKey();
 			Cell cell = header.createCell(entry.getValue());
 			cell.setCellValue(key);
-			sheet.setColumnWidth(cell.getColumnIndex(), key.length() * 300);
-			
+			sheet.setColumnWidth(cell.getColumnIndex(), key.length() * 330);
 		}
 	}
 
@@ -73,7 +72,7 @@ public class ExcelWriter {
 
 		write(file, rowStart, colStart, id, data, allFiles());
 	}
-	
+
 	public static List<File> allFiles() {
 		List<File> files = new ArrayList<File>();
 		for (File f : Server.COMPUTER_MATCHES_DIR.listFiles()) {
@@ -88,21 +87,25 @@ public class ExcelWriter {
 		Sheet sheet = workbook.createSheet();
 		int rowNum = rowStart;
 		Row header = sheet.createRow(rowNum++);
-		writeHeader(header, headers);
+		writeHeader(sheet, header, headers);
 		int subCount = 0;
 
 		for (File childFile : files) {
 			if (childFile.exists() && childFile.isFile() && FilenameUtils.isExtension(childFile.getName(), ScoutingConstants.EXTENSION)) {
-				MatchSubmission sub = ScoutingUtils.read(childFile);
-				if (id.matchFile(sub, data)) {
-					Row row = sheet.createRow(rowNum++);
-					writeRow(row, headers, sub);
-					subCount++;
+				try {
+					MatchSubmission sub = ScoutingUtils.read(childFile);
+					if (id.matchFile(sub, data)) {
+						Row row = sheet.createRow(rowNum++);
+						writeRow(row, headers, sub);
+						subCount++;
+					}
+				} catch (RuntimeException e) {
+					System.out.println("Error reading file " + childFile + "\n" + e.getCause().getMessage());
 				}
 			}
 		}
 		if (ExcelUtils.writeExcelFile(workbook, file)) {
-			Utils.showInfo("Exported file successfully", "Saved data to file \"" + file + "\" successfully\n" + "Includes " + subCount + " match-submissions"); 
+			Utils.showInfo("Exported file successfully", "Saved data to file \"" + file + "\" successfully\n" + "Includes " + subCount + " match-submissions");
 		}
 	}
 

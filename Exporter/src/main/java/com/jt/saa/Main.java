@@ -17,7 +17,6 @@ import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.AssignerList;
 import com.jt.scoutcore.ScoutingConstants;
 import com.jt.scoutcore.ScoutingUtils;
-import com.jt.scoutserver.utils.AndroidUtils;
 import com.jt.scoutserver.utils.ExcelUtils;
 import com.jt.scoutserver.utils.Utils;
 
@@ -30,6 +29,8 @@ public class Main {
 	public static final String PHONE_SAVE_DIR = ScoutingUtils.getSaveDir(), PHONE_ASSIGNMENT_FILE = PHONE_SAVE_DIR + ScoutingConstants.ANDROID_ASSIGNMENTS_FILE_NAME;
 	private static int matchStart = 0;
 
+	
+	private static long lastTime = System.currentTimeMillis();
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		System.out.println("Starting Scouting App Pre-Match Assigner!");
@@ -137,9 +138,9 @@ public class Main {
 		}
 
 		List<JadbDevice> writtenDevices = new ArrayList<JadbDevice>();
-		for (int i = 0; i < deviceOutputs.length; i++) {
+		for (int i = 0; i < deviceOutputs.length;) {
 			try {
-				File file = new File(Integer.toString(i));
+				File file = new File("./temp" + Integer.toString(i) + ".dat");
 				AssignerList list = new AssignerList(deviceOutputs[i], matchStart);
 				ScoutingUtils.write(file, list, AssignerList.class);
 
@@ -148,16 +149,18 @@ public class Main {
 					List<JadbDevice> devices = connection.getDevices();
 					JadbDevice currentDevice = null;
 					for (JadbDevice device : devices) {
-						if (!writtenDevices.contains(device)) {// We found one we havnt pushed to
+						if (!writtenDevices.contains(device)) {// We found one we havn't pushed to
 							currentDevice = device;
 						} else {
 						}
 					}
 					if (currentDevice == null) {
-						System.out.println("Waiting for new devices...");
-						i--;
+						if(System.currentTimeMillis() - lastTime > 1000) {
+							lastTime = System.currentTimeMillis();
+							System.out.println("Waiting for new devices...");
+						}
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(1);
 						} catch (Exception e) {
 						}
 						continue;
@@ -166,11 +169,11 @@ public class Main {
 					RemoteFile remoteFile = new RemoteFile(PHONE_ASSIGNMENT_FILE);
 					currentDevice.push(file, remoteFile);
 					writtenDevices.add(currentDevice);
-					Thread.sleep(100);
-					file.deleteOnExit();
+					i++;
+					Thread.sleep(20);
+					file.delete();
 				} catch (Exception e) {
 					Utils.showError("Failed to save file on device!", "Failed to write to device " + e.getClass() + " : " + e.getMessage());
-					i--;
 					throw new RuntimeException(e);
 				}
 			} catch (Exception e) {
