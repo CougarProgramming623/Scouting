@@ -15,103 +15,127 @@
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <RadioButton
-                android:id="@+id/radio0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false" />
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/middle_platform" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/middle_platform" />
 
-            <RadioButton
-                android:id="@+id/radio01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false" />
+        <RadioButton
+            android:id="@+id/radio01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/top_platform" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/top_platform" />
 
-            <RadioButton
-                android:id="@+id/radio02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false" />
+        <RadioButton
+            android:id="@+id/radio02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/middle_platform" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/middle_platform" />
 
     </RadioGroup>
 
     <TextView
         android:id="@+id/match"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="162dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="2dp"
         android:tag="@string/match_tag"
         android:text="Match #000"
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/team"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
         app:layout_constraintTop_toBottomOf="@+id/team" />
 
     <TextView
         android:id="@+id/team"
+        android:layout_width="166dp"
+        android:layout_height="39dp"
         android:tag="@string/team_tag"
-        android:layout_width="200dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:text="Team 0000"
         android:textColor="#ffffff"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:tag="@string/next_tag"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline75" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="88dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="232dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="135dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="8dp"
         android:text="Pre-Teleop"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
+        android:layout_marginTop="8dp"
         android:text="Starting Position"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
         app:layout_constraintTop_toBottomOf="@+id/match" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 
 
 </android.support.constraint.ConstraintLayout>
