@@ -30,7 +30,7 @@ public abstract class AssignmentsBase {
     public abstract List<AssignerEntry> getRemainingAssignments();
 
     /**
-     * Returns all assignments , including all completed, the current one, and any future assignments
+     * Returns all assignments, including all completed, the current one, and any future assignments
      * @return
      */
     public abstract List<AssignerEntry> getAllAssignments();
