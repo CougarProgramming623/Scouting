@@ -7,13 +7,13 @@ import android.widget.Switch;
 
 import com.jt.scoutcore.MatchSubmission;
 
-public class FRC2018 extends ScoutingActivity {
+public class FRC2018 extends SimpleScoutingActivity {
 
     private Switch baseline;
     private EditText switchTele, switchAuto, scaleTele, scaleAuto, penaltyPoints, vault;
     private RadioGroup finalPosition;
 
-    public void create() {
+    public void createImpl() {
         setContentView(R.layout.frc2018);
 
         switchTele = findViewById(R.id.switch_tele);
@@ -26,7 +26,8 @@ public class FRC2018 extends ScoutingActivity {
         finalPosition = findViewById(R.id.final_position);
     }
 
-    public void reset() {
+    public void resetImpl() {
+        super.resetImpl();
         switchTele.setText("0");
         switchAuto.setText("0");
         scaleTele.setText("0");

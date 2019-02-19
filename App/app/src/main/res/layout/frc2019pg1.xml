@@ -10,13 +10,59 @@
     android:visibility="visible"
     tools:context=".FRC2019">
 
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="112dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/radio0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/middle_platform" />
+
+            <RadioButton
+                android:id="@+id/radio01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/top_platform" />
+
+            <RadioButton
+                android:id="@+id/radio02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/middle_platform" />
+
+    </RadioGroup>
+
     <TextView
         android:id="@+id/match"
         android:layout_width="200dp"
         android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:tag="@string/match_tag"
         android:text="Match #000"
         android:textColor="#ffffff"
         android:textSize="18sp"
@@ -25,6 +71,7 @@
 
     <TextView
         android:id="@+id/team"
+        android:tag="@string/team_tag"
         android:layout_width="200dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
@@ -36,7 +83,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/next_tag"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="88dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="232dp"
+        android:layout_marginTop="28dp"
+        android:text="Pre-Teleop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:text="Starting Position"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/match" />
 
 
 </android.support.constraint.ConstraintLayout>

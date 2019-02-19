@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.jt.scoutcore.MatchSubmission;
 
 
-public class FTC2018 extends ScoutingActivity {
+public class FTC2018 extends SimpleScoutingActivity {
 
     private TextView silver, gold, penalty;
     private Switch claiming, landing, parking, latch;
@@ -18,7 +18,7 @@ public class FTC2018 extends ScoutingActivity {
     private RadioButton nosample, notincrater;
 
 
-    public void create() {
+    public void createImpl() {
         setContentView(R.layout.ftc2018);
 
         silver = findViewById(R.id.silvercounter);
@@ -35,7 +35,7 @@ public class FTC2018 extends ScoutingActivity {
     }
 
 
-    public void reset() {
+    public void resetImpl() {
         silver.setText("0");
         gold.setText("0");
         penalty.setText("0");

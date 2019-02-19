@@ -10,6 +10,27 @@
     android:visibility="visible"
     tools:context=".FRC2019">
 
+    <Button
+        android:id="@+id/previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/previous_tag"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="88dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="12dp"
+        android:text="Other"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/match" />
+
     <TextView
         android:id="@+id/match"
         android:layout_width="200dp"
@@ -38,13 +59,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/next"
+        android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:tag="@string/next_tag"
-        android:text="Next"
+        android:tag="@string/submit_tag"
+        android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
