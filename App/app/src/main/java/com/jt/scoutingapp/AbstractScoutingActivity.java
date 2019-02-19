@@ -26,90 +26,57 @@ import com.jt.scoutcore.TeamColor;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class ScoutingActivity extends AppCompatActivity {
+public abstract class AbstractScoutingActivity extends AppCompatActivity {
 
     protected AtomicBoolean hasPermission = new AtomicBoolean(false);
     protected AssignmentsBase list;
 
-    private Button submitButton;
-    private TextView teamNumber, matchNumber;
-
-
     //Called once on app startup to grab objects from the xml
-    public abstract void create();
+    public abstract void init();
 
-    //Called each time when a new match needs to be displayed
-    public abstract void reset();
+    //Called each time a new match needs to be displayed
+    public abstract void resetImpl();
 
-    //Called each time the user presses submit
-    public abstract void onSubmit(MatchSubmission m);
+    //Called when the user presses and confirms submit
+    protected abstract void handleSubmit();
+
+    public final <T extends View> T findViewByTag(int tag) {
+        T screen = findViewById(android.R.id.content);
+        return screen.findViewWithTag(getString(tag));
+    }
 
 
-    //Used in this method
-    private AssignerEntry nextUnscouted = null;
-    private void resetSuperclass() {
+    //Re creates the UI for displaying the current match
+    public void reset() {
         AssignerEntry current = list.getCurrent();
         if(current == null) {
-            throw new Error("Current shouldnt be null!");
+            setContentView(R.layout.end_of_assignments);
+            return;//TODO this may be a bad case
         }
-        File currentFile = ClientUtils.getMatchFile(current.match, current.team);
-        for(File file : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
-            if(currentFile.equals(file)) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Match Already Scouted!");
-                alertDialog.setMessage("You already scouted match #" + current.match + " for team " + current.team + "\nWhat would you like to do?");
-
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Re scout this match (will override old data)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;//Nothing we are already on the match
-                    }
-                });
-                if(list.getRemainingAssignments().size() > 0) {
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip to the next assignment", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            list.next();
-                            resetSuperclass();
-                        }
-                    });
-                }
-                for(AssignerEntry entry : list.getAllAssignments()) {
-                    File entryFile = ClientUtils.getMatchFile(entry.match, entry.team);
-                    boolean notScouted = true;
-                    for(File file1 : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
-                        if(entryFile.equals(file1)) {
-                            notScouted = false;//We found the file. Its already scouted
-                        }
-                    }
-                    if(notScouted) {
-                        nextUnscouted = entry;
-                        break;
-                    }
-                }
-                if(nextUnscouted != null) {
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Skip to the next unscouted match (match #" + nextUnscouted.match + " team " + nextUnscouted.team, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            list.goToMatch(nextUnscouted.match, nextUnscouted.team);
-                            resetSuperclass();
-                        }
-                    });
-                }
-
-                alertDialog.show();
-            }
-        }
-
-        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-        if (list.getCurrent().red) {
-            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
-        } else {
-            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
-        }
-        reset();
+        checkOverride(current);
+        resetImpl();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getPermissions();
+        getAssignments();
+        init();
+    }
+
+    //Called when the user clicks save or dismisses the submit popup
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            handleSubmit();
+        }
+    }
+
+    //Called to ensure we have the permissions to read/write to the SD card. This will prompt the user about accessing files on newer devices
+    protected void getPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
             int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             // If do not grant write external storage permission.
@@ -133,6 +100,9 @@ public abstract class ScoutingActivity extends AppCompatActivity {
             } catch (Exception e) {
             }
         }
+    }
+
+    protected void getAssignments() {
         try {
             list = ClientUtils.readAssignments();
         } catch(Exception e) {
@@ -140,43 +110,61 @@ public abstract class ScoutingActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
-        //Call create first so that the user can set their layout
-        create();
-        teamNumber = findViewById(R.id.team);
-        matchNumber = findViewById(R.id.match);
-        submitButton = findViewById(R.id.submit);
-        if(submitButton != null) {
-            submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(ScoutingActivity.this, Popup.class);
-                    startActivityForResult(intent, 42);
-                }
-            });
-        } else {
-            Log.e("UI", "Unable to find submit button!");
-        }
-        resetSuperclass();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            MatchSubmission m = new MatchSubmission(list.getCurrent().team, list.getCurrent().match, list.getCurrent().red ? TeamColor.RED : TeamColor.BLUE);
-            onSubmit(m);
+    //Used in this method by lambdas so it must be an instance variable
+    private AssignerEntry nextUnscouted = null;
 
-            File file = ClientUtils.getMatchFile(list.getCurrent().match, list.getCurrent().team);
-            ClientUtils.ANDROID_MATCHES_DIR.mkdirs();
-            ScoutingUtils.write(m, file);
+    //Checks if the the desired match has already been scouted and prompts the user about what to do if so
+    private void checkOverride(AssignerEntry current) {
+        File currentFile = ClientUtils.getMatchFile(current.match, current.team);
+        for(File file : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
+            if(currentFile.equals(file)) {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Match Already Scouted!");
+                alertDialog.setMessage("You already scouted match #" + current.match + " for team " + current.team + "\nWhat would you like to do?");
 
-            if(list.next() == null) {
-                setContentView(R.layout.end_of_assignments);
-            } else {
-                resetSuperclass();
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Re scout this match (will override old data)", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;//Nothing we are already on the match
+                    }
+                });
+                if(list.getRemainingAssignments().size() > 0) {
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip to the next assignment", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            list.next();//Go to the next match
+                            reset();//Display the new match
+                        }
+                    });
+                }
+                for(AssignerEntry entry : list.getAllAssignments()) {
+                    File entryFile = ClientUtils.getMatchFile(entry.match, entry.team);
+                    boolean notScouted = true;
+                    for(File file1 : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
+                        if(entryFile.equals(file1)) {
+                            notScouted = false;//We found the file. Its already scouted
+                        }
+                    }
+                    if(notScouted) {
+                        nextUnscouted = entry;
+                        break;
+                    }
+                }
+                if(nextUnscouted != null) {//This option will be hidden if nextUnscouted is null, indicating that there are no more unscouted matches
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Skip to the next unscouted match (match #" + nextUnscouted.match + " team " + nextUnscouted.team, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            list.goToMatch(nextUnscouted.match, nextUnscouted.team);
+                            reset();//Display the new match
+                        }
+                    });
+                }
+
+                alertDialog.show();
             }
         }
+
     }
+
 
     /**
      * Returns the tag of the selected radio button in the radio group or null if no radio button is currently selected
