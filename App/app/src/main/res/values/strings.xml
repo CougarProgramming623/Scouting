@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Scouting App</string>
+
+    <string name="match_tag">Match</string>
+    <string name="team_tag">Team</string>
+
+    <string name="submit_tag">Submit</string>
+    <string name="next_tag">Next</string>
+    <string name="previous_tag">Previous</string>
 </resources>
