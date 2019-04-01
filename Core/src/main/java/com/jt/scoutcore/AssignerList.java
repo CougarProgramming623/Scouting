@@ -31,9 +31,9 @@ public class AssignerList extends AssignmentsBase {
 		return entries.get(index);
 	}
 
-    public AssignerEntry next() {
+    public void next(OnMatchDetermined consumer) {
         index++;
-        return getCurrent();
+        consumer.submit(getCurrent());
     }
 
     public boolean hasAssignment() {
@@ -72,10 +72,8 @@ public class AssignerList extends AssignmentsBase {
     }
 
 
-    public boolean hasNewAssignments() {
-	    //We don't support dynamic assignments, so always return false
+    public boolean hasDynamicAssignments() {
 	    return false;
     }
-
 
 }

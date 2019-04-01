@@ -4,16 +4,21 @@ import java.util.List;
 
 public abstract class AssignmentsBase {
 
+    public interface OnMatchDetermined {
+        public void submit(AssignerEntry submission);
+    }
+
     /**
      * Returns the current assignment without changing what it is
      */
     public abstract AssignerEntry getCurrent();
 
+
+
     /**
      * Skips on to the next assignment
-     * @return The next assignment
      */
-    public abstract AssignerEntry next();
+    public abstract void next(OnMatchDetermined consumer);
 
     /**
      * Sets the current assignment to be for match match and team team and retuens that assignment, or null if no such assignment exists
@@ -48,12 +53,14 @@ public abstract class AssignmentsBase {
     /**
      * Returns true if new assignments have been added since the last call to getCurrent or next
      */
-    public abstract boolean hasNewAssignments();
+    public abstract boolean hasDynamicAssignments();
 
     /**
      * Returns true if this device has an assignment. This indicates that calls to getCurrent() will return valid assignments (non-null)
      * @return
      */
-    public abstract boolean hasAssignment();
+    public boolean hasAssignment() {
+        return getCurrent() != null;
+    }
 
 }

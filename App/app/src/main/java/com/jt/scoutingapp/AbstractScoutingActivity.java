@@ -5,18 +5,26 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jt.scoutcore.AssignedTeams;
 import com.jt.scoutcore.AssignerEntry;
 import com.jt.scoutcore.AssignmentsBase;
 import com.jt.scoutcore.MatchSubmission;
@@ -46,15 +54,34 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
     }
 
 
-    //Re creates the UI for displaying the current match
+    //Re creates the UI for displaying the next match
     public void reset() {
         AssignerEntry current = list.getCurrent();
-        if(current == null) {
-            setContentView(R.layout.end_of_assignments);
-            return;//TODO this may be a bad case
+        if (current == null) {
+            Log.e("Scout", "Current Entry Is Null: ");
+            if (list.hasDynamicAssignments()) {
+                list.next((entry) -> {
+                    if (entry != null) {
+                        checkOverride(entry);
+                        resetImpl();
+                    } else {
+                        Log.w("Scout", "Failed to find next dynamic match");
+                    }
+                });
+            } else {
+                setContentView(R.layout.end_of_assignments);
+                Log.w("Scout", "No new matches available");
+            }
+        } else {
+            list.next((entry) -> {
+                if (entry != null) {
+                    checkOverride(entry);
+                    resetImpl();
+                } else {
+                    Log.w("Scout", "Failed to find next dynamic match");
+                }
+            });
         }
-        checkOverride(current);
-        resetImpl();
     }
 
 
@@ -64,6 +91,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         getPermissions();
         getAssignments();
         init();
+        reset();
     }
 
     //Called when the user clicks save or dismisses the submit popup
@@ -72,6 +100,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             handleSubmit();
+            reset();
         }
     }
 
@@ -102,9 +131,99 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         }
     }
 
+    protected void showMatchAlert(final int team, int[] teamsList, final AssignedTeams.OnMatchDetermined listener) {
+
+        AlertDialog.Builder matchAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
+        matchAlert.setTitle("Enter Match Number");
+        final EditText input = new EditText(AbstractScoutingActivity.this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        matchAlert.setView(input);
+        matchAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                final int match;
+                try {
+                    match = Integer.parseInt(input.getText().toString());
+                } catch(Exception e) {
+                    Toast.makeText(AbstractScoutingActivity.this, "Invalid match number \"" + input.getText().toString() + "\"", Toast.LENGTH_LONG).show();
+                    showMatchAlert(team, teamsList, listener);
+                    return;
+                }
+
+                AlertDialog.Builder colorAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
+                colorAlert.setTitle("Select Color");
+                colorAlert.setPositiveButton("Red", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        listener.submit(new AssignerEntry(match, team, true));
+                    }
+                });
+                colorAlert.setNegativeButton("Blue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        listener.submit(new AssignerEntry(match, team, false));
+                    }
+                });
+                colorAlert.show();
+            }
+        });
+        matchAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        matchAlert.show();
+    }
+
+    protected void showTeamAlert(int[] teamsList, final AssignedTeams.OnMatchDetermined listener) {
+        AlertDialog.Builder teamAlert = new AlertDialog.Builder(this);
+        teamAlert.setTitle("Enter Team Number");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        teamAlert.setView(input);
+        teamAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                final int team;
+                try {
+                    team = Integer.parseInt(input.getText().toString());
+                } catch(Exception e) {
+                    Toast.makeText(AbstractScoutingActivity.this, "Invalid team number \"" + input.getText().toString() + "\"", Toast.LENGTH_LONG).show();
+                    showTeamAlert(teamsList, listener);
+                    return;
+                }
+                boolean found = false;
+                for(int teamNum : teamsList) {
+                    if(teamNum == team) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    Toast.makeText(AbstractScoutingActivity.this, "Team \"" + team + "\" Not Found!", Toast.LENGTH_LONG).show();
+                    showTeamAlert(teamsList, listener);
+                    return;
+                }
+                showMatchAlert(team, teamsList, listener);
+            }
+        });
+        teamAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        teamAlert.show();
+    }
+
     protected void getAssignments() {
         try {
             list = ClientUtils.readAssignments();
+            if(list == null) throw new NullPointerException();//To to catch
+            if (list instanceof AssignedTeams) {
+                AssignedTeams teams = (AssignedTeams) list;
+                teams.setCreator((int[] teamsList, AssignedTeams.OnMatchDetermined listener) -> {
+                    showTeamAlert(teamsList, listener);
+                });
+
+            }
         } catch(Exception e) {
             setContentView(R.layout.no_assignments);
             e.printStackTrace();
@@ -132,8 +251,9 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
                 if(list.getRemainingAssignments().size() > 0) {
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Skip to the next assignment", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            list.next();//Go to the next match
-                            reset();//Display the new match
+                            list.next((entry) -> {
+                                reset();//Display the new match
+                            });//Go to the next match
                         }
                     });
                 }
@@ -165,16 +285,37 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
 
     }
 
+    public void setTeamAndMatch() {
+
+        TextView teamNumber = findViewByTag(R.string.team_tag);
+        TextView matchNumber = findViewByTag(R.string.match_tag);
+        if(teamNumber == null) throw new RuntimeException("Unable to find a textview with the team tag");
+        if(matchNumber == null) throw new RuntimeException("Unable to find a textview with the match tag");
+
+        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
+        if (list.getCurrent().red) {
+            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
+        } else {
+            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
+        }
+    }
+
+    public String getRadioGroupStringSelection(@IdRes int id) {
+        View view = findViewById(id);
+        if(!(view instanceof RadioGroup))
+            return "NOT RADIO GROUP";
+        return getRadioGroupStringSelection((RadioGroup) view);
+    }
 
     /**
-     * Returns the tag of the selected radio button in the radio group or null if no radio button is currently selected
-     * @return The tag of the selected radio button, or null
+     * Returns the name-tag of the selected radio button in the radio group or null if no radio button is currently selected
+     * @return The name-tag of the selected radio button, or null
      */
     public String getRadioGroupStringSelection(RadioGroup group) {
         View view = findViewById(group.getCheckedRadioButtonId());
         if(view == null)
-            return null;
-        return (view.getTag() == null) ? null : view.getTag().toString();
+            return "null";
+        return (view.getTag(R.id.name) == null) ? null : view.getTag(R.id.name).toString();
     }
 
     public static int getIntOrZero(TextView view) {

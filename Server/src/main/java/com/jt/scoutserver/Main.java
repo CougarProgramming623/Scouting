@@ -19,7 +19,7 @@ public class Main {
 		 * 
 		 * System.exit(0);
 		 */
-
+ 
 		Server server = new Server();
 		while (true) {
 			if (SystemUtils.hasNewDevices()) {

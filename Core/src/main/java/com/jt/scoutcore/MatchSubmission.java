@@ -35,30 +35,30 @@ public class MatchSubmission {
 		if (map.containsKey(name))
 			value = get(name, Integer.class);
 		else
-			value = Integer.valueOf(0);
-		map.put(name, Double.valueOf(value + amount));
+			value = 0;
+		map.put(name, value + amount);
 	}
 
 	public int getTeamNumber() {
 		Integer num = get(TEAM_NUMBER_KEY, Integer.class);
 		if (num == null)
 			return -1;
-		return num.intValue();
+		return num;
 	}
 
 	public void setTeamNumber(int number) {
-		map.put(TEAM_NUMBER_KEY, Integer.valueOf(number));
+		map.put(TEAM_NUMBER_KEY, number);
 	}
 
 	public int getMatchNumber() {
 		Integer num = get(MATCH_NUMBER_KEY, Integer.class);
 		if (num == null)
 			return -1;
-		return num.intValue();
+		return num;
 	}
 
 	public void setMatchNumber(int number) {
-		map.put(MATCH_NUMBER_KEY, Integer.valueOf(number));
+		map.put(MATCH_NUMBER_KEY, number);
 	}
 
 	public void setColor(TeamColor color) {
@@ -84,12 +84,17 @@ public class MatchSubmission {
 		Object obj = map.get(name);
 		if (obj == null)
 			throw new NullPointerException("Null values not allowed! Key: " + name);
-		assert (type.isAssignableFrom(obj.getClass()));
-		return (T) obj;
+		if (type.isAssignableFrom(obj.getClass()))
+		    return (T) obj;
+		throw new RuntimeException(type + " is not assignable type stored in this match submission! Stored= " + obj.getClass());
 	}
 
 	public Object get(String name) {
 		return map.get(name);
+	}
+
+	public Object remove(String name) {
+	    return map.remove(name);
 	}
 
 	public MatchSubmission(LinkedHashMap<String, Object> map) {
@@ -118,11 +123,9 @@ public class MatchSubmission {
 			return false;
 		MatchSubmission other = (MatchSubmission) obj;
 		if (map == null) {
-			if (other.map != null)
-				return false;
-		} else if (!map.equals(other.map))
-			return false;
-		return true;
+			return other.map == null;
+		}
+		return map.equals(other.map);
 	}
 
 	@Override

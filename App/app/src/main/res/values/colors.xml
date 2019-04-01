@@ -3,4 +3,6 @@
     <color name="colorPrimary">#a50000</color>
     <color name="colorPrimaryDark">#720000</color>
     <color name="colorAccent">#f4ff30</color>
+    <color name="burgundy">#8B0000</color>
+    <color name="gold">#ffc300</color>
 </resources>

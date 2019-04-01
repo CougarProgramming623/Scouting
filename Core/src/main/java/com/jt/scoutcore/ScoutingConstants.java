@@ -26,6 +26,9 @@ public class ScoutingConstants {
 			kryo.register(ArrayList.class);
 			kryo.register(AssignerList.class);
 			kryo.register(AssignerEntry.class);
+            kryo.register(AssignedTeams.class);
+            kryo.register(AssignedTeams.MatchCreator.class);
+            kryo.register(int[].class);
 			return kryo;
 		};
 	};

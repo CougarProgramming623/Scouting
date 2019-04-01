@@ -16,9 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import org.apache.commons.io.FileUtils;
 
 import com.jt.scoutcore.MatchSubmission;
 import com.jt.scoutcore.ScoutingConstants;
@@ -41,7 +44,7 @@ public class Server extends JFrame {
 	private JTextArea console = new JTextArea(10, 30);
 	private DefaultListModel<MatchSubmission> model = new DefaultListModel<MatchSubmission>();
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
-	private JButton pull = new JButton("Pull"), export = new JButton("Export to Excel");
+	private JButton pull = new JButton("Pull"), export = new JButton("Export to Excel"), purgeOldMatches = new JButton("Purge Old Matches");
 
 	public Server() {
 		super("Scouting App Server");
@@ -78,6 +81,12 @@ public class Server extends JFrame {
 			ExportWindow window = new ExportWindow();
 
 		});
+		purgeOldMatches.addActionListener((e) -> {
+			int result = JOptionPane.showConfirmDialog(this, "Do you want to delete all matches stored on your computer?\nYou cannot undo this", "Delete all matches?", JOptionPane.YES_NO_OPTION);
+			if (result == 0) {
+				deleteMatches();
+			}
+		});
 
 		panel.add(scroll, BorderLayout.SOUTH);
 		panel.add(new JLabel("Indexed Matches"), BorderLayout.WEST);
@@ -92,6 +101,7 @@ public class Server extends JFrame {
 		JPanel north = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		north.add(pull);
 		north.add(export);
+		north.add(purgeOldMatches);
 
 		panel.add(north, BorderLayout.NORTH);
 
@@ -108,6 +118,27 @@ public class Server extends JFrame {
 				System.exit(0);
 			}
 		});
+	}
+
+	private void deleteMatches() {
+		model.clear();
+		for (File file : COMPUTER_MATCHES_DIR.listFiles()) {
+			try {
+				FileUtils.forceDelete(file);
+			} catch (IOException e) {
+				e.printStackTrace(System.out);
+				try {
+					FileUtils.forceDelete(file);
+				} catch (IOException e2) {
+					e2.printStackTrace(System.out);
+					try {
+						FileUtils.forceDelete(file);
+					} catch (IOException e3) {
+						e3.printStackTrace(System.out);
+					}
+				}
+			}
+		}
 	}
 
 	private void refreshFiles() {

@@ -18,7 +18,6 @@ import java.io.File;
  */
 public abstract class SimpleScoutingActivity extends AbstractScoutingActivity {
     private Button submitButton;
-    private TextView teamNumber, matchNumber;
 
     //Called each time the user presses submit
     public abstract void onSubmit(MatchSubmission m);
@@ -28,8 +27,6 @@ public abstract class SimpleScoutingActivity extends AbstractScoutingActivity {
     public void init() {
         //Call create first so that the user can set their layout
         createImpl();
-        teamNumber = findViewByTag(R.string.team_tag);
-        matchNumber = findViewByTag(R.string.match_tag);
         submitButton = findViewByTag(R.string.submit_tag);
         if(submitButton == null) {
             Log.w("UI", "Unable to find submit button for class: " + this.getClass());
@@ -42,13 +39,6 @@ public abstract class SimpleScoutingActivity extends AbstractScoutingActivity {
                 }
             });
         }
-        if(teamNumber == null) {
-            Log.w("UI", "Unable to find team number view for class: " + this.getClass());
-        }
-        if(matchNumber == null) {
-            Log.w("UI", "Unable to find match number view for class: " + this.getClass());
-        }
-        reset();
     }
 
     protected void handleSubmit() {
@@ -58,21 +48,10 @@ public abstract class SimpleScoutingActivity extends AbstractScoutingActivity {
         File file = ClientUtils.getMatchFile(list.getCurrent().match, list.getCurrent().team);//Save the file
         ClientUtils.ANDROID_MATCHES_DIR.mkdirs();
         ScoutingUtils.write(m, file);
-
-        if(list.next() == null) {//Handle the next match
-            setContentView(R.layout.end_of_assignments);
-        } else {
-            reset();
-        }
     }
 
     @Override
     public void resetImpl() {
-        teamNumber.setText(Html.fromHtml("<font color=#f4ff30>Team " + list.getCurrent().team + "</font>"));
-        if (list.getCurrent().red) {
-            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#FF3030>Red</font>"));
-        } else {
-            matchNumber.setText(Html.fromHtml("Match " + list.getCurrent().match + " | <font color=#0060ff>Blue</font>"));
-        }
+        setTeamAndMatch();
     }
 }

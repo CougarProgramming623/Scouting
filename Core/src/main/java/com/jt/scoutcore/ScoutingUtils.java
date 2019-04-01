@@ -31,6 +31,7 @@ public class ScoutingUtils {
 			Input in = new Input(new FileInputStream(file));
 			Object obj = ScoutingConstants.KRYO.get().readClassAndObject(in);
 			assert type.isAssignableFrom(obj.getClass());
+            System.out.println("Assignments: " + obj);
 			return (T) obj;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
