@@ -104,33 +104,67 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         }
     }
 
+    private static final int PREMS_CODE = 8192;
+
+    //Called when permissions are assigned from the OS. Retry obtaining write permissions if they are denied the first time
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.i("Scout", "Method call");
+        if (requestCode == PREMS_CODE) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        hasPermission.set(true);
+                        Log.i("Scout", "Perms granted");
+                    } else {
+                        AlertDialog.Builder errorAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
+                        errorAlert.setTitle("The cougar robotics scouting app needs to write scouting data");
+                        errorAlert.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                getPermissions();
+                            }
+                        });
+                        errorAlert.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                System.exit(1);
+                            }
+                        });
+                        errorAlert.show();
+                    }
+                }
+            }
+        }
+    }
+
     //Called to ensure we have the permissions to read/write to the SD card. This will prompt the user about accessing files on newer devices
     protected void getPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
             int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             // If do not grant write external storage permission.
-            Log.i("Permission", "About to request permission!");
+            Log.i("Scout", "About to request permission!");
             if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                 // Request user to grant write external storage permission.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                Log.i("Permission", "Requesting permission!!");
-                hasPermission.set(false);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PREMS_CODE);
+                Log.i("Scout", "Requesting permission!!");
             } else {
                 hasPermission.set(true);
-                Log.i("Permission", "No permission needed!");
+                Log.i("Scout", "No permission needed!");
             }
         } else {
             hasPermission.set(true);
         }
-        while(!hasPermission.get()) {
-            Log.d("Permission", "Waiting to get permissions...");
+        int i = 0;
+        while(!hasPermission.get()) {//Wait until perms are received
             try {
                 Thread.sleep(100);
+                if (i++ % 10 == 0) Log.d("Scout", "Waiting for perms");
             } catch (Exception e) {
             }
         }
     }
 
+    // Prompts the user to to to a given match by the match number
     protected void showMatchAlert(final int team, int[] teamsList, final AssignedTeams.OnMatchDetermined listener) {
 
         AlertDialog.Builder matchAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
@@ -173,6 +207,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         matchAlert.show();
     }
 
+    // Prompts the user to to to a given match by the team number
     protected void showTeamAlert(int[] teamsList, final AssignedTeams.OnMatchDetermined listener) {
         AlertDialog.Builder teamAlert = new AlertDialog.Builder(this);
         teamAlert.setTitle("Enter Team Number");
