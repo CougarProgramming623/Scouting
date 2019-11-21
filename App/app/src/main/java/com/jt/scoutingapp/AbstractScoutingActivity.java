@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractScoutingActivity extends AppCompatActivity {
 
-    protected AtomicBoolean hasPermission = new AtomicBoolean(false);
     protected AssignmentsBase list;
 
     //Called once on app startup to grab objects from the xml
@@ -52,6 +51,8 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         T screen = findViewById(android.R.id.content);
         return screen.findViewWithTag(getString(tag));
     }
+
+    private volatile boolean hasPerms = false;
 
 
     //Re creates the UI for displaying the next match
@@ -84,14 +85,19 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         }
     }
 
+    private void onCreateImpl() {
+        getAssignments();
+        init();
+        reset();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getPermissions();
-        getAssignments();
-        init();
-        reset();
+        if (getPermissions())//We have perms so init the app here
+            onCreateImpl();
+
     }
 
     //Called when the user clicks save or dismisses the submit popup
@@ -115,8 +121,9 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        hasPermission.set(true);
+
                         Log.i("Scout", "Perms granted");
+                        onCreateImpl();//Initalize here once we have perms
                     } else {
                         AlertDialog.Builder errorAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
                         errorAlert.setTitle("The cougar robotics scouting app needs to write scouting data");
@@ -138,30 +145,24 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
     }
 
     //Called to ensure we have the permissions to read/write to the SD card. This will prompt the user about accessing files on newer devices
-    protected void getPermissions() {
+    protected boolean getPermissions() {
+        if (hasPerms)
+            return true;
         if (Build.VERSION.SDK_INT >= 23) {
-            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             // If do not grant write external storage permission.
             Log.i("Scout", "About to request permission!");
-            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // Request user to grant write external storage permission.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PREMS_CODE);
-                Log.i("Scout", "Requesting permission!!");
+                requestPermissions(new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, PREMS_CODE);
+                Log.i("Scout", "Requesting permission. Returning");
+                return false;
             } else {
-                hasPermission.set(true);
                 Log.i("Scout", "No permission needed!");
-            }
-        } else {
-            hasPermission.set(true);
-        }
-        int i = 0;
-        while(!hasPermission.get()) {//Wait until perms are received
-            try {
-                Thread.sleep(100);
-                if (i++ % 10 == 0) Log.d("Scout", "Waiting for perms");
-            } catch (Exception e) {
+                hasPerms = true;
             }
         }
+        return true;
     }
 
     // Prompts the user to to to a given match by the match number
