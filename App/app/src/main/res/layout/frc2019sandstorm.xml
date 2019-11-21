@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
         app:layout_constraintRight_toRightOf="@id/vertical_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/starting_height_text">
+        app:layout_constraintTop_toBottomOf="@+id/stones_correct">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
         app:layout_constraintRight_toRightOf="@id/vertical_guideline"
-        app:layout_constraintTop_toTopOf="@+id/cargo">
+        app:layout_constraintTop_toTopOf="@+id/stones_delivered_text">
 
         <CheckBox
             android:id="@+id/cargo_auto1"
@@ -236,7 +236,7 @@
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
         app:layout_constraintRight_toRightOf="@id/vertical_guideline"
-        app:layout_constraintTop_toTopOf="@+id/hatch">
+        app:layout_constraintTop_toTopOf="@+id/stones_placed_text">
 
         <CheckBox
             android:id="@+id/hatch_auto1"
@@ -321,7 +321,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/starting_height_text"
+        android:id="@+id/stones_correct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Starting Height"
@@ -355,10 +355,10 @@
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
         app:layout_constraintRight_toRightOf="@id/vertical_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/starting_height_text" />
+        app:layout_constraintTop_toBottomOf="@+id/stones_correct" />
 
     <TextView
-        android:id="@+id/cargo"
+        android:id="@+id/stones_delivered_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -369,14 +369,14 @@
         app:layout_constraintTop_toBottomOf="@+id/driver_station" />
 
     <TextView
-        android:id="@+id/hatch"
+        android:id="@+id/stones_placed_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Hatch"
         android:textColor="#ffffff"
         android:textSize="22sp"
-        app:layout_constraintTop_toBottomOf="@+id/cargo"
+        app:layout_constraintTop_toBottomOf="@+id/stones_delivered_text"
         app:layout_constraintRight_toLeftOf="@id/vertical_guideline25" />
 
     <android.support.constraint.Guideline

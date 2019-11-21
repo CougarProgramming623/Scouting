@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:background="#8B0000"
+    android:visibility="visible"
+    tools:context=".FRC2019">
+
+    <RadioGroup
+        android:id="@+id/ending_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/text1">
+
+
+        <RadioButton
+            android:id="@+id/ending_pos_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+
+            <tag
+                android:id="@id/name"
+                android:value="Bottom" />
+        </RadioButton>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bottom_platform" />
+
+        <RadioButton
+            android:id="@+id/ending_pos_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+
+            <tag
+                android:id="@id/name"
+                android:value="Center" />
+        </RadioButton>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/middle_platform" />
+
+        <RadioButton
+            android:id="@+id/ending_pos_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+
+            <tag
+                android:id="@id/name"
+                android:value="Right" />
+        </RadioButton>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/top_platform" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/next_tag"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline75" />
+
+    <Button
+        android:id="@+id/previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/previous_tag"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline25"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        app:layout_constraintHorizontal_bias="0.795"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/text2">
+
+        <tag
+            android:id="@id/store"
+            android:value="@string/store_true" />
+    </RatingBar>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="287dp"
+        android:layout_height="113dp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/text3">
+
+        <EditText
+            android:id="@+id/comments"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="Enter comments here..."
+            android:inputType="textMultiLine"
+            android:textColor="#ffffff"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+
+        </EditText>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="124dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="8dp"
+        android:text="End Game"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/match"
+        android:layout_width="162dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:tag="@string/match_tag"
+        android:text="Match #000"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/team" />
+
+    <TextView
+        android:id="@+id/team"
+        android:layout_width="153dp"
+        android:layout_height="36dp"
+        android:tag="@string/team_tag"
+        android:text="Team 0000"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ending Position"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/match" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="145dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="112dp"
+        android:text="Overall Rating"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Comments"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/ending_position" />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Ground Pickup?"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <RadioGroup
+        android:id="@+id/ground_pickup"
+        android:layout_width="148dp"
+        android:layout_height="22dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/text4">
+        <tag
+            android:id="@id/store"
+            android:value="@string/store_true" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Yes">
+            <tag
+                android:id="@id/name"
+                android:value="Yes" />
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No">
+            <tag
+                android:id="@id/name"
+                android:value="No" />
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </RadioButton>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Direct Climb?"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <RadioGroup
+        android:id="@+id/direct_climb"
+        android:layout_width="200dp"
+        android:layout_height="26dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toBottomOf="@+id/text5">
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:text="Yes">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+            <tag
+                android:id="@id/name"
+                android:value="Yes" />
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+            <tag
+                android:id="@id/name"
+                android:value="No" />
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Unused">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+            <tag
+                android:id="@id/name"
+                android:value="Unused" />
+        </RadioButton>
+    </RadioGroup>
+
+</android.support.constraint.ConstraintLayout>

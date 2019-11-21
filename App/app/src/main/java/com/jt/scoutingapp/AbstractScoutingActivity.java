@@ -126,7 +126,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
                         onCreateImpl();//Initalize here once we have perms
                     } else {
                         AlertDialog.Builder errorAlert = new AlertDialog.Builder(AbstractScoutingActivity.this);
-                        errorAlert.setTitle("The cougar robotics scouting app needs to write scouting data");
+                        errorAlert.setTitle("The cougar robotics scouting app needs permissions to write scouting data to the SD card");
                         errorAlert.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 getPermissions();
@@ -134,7 +134,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
                         });
                         errorAlert.setNegativeButton("Quit", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                System.exit(1);
+                                System.exit(100);
                             }
                         });
                         errorAlert.show();
@@ -149,13 +149,11 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         if (hasPerms)
             return true;
         if (Build.VERSION.SDK_INT >= 23) {
-            // If do not grant write external storage permission.
-            Log.i("Scout", "About to request permission!");
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                     checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // Request user to grant write external storage permission.
                 requestPermissions(new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, PREMS_CODE);
-                Log.i("Scout", "Requesting permission. Returning");
+                Log.i("Scout", "Requesting permission");
                 return false;
             } else {
                 Log.i("Scout", "No permission needed!");
