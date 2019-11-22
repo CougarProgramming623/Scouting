@@ -86,7 +86,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/stones_placed"
+        android:id="@+id/stones_placed_auto"
         android:layout_width="169dp"
         android:layout_height="40dp"
         android:gravity="center"
@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="@+id/stones_placed_text">
 
         <CheckBox
-            android:id="@+id/stones_placed1"
+            android:id="@+id/stones_placed1_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false">
@@ -107,7 +107,7 @@
         </CheckBox>
 
         <CheckBox
-            android:id="@+id/stones_placed2"
+            android:id="@+id/stones_placed2_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false">
@@ -118,7 +118,7 @@
         </CheckBox>
 
         <CheckBox
-            android:id="@+id/stones_placed3"
+            android:id="@+id/stones_placed3_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false">
@@ -129,7 +129,7 @@
         </CheckBox>
 
         <CheckBox
-            android:id="@+id/stones_placed4"
+            android:id="@+id/stones_placed4_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false">
@@ -140,7 +140,7 @@
         </CheckBox>
 
         <CheckBox
-            android:id="@+id/stones_placed5"
+            android:id="@+id/stones_placed5_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false">
@@ -157,7 +157,7 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/stones_placed"
+        app:layout_constraintStart_toStartOf="@+id/stones_placed_auto"
         app:layout_constraintTop_toTopOf="@+id/sky_stones_text">
 
         <CheckBox

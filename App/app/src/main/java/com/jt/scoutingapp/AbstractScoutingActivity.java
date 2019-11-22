@@ -343,7 +343,6 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
 
     /**
      * Returns the name-tag of the selected radio button in the radio group or null if no radio button is currently selected
-     * @return The name-tag of the selected radio button, or null
      */
     public String getRadioGroupStringSelection(RadioGroup group) {
         View view = findViewById(group.getCheckedRadioButtonId());

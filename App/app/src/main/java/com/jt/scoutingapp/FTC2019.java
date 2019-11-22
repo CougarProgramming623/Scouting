@@ -1,97 +1,73 @@
 package com.jt.scoutingapp;
 
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.jt.scoutcore.MatchSubmission;
 
-public class FTC2019 extends SimpleScoutingActivity {
+public class FTC2019 extends MultiPageScoutingActivity {
 
-    private TextView silver, gold, penalty;
-    private Switch claiming, landing, parking, latch;
-    private RadioGroup craterstatus, samplestatus;
-    private RadioButton nosample, notincrater;
+    public void finalizeSubmission(MatchSubmission m) {
 
+    }
 
-    public void createImpl() {
-        setContentView(R.layout.ftc2018);
+    public static class FirstPage extends ScoutingPage {
 
-        silver = findViewById(R.id.silvercounter);
-        gold = findViewById(R.id.goldcounter);
-        penalty = findViewById(R.id.pencounter);
-        claiming = findViewById(R.id.claiming);
-        landing = findViewById(R.id.landing);
-        parking = findViewById(R.id.parking);
-        latch = findViewById(R.id.latch);
-        craterstatus = findViewById(R.id.craterstatus);
-        samplestatus = findViewById(R.id.samplestatus);
-        nosample = findViewById(R.id.nosample);
-        notincrater = findViewById(R.id.notincrater);
+        @Override
+        public void showImpl(MultiPageScoutingActivity parent) {
+            parent.setContentView(R.layout.ftc2019auto);
+        }
+
+        @Override
+        public void onSubmit(MultiPageScoutingActivity parent, MatchSubmission m) {
+            m.put("Foundation Moved (auto)", ((Switch) parent.findViewByTag(R.id.foundation_moved)).isChecked());
+            m.put("Stones Delivered (auto)", parent.sumCheckBoxes(R.id.stones_delivered1, R.id.stones_delivered2, R.id.stones_delivered3, R.id.stones_delivered4, R.id.stones_delivered5));
+            m.put("Stones Placed (auto)", parent.sumCheckBoxes(R.id.stones_placed1_auto, R.id.stones_placed2_auto, R.id.stones_placed3_auto, R.id.stones_placed4_auto, R.id.stones_placed5_auto));
+            m.put("Sky Stones (auto)", parent.sumCheckBoxes(R.id.sky_stones1, R.id.sky_stones2, R.id.sky_stones3, R.id.sky_stones4, R.id.sky_stones5));
+            m.put("Parked (auto)", ((Switch) parent.findViewByTag(R.id.parked)).isChecked());
+        }
+    }
+
+    public static class SecondPage extends ScoutingPage {
+
+        @Override
+        public void showImpl(MultiPageScoutingActivity parent) {
+            parent.setContentView(R.layout.ftc2019tele);
+        }
+
+        @Override
+        public void onSubmit(MultiPageScoutingActivity parent, MatchSubmission m) {
+            m.put("Stones across correct color bridge", parent.sumCheckBoxes(R.id.stones_correct1, R.id.stones_correct2, R.id.stones_correct3, R.id.stones_correct4, R.id.stones_correct5,
+                    R.id.stones_correct6, R.id.stones_correct7, R.id.stones_correct8, R.id.stones_correct9, R.id.stones_correct10, R.id.stones_correct11));
+            m.put("Stones Placed", parent.sumCheckBoxes(R.id.stones_placed1, R.id.stones_placed2, R.id.stones_placed3, R.id.stones_placed4, R.id.stones_placed5,
+                    R.id.stones_placed6, R.id.stones_placed7, R.id.stones_placed8, R.id.stones_placed9, R.id.stones_placed10,
+                    R.id.stones_placed11, R.id.stones_placed12, R.id.stones_placed13, R.id.stones_placed14, R.id.stones_placed15,
+                    R.id.stones_placed16, R.id.stones_placed17, R.id.stones_placed18, R.id.stones_placed19, R.id.stones_placed20));
+        }
+    }
+
+    public static class ThirdPage extends ScoutingPage {
+
+        @Override
+        public void showImpl(MultiPageScoutingActivity parent) {
+            parent.setContentView(R.layout.ftc2019endgame);
+        }
+
+        @Override
+        public void onSubmit(MultiPageScoutingActivity parent, MatchSubmission m) {
+            m.put("Capstone", parent.getRadioGroupStringSelection(R.id.capstone));
+            m.put("Move Foundation", parent.getRadioGroupStringSelection(R.id.move_foundation));
+            m.put("Parked", parent.getRadioGroupStringSelection(R.id.parked));
+
+            m.put("Comments", ((EditText) parent.findViewById(R.id.comments)).getText().toString());
+            m.put("Rating", (int) ((RatingBar) parent.findViewById(R.id.rating)).getRating());//The rating is only ever going to be an int anyways...
+        }
     }
 
 
-    public void resetImpl() {
-        silver.setText("0");
-        gold.setText("0");
-        penalty.setText("0");
-        claiming.setChecked(false);
-        landing.setChecked(false);
-        parking.setChecked(false);
-        latch.setChecked(false);
-        craterstatus.check(notincrater.getId());
-        samplestatus.check(nosample.getId());
-    }
-
-    public void silverUp(View view) {
-        updateItem(silver, +1, ZERO_TO_POS_INF);
-    }
-
-    public void silverDown(View view) {
-        updateItem(silver, -1, ZERO_TO_POS_INF);
-    }
-
-    public void goldUp(View view) {
-        updateItem(gold, +1, ZERO_TO_POS_INF);
-    }
-
-    public void goldDown(View view) {
-        updateItem(gold, -1, ZERO_TO_POS_INF);
-    }
-
-    public void penUp(View view) {
-        updateItem(penalty, +5, NEG_INF_TO_ZERO);
-    }
-
-    public void penDown(View view) { updateItem(penalty, -5, NEG_INF_TO_ZERO); }
-
-    public void disableLatch (View v) {
-        Switch sw = findViewById(R.id.landing);
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    findViewById(R.id.latch).setEnabled(false);
-                    //findViewById(R.id.switch2).set
-                } else {
-                    findViewById(R.id.latch).setEnabled(true);
-                }
-            }
-        });
-    }
-
-    public void onSubmit(MatchSubmission m) {
-        m.put("Silver Balls", getIntOrZero(silver.getText()));
-        m.put("Gold Cubes", getIntOrZero(gold.getText()));
-        m.put("Penalty Points", getIntOrZero(penalty.getText()));
-        m.put("Claming", claiming.isChecked());
-        m.put("Landing", landing.isChecked());
-        m.put("Parking", parking.isChecked());
-        m.put("Latch", latch.isChecked());
-        m.put("Crater Parking", findViewById(craterstatus.getCheckedRadioButtonId()).getTag().toString());
-        m.put("Sample (Auto)", findViewById(samplestatus.getCheckedRadioButtonId()).getTag().toString());
+    public FTC2019() {
+        super(new FTC2019.FirstPage(), new FTC2019.SecondPage(), new FTC2019.ThirdPage());
     }
 
 }

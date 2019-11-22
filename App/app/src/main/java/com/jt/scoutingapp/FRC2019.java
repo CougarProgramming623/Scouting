@@ -86,8 +86,8 @@ public class FRC2019 extends MultiPageScoutingActivity {
         public void onSubmit(MultiPageScoutingActivity parent, MatchSubmission m) {
             m.put("Ending Position", parent.getRadioGroupStringSelection(R.id.ending_position));
             m.put("Comments", ((EditText) parent.findViewById(R.id.comments)).getText().toString());
-            m.put("Ground Pickup", parent.getRadioGroupStringSelection(R.id.ground_pickup));
-            m.put("Direct Climb", parent.getRadioGroupStringSelection(R.id.direct_climb));
+            m.put("Ground Pickup", parent.getRadioGroupStringSelection(R.id.capstone));
+            m.put("Direct Climb", parent.getRadioGroupStringSelection(R.id.parked));
             m.put("Rating", (int) ((RatingBar) parent.findViewById(R.id.rating)).getRating());//The rating is only ever going to be an int anyways...
         }
     }
