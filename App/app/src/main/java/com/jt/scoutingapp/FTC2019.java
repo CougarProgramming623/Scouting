@@ -21,11 +21,11 @@ public class FTC2019 extends MultiPageScoutingActivity {
 
         @Override
         public void onSubmit(MultiPageScoutingActivity parent, MatchSubmission m) {
-            m.put("Foundation Moved (auto)", ((Switch) parent.findViewByTag(R.id.foundation_moved)).isChecked());
+            // m.put("Foundation Moved (auto)", ((Switch) parent.findViewByTag(R.id.foundation_moved)).isChecked());
             m.put("Stones Delivered (auto)", parent.sumCheckBoxes(R.id.stones_delivered1, R.id.stones_delivered2, R.id.stones_delivered3, R.id.stones_delivered4, R.id.stones_delivered5));
             m.put("Stones Placed (auto)", parent.sumCheckBoxes(R.id.stones_placed1_auto, R.id.stones_placed2_auto, R.id.stones_placed3_auto, R.id.stones_placed4_auto, R.id.stones_placed5_auto));
             m.put("Sky Stones (auto)", parent.sumCheckBoxes(R.id.sky_stones1, R.id.sky_stones2, R.id.sky_stones3, R.id.sky_stones4, R.id.sky_stones5));
-            m.put("Parked (auto)", ((Switch) parent.findViewByTag(R.id.parked)).isChecked());
+            //m.put("Parked (auto)", ((Switch) parent.findViewByTag(R.id.parked)).isChecked());
         }
     }
 
