@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:background="#8B0000"
+    android:visibility="visible"
+    tools:context=".FRC2019">
+
+    <TextView
+        android:id="@+id/starting_position2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Rocket 1"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/cargo_shipRight_hatch" />
+
+    <TextView
+        android:id="@+id/starting_position3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Rocket 2"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toBottomOf="@+id/cargo_shipRight_hatch" />
+
+    <TextView
+        android:id="@+id/stones_correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Cargo Ship"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/match" />
+
+    <LinearLayout
+        android:id="@+id/cargo_shipRight_hatch"
+        android:layout_width="145dp"
+        android:layout_height="35dp"
+
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/cargo_shipLeft_hatch">
+
+        <CheckBox
+            android:id="@+id/cargo_ship1_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship2_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship3_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship4_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cargo_shipLeft_hatch"
+        android:layout_width="144dp"
+        android:layout_height="30dp"
+
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/stones_correct">
+
+        <CheckBox
+            android:id="@+id/cargo_ship5_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship6_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship7_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+        <CheckBox
+            android:id="@+id/cargo_ship8_hatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false">
+
+            <tag
+                android:id="@id/store"
+                android:value="@string/store_true" />
+        </CheckBox>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="84dp"
+        android:layout_height="118dp"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.237"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/starting_position2">
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket1a"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_high_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+                app:layout_constraintRight_toRightOf="@id/vertical_guideline25">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_high_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+                app:layout_constraintRight_toRightOf="@id/vertical_guideline25">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket1b"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+            app:layout_constraintTop_toTopOf="@id/hatch_rocket1a">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_medium_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_medium_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket1c"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+            app:layout_constraintTop_toTopOf="@id/hatch_rocket1b">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_low_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket1_low_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="84dp"
+        android:layout_height="118dp"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.237"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toBottomOf="@+id/starting_position3">
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket2a"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_high_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+                app:layout_constraintRight_toRightOf="@id/vertical_guideline75">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_high_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+                app:layout_constraintRight_toRightOf="@id/vertical_guideline75">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket2b"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+            app:layout_constraintTop_toTopOf="@id/hatch_rocket2a">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_medium_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_medium_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hatch_rocket2c"
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+            app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+            app:layout_constraintTop_toTopOf="@id/hatch_rocket2b">
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_low_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+            <CheckBox
+                android:id="@+id/hatch_rocket2_low_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false">
+
+                <tag
+                    android:id="@id/store"
+                    android:value="@string/store_true" />
+            </CheckBox>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/match"
+        android:layout_width="162dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:tag="@string/match_tag"
+        android:text="Match #000"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toBottomOf="@+id/team" />
+
+    <TextView
+        android:id="@+id/team"
+        android:layout_width="153dp"
+        android:layout_height="36dp"
+        android:tag="@string/team_tag"
+        android:text="Team 0000"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline25"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline25"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/next_tag"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline75" />
+
+    <Button
+        android:id="@+id/previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:tag="@string/previous_tag"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vertical_guideline25"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="184dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="8dp"
+        android:text="Teleop-Hatches"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        app:layout_constraintLeft_toLeftOf="@id/vertical_guideline75"
+        app:layout_constraintRight_toRightOf="@id/vertical_guideline75"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical_guideline75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+
+</android.support.constraint.ConstraintLayout>

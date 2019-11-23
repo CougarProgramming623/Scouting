@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Scouting App</string>
+
+    <string name="match_tag">Match</string>
+    <string name="team_tag">Team</string>
+
+    <string name="submit_tag">Submit</string>
+    <string name="next_tag">Next</string>
+    <string name="previous_tag">Previous</string>
+    <string name="store_true">true</string>
+
+    <item type="id" name="store" />
+    <item type="id" name="name" />
+
+    <string name="cargo_title">Teleop-<font color="#ffc300">Cargo</font></string><!--- Gold color -->
+</resources>

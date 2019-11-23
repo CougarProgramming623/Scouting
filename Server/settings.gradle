@@ -1,0 +1,5 @@
+
+rootProject.name = 'Server'
+include ":Core"
+project(":Core").projectDir = file("../Core")
+
