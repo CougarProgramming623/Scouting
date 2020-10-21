@@ -57,6 +57,7 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
 
     //Re creates the UI for displaying the next match
     public void reset() {
+        if (list == null) return;
         AssignerEntry current = list.getCurrent();
         if (current == null) {
             Log.e("Scout", "Current Entry Is Null: ");
@@ -97,7 +98,6 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (getPermissions())//We have perms so init the app here
             onCreateImpl();
-
     }
 
     //Called when the user clicks save or dismisses the submit popup

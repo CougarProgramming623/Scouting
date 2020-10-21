@@ -1,5 +1,6 @@
 
 apply plugin: 'java-library'
+apply plugin: 'application'
 repositories {
     jcenter()
 }
@@ -9,5 +10,8 @@ dependencies {
 	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile group: 'com.esotericsoftware', name: 'kryo', version: '5.0.0-RC1'
-	compile files("../Server")
+	compile files("../Server/build/libs/Server.jar")
+	compile files("../Core/build/libs/Core.jar")
 }
+
+mainClassName = 'com.jt.saa.Main'
