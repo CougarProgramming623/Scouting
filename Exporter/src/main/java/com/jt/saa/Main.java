@@ -60,8 +60,11 @@ public class Main {
 				deviceOutputs[i] = new ArrayList<AssignerEntry>();
 			}
 
+			// matchColumn = excel column at which the match # is stored
+			//
 			int matchColumn = -1;
 			List<Integer> redColumns = new ArrayList<Integer>(), blueColumns = new ArrayList<Integer>();
+
 			Workbook workbook = ExcelUtils.openExcelFile(excelFile);
 			Sheet sheet = workbook.getSheetAt(0);
 			Row header = sheet.getRow(0);
@@ -139,11 +142,12 @@ public class Main {
 					System.out.println("missing team at row=" + (row.getRowNum() + 1));
 				}
 
+
 				AssignerEntry entry;
 				while ((entry = getEntry(redTeams, blueTeams, match)) != null) {
 					int device = getLeastDevice(deviceUsages, entry);
 					if (device == -1) {
-						System.err.println("Unable to find a device to assign " + entry + " to");
+						throw new RuntimeException("Unable to find a device to assign " + entry + " to");
 					}
 					deviceUsages[device]++;
 					deviceOutputs[device].add(entry);
@@ -318,11 +322,11 @@ public class Main {
 	private static int getLeastDevice(int[] deviceUsages, AssignerEntry entry) {
 		int deviceIndex = -1;
 		for (int i = 0; i < deviceUsages.length; i++) {
-			if (entry.red == deviceIsRed[i]) {// Only allow adding a red entry to a red device or vice versa
+//			if (entry.red == deviceIsRed[i]) { // Only allow adding a red entry to a red device or vice versa
 				if (deviceIndex == -1 || (deviceUsages[i] < deviceUsages[deviceIndex])) {
 					deviceIndex = i;
 				}
-			}
+//			}
 		}
 		return deviceIndex;
 	}
