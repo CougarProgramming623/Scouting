@@ -1,7 +1,10 @@
 
 apply plugin: 'java-library'
+apply plugin: 'application'
+
 repositories {
     jcenter()
+
 	maven { url "https://jitpack.io" }
 }
 
@@ -29,3 +32,5 @@ task runFatJar(type: JavaExec) {
 	classpath = fatJar.outputs.files
 	main = 'com.jt.scoutserver.Main'
 }
+
+mainClassName = 'com.jt.scoutserver.Main'
