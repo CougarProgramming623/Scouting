@@ -41,13 +41,13 @@ public class Main {
 		File excelFile = Utils.openFile(ExcelUtils.EXCEL_EXTENSION, "Excel Files");
 		if (excelFile == null)
 			return;
-		int numDevices = Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
+		int numDevices = 1; // TODO add this back in, I'm just lazy: Utils.getIntInput(1, 100, "Enter Number of Devices", "Enter the number of devices to export for");
 		if (numDevices == Integer.MIN_VALUE)
 			return;
-		int result = JOptionPane.showConfirmDialog(null, "Do you want to pre-set the matches (yes) using the file or pre-set the teams (no)", "Set Mode", JOptionPane.YES_NO_OPTION);
-		if (result == JOptionPane.YES_OPTION) {
+		int result = 0;//JOptionPane.showConfirmDialog(null, "Do you want to pre-set the matches (yes) using the file or pre-set the teams (no)", "Set Mode", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) { // TODO look into what the 'false' option does. Preset for now cause I'm lazy
 			System.out.println("Presetting matches");
-			matchStart = Utils.getIntInput(0, 10000, "Enter Match Number to start on", "Enter 0 to start on the first match");
+			matchStart = 0; // TODO add this back in, I'm just lazy: Utils.getIntInput(0, 10000, "Enter Match Number to start on", "Enter 0 to start on the first match");
 			if (matchStart == Integer.MIN_VALUE)
 				return;
 			int[] deviceUsages = new int[numDevices];// maps device id's to number of matches assigned
@@ -165,6 +165,7 @@ public class Main {
 					try {
 						JadbConnection connection = new JadbConnection();
 						List<JadbDevice> devices = connection.getDevices();
+						System.out.println("Found " + devices.size() + " devices.");
 						JadbDevice currentDevice = null;
 						for (JadbDevice device : devices) {
 							if (!writtenDevices.contains(device)) {// We found one we havn't pushed to
@@ -193,6 +194,7 @@ public class Main {
 						file.delete();
 					} catch (Exception e) {
 						Utils.showError("Failed to save file on device!", "Failed to write to device " + e.getClass() + " : " + e.getMessage());
+						e.printStackTrace();
 						throw new RuntimeException(e);
 					}
 				} catch (Exception e) {
