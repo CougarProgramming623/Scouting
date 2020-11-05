@@ -273,11 +273,11 @@ public abstract class AbstractScoutingActivity extends AppCompatActivity {
         File currentFile = ClientUtils.getMatchFile(current.match, current.team);
         for(File file : ClientUtils.ANDROID_MATCHES_DIR.listFiles()) {
             if(currentFile.equals(file)) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK).create();
                 alertDialog.setTitle("Match Already Scouted!");
                 alertDialog.setMessage("You already scouted match #" + current.match + " for team " + current.team + "\nWhat would you like to do?");
 
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Re scout this match (will override old data)", new DialogInterface.OnClickListener() {
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Re scout this match (will override old data)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         return;//Nothing we are already on the match
                     }
