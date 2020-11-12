@@ -13,9 +13,11 @@ public class Main {
 		while (true) {
 			try {
 				if (SystemUtils.hasNewDevices()) {
-					System.out.println("Detected new device! Press \"pull\" to pull new files");
-					Thread.sleep(1000);
+					System.out.println("Pulling from new device...");
+					server.pull();
+					server.flashConsole();
 				}
+				Thread.sleep(100);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}

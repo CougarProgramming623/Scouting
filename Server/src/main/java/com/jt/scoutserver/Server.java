@@ -1,6 +1,7 @@
 package com.jt.scoutserver;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -46,6 +47,8 @@ public class Server extends JFrame {
 	private JList<MatchSubmission> list = new JList<MatchSubmission>(model);
 	private JButton pull = new JButton("Pull"), export = new JButton("Export to Excel"), purgeOldMatches = new JButton("Purge Old Matches");
 
+
+	private JScrollPane scroll;
 	public Server() {
 		super("Scouting App Server");
 
@@ -69,7 +72,7 @@ public class Server extends JFrame {
 
 		JPanel panel = new JPanel(new BorderLayout());
 		console.setEditable(false);
-		JScrollPane scroll = new JScrollPane(console);
+		scroll = new JScrollPane(console);
 		scroll.setBorder(BorderFactory.createTitledBorder("Console"));
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -114,14 +117,19 @@ public class Server extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				setVisible(false);
-				try {
-					SystemUtils.nativeExit();
-				} catch(NoClassDefFoundError e2) {
-					System.out.println("Natives not enabled");
-				}
 				System.exit(0);
 			}
 		});
+	}
+
+	public void flashConsole() {
+		getContentPane().setBackground(Color.GREEN);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		getContentPane().setBackground(Color.WHITE);
 	}
 
 	private void deleteMatches() {
@@ -168,7 +176,7 @@ public class Server extends JFrame {
 
 	public void pull() {
 		COMPUTER_MATCHES_DIR.mkdirs();
-		System.out.println("\nPreparing to pull fines...");
+		System.out.println("\nPreparing to pull files...");
 		boolean pulled = false;
 		try {
 			JadbConnection jadb = new JadbConnection();

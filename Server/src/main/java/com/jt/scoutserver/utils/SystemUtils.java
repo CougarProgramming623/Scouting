@@ -6,26 +6,25 @@ import java.nio.charset.Charset;
 
 import org.apache.poi.util.IOUtils;
 
+import se.vidstige.jadb.JadbConnection;
+import se.vidstige.jadb.JadbException;
+
 public class SystemUtils {
 
 	private static final String EXCEL_EXE_NAME = "EXCEL.EXE";
-
-	static {
-		System.out.println("Loading native library");
-		System.loadLibrary("Scouting App Natives");
-		
-		nativeInit();
-	}
 
 	/**
 	 * Returns if a new device has been plugged into this system since the last time this method was called - or when this class was initialized
 	 * 
 	 */
-	public static native boolean hasNewDevices();
 
-	private static native int nativeInit();
-
-	public static native void nativeExit();
+	static int count = 0;
+	public static boolean hasNewDevices() throws IOException, JadbException {
+		int newCount = new JadbConnection().getDevices().size();
+		boolean hasNew = newCount > count;
+		count = newCount;
+		return hasNew;
+	}
 
 	public static boolean isExcelRunning() {
 		try {

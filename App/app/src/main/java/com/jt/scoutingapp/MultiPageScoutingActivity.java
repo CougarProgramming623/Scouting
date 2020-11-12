@@ -40,8 +40,8 @@ public abstract class MultiPageScoutingActivity extends AbstractScoutingActivity
         public abstract void showImpl(MultiPageScoutingActivity parent);
 
         private void show(MultiPageScoutingActivity parent) {
-            showImpl(parent);//Let the user set their layout so we can pull the requisite buttons from it
-            parent.pageShown(this);//Re-load any saved values
+            showImpl(parent);// Let the user set their layout so we can pull the requisite buttons from it
+            parent.pageShown(this); // Re-load any saved values
             View submitButton = setListener(parent, R.string.submit_tag, (v) -> parent.nextPage());
             View nextButton = setListener(parent, R.string.next_tag, (v) -> parent.nextPage());
             View previousButton = setListener(parent, R.string.previous_tag, (v) -> parent.previousPage());
