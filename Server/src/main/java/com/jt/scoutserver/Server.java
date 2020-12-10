@@ -146,9 +146,8 @@ public class Server extends JFrame {
 		}
 
 		try {
-
-			Files.write(Path.of(""), Collections.singleton(fileContent));
-//			Files.writeString(Path.of("/home/carson/install/output.csv"), fileContent);
+			//Files.writeString(Path.of("/home/carson/install/output.csv"), fileContent);
+			Files.write(new File("C:\\Users\\plasm\\Documents\\Robotics\\test.csv").toPath(), Collections.singleton(fileContent));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
