@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -145,7 +146,9 @@ public class Server extends JFrame {
 		}
 
 		try {
-			Files.writeString(Path.of("/home/carson/install/output.csv"), fileContent);
+
+			Files.write(Path.of(""), Collections.singleton(fileContent));
+//			Files.writeString(Path.of("/home/carson/install/output.csv"), fileContent);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
