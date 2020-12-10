@@ -9,7 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -81,8 +85,8 @@ public class Server extends JFrame {
 			pull();
 		});
 		export.addActionListener((e) -> {
-			ExportWindow window = new ExportWindow();
-
+			//ExportWindow window = new ExportWindow();
+			writeToCSV();
 		});
 		purgeOldMatches.addActionListener((e) -> {
 			int result = JOptionPane.showConfirmDialog(this, "Do you want to delete all matches stored on your computer?\nYou cannot undo this", "Delete all matches?", JOptionPane.YES_NO_OPTION);
@@ -120,6 +124,45 @@ public class Server extends JFrame {
 				System.exit(0);
 			}
 		});
+	}
+
+
+	public void writeToCSV() {
+		File[] files = COMPUTER_MATCHES_DIR.listFiles();
+		String fileContent = null;
+		String[] columns = new String[0];
+		for(File file : files) {
+			MatchSubmission sub = ScoutingUtils.read(file);
+			if(fileContent == null) {// if this is the first iteration
+				columns = sub.getMap().keySet().toArray(new String[0]);
+				fileContent = convertToCSV(columns) + "\n";
+			}
+			String[] row = new String[columns.length];
+			for(int i = 0; i < row.length; i++) {
+				row[i] = String.valueOf(sub.getMap().get(columns[i]));
+			}
+			fileContent += convertToCSV(row) + "\n";
+		}
+
+		try {
+			Files.writeString(Path.of("/home/carson/install/output.csv"), fileContent);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	public static String convertToCSV(String[] data) {
+		return Stream.of(data)
+				.map(Server::escapeSpecialCharacters)
+				.collect(Collectors.joining(","));
+	}
+	public static String escapeSpecialCharacters(String data) {
+		String escapedData = data.replaceAll("\\R", " ").replace("\n", " \\ n ");
+		if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+			data = data.replace("\"", "\"\"");
+			escapedData = "\"" + data + "\"";
+		}
+		return escapedData;
 	}
 
 	public void flashConsole() {
